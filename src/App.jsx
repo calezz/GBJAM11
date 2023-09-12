@@ -1,14 +1,15 @@
 import './App.css'
-import CanvasComponent from './CanvasComponent'
-
+import Display from './display/Display'
+import DevMenu from './helpers/DevMenu'
 
 function App() {
 
-  return (
-    
-      <CanvasComponent/>
+  return (<>
+    <Display/>
 
+      <DevMenu/>
     
+  </>
   )
 }
 
