@@ -22,7 +22,7 @@ const audio = useRef(null)
       <br />
 
       {<audio ref={audio} style={{transform:`scale(.5)`, position:"relative",left:"-25%"}} controls>
-      <source src="./src/assets/tekit.mp3" type="audio/mpeg" />
+      <source src="/tekit.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>}
     </>

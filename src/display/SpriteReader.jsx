@@ -14,7 +14,7 @@ export default function SpriteReader() {
   //TODO ASSET POSITION
   useEffect(() => {
     const image = new Image();
-    image.src = "./src/assets/placeholder2.png";
+    image.src = "/placeholder2.png";
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const sourceX = 0;
