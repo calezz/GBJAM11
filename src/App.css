@@ -35,6 +35,7 @@ canvas{
   shape-rendering:crispEdges;
   image-rendering:pixelated;
   position: absolute;
+  
 }
 p{
   line-height: 1.5em;

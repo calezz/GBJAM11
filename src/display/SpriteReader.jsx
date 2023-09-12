@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
+import { useLogicStore } from "../store/Store";
 
 export default function SpriteReader() {
+    const store = useLogicStore((state)=>state.count)
+    
   const canvasRef = useRef(null);
  
   const [X,Y] = [16,16] //placeholder for cartesian 4 bit
@@ -12,8 +15,8 @@ export default function SpriteReader() {
   const [DX,DY] = [0,0] // where the sprite will be drawn from relative to its own canvas 
   
   //TODO ASSET POSITION
-  useEffect(() => {
-    const image = new Image();
+  useEffect(  () => {
+    const image =  new Image();
     image.src = "/placeholder2.png";
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -45,6 +48,7 @@ export default function SpriteReader() {
 
   return (
     <>
+      <p>{store}</p>
       <canvas ref={canvasRef} style={style} height={`${HEIGHT}`} width={`${WIDTH}`} />
     </>
   );

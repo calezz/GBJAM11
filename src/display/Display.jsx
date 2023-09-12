@@ -5,4 +5,5 @@ export default function Display(){
     <div id="display">
     <SpriteReader />
   </div>)
+  
 }
