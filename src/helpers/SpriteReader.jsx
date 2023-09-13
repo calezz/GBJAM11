@@ -6,7 +6,7 @@ export default function SpriteReader(props) {
   const [metadata, setMetadata] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const canvasRef = useRef(null);
-  
+
   //Might need to migrate this later
   // const [X, Y, Z] = [16, 16, -16]; //placeholder for cartesian 4 bit
   //const [isoX, isoY] = [X / 2 - Y / 2, X / 4 + Y / 4 + Z / 2]; //cartesian 4 bit to iso
@@ -15,7 +15,7 @@ export default function SpriteReader(props) {
   let HEIGHT = 16;
 
   useEffect(() => {
-    fetch(`/src/assets/${props.tilename}.json`)
+    fetch(`/${props.tilename}.json`)
       .then((response) => response.json())
       .then((data) => setMetadata(data))
       .catch((error) => console.error("fetching error:", error))
