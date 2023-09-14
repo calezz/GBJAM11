@@ -11,7 +11,6 @@ export default function Entity(props) {
   useEffect(() => {   
     if(rest.snippet.id===500){
     const keyHandler = (e) => {
-
       if (e.key === "w") {
         setIso((prev)=>[prev[0] + 8, prev[1] - 4]);
         setPos((prev)=>[prev[0], prev[1]-1,prev[2]])
@@ -61,7 +60,7 @@ export default function Entity(props) {
     <>
       {rest.snippet.id>0 && (
         <div style={style} >
-
+          {console.log(rest.snippet.state)}
           <SpriteReader props={rest} zIndex={style.zIndex} />
         </div>
       )}

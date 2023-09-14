@@ -4,11 +4,28 @@ import { useEffect, useRef, useState, useLayoutEffect } from "react";
 
 export default function SpriteReader(props) {
   const canvasRef = useRef(null);
-  const [metadata, setMetadata] = useState(null);
   const [currentFrame, setCurrentFrame] = useState(0);
   const [size, setSize] = useState([16, 16]);
-
+  
   useEffect(() => {
+    console.log("reset")
+    setCurrentFrame(-1) //reset on state change
+    let timeoutId;
+    const incrementFrame = () => {
+      setCurrentFrame((prevCurrentFrame) => prevCurrentFrame + 1);
+      timeoutId = setTimeout(incrementFrame, 1000); // Repeat after 100 milliseconds
+    };
+  
+    if (props.props.snippet.state !== "static") {
+      incrementFrame();
+    }
+  
+    // Return a cleanup function to clear the timeout when the component unmounts or state changes
+    return () => clearTimeout(timeoutId);
+  }, [props.props.snippet.state]);
+  useEffect(() => {
+    
+    console.log(currentFrame,props.props.snippet.state)
     const image = new Image();
     let WIDTH, HEIGHT, OX, OY, DX, DY, scale;
     let displayFrame = 0;
@@ -17,12 +34,14 @@ export default function SpriteReader(props) {
       const frametags = props.props.snippet.character.meta.frameTags.find(
         (obj) => obj.name === props.props.snippet.state
       );
-      
+
       // Check animation
       const frameCount = frametags.to - frametags.from + 1;
       displayFrame = frametags.from + (currentFrame % frameCount);
-      currentFrame % frameCount === frameCount - 1 &&
-        (props.props.snippet.state = "idle_human_02");
+
+      //resets the animation if near completion //wrap in if statement to make repeatable
+      currentFrame % frameCount === (frameCount - 1) &&
+        ((props.props.snippet.state = "idle_human_02")&&setCurrentFrame(0))
 
       const config = props.props.snippet.character;
 
@@ -86,22 +105,8 @@ export default function SpriteReader(props) {
       );
       //     return ()=>clearRect(0, 0, 160, 144);
     };
-  }, [currentFrame, props.props.snippet.state]);
+  }, [currentFrame]);
 
-  useEffect(() => {
-    let timeoutId;
-    const incrementFrame = () => {
-      setCurrentFrame((prevCurrentFrame) => prevCurrentFrame + 1);
-      timeoutId = setTimeout(incrementFrame, 80); // Repeat after 100 milliseconds
-    };
-
-    if (props.props.snippet.state !== "static") {
-      incrementFrame();
-    }
-
-    // Return a cleanup function to clear the timeout when the component unmounts or state changes
-    return () => clearTimeout(timeoutId);
-  }, [props.props.snippet.state]);
 
   const style = {
     position: "absolute",
