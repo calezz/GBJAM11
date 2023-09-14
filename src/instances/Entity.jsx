@@ -43,12 +43,13 @@ export default function Entity(props) {
         setIso((prev)=>[prev[0] , prev[1] +8]);
         setPos((prev)=>[prev[0] , prev[1],prev[2]-1])
         rest.snippet.state="jumping_human_back"
+        console.log("holding")
       }
     };
     //movement controller
-    window.addEventListener("keydown", keyHandler);
+    window.addEventListener("keyup", keyHandler);
     return () => {
-      window.removeEventListener("keydown", keyHandler);
+      window.removeEventListener("keyup", keyHandler);
     }}
 }, []);
 

@@ -67,16 +67,7 @@ export default function SpriteReader(props) {
     const destinationHeight = HEIGHT; //
     ctx.imageSmoothingEnabled = false;
     ctx.clearRect(0, 0, 160, 144);
-    console.log (image,
-      sourceX,
-      sourceY,
-      sourceWidth,
-      sourceHeight,
-      destinationX + offsetX,
-      destinationY + offsetY,
-      destinationWidth * scale,
-      destinationHeight * scale
-      )
+
     image.onload = () => {
       ctx.drawImage(
         image,
