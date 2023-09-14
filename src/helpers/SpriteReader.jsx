@@ -73,72 +73,23 @@ export default function SpriteReader(props) {
       );
       return () => ctx.clearRect(0, 0, 160, 144);
     }
+}, []);
 
 
-
-
-
-
-   /* else if (metadata) {
-      console.error("HMM")
-      const image = new Image();
-      image.src = `/${props.tilename}.png`;
-      const config = metadata
-      let WIDTH, HEIGHT,OX,OY,DX,DY,scale
-      if(config?.meta?.app==="https://www.aseprite.org/"){
-        //number of frames //current frame
-     // console.log(config.frameTags.find(entry=>entry.name==="idle"))
-     [WIDTH, HEIGHT] = [config.frames[`${props.tilename} 0.aseprite`].frame.w, config.frames[`${props.tilename} 0.aseprite`].frame.h]; // asset size will be input here
-      [OX, OY] = [config.frames[`${props.tilename} 0.aseprite`].frame.x, config.frames[`${props.tilename} 0.aseprite`].frame.y]; // where the sprite will be read from
-      [DX, DY] = [0, 0]; // where the sprite will be drawn from relative to its own canvas
-      scale = config.meta.scale; //scale - dont see why i would ever need this but its here just in case
-    }
-    else{
-      console.error("HMM")
-      [WIDTH, HEIGHT] = [config.size[0], config.size[1]]; // asset size will be input here
-      [OX, OY] = [config.drawOrigin[0], config.drawOrigin[1]]; // where the sprite will be read from
-      [DX, DY] = [0, 0]; // where the sprite will be drawn from relative to its own canvas
-      scale = config.scale; //scale - dont see why i would ever need this but its here just in case
-    }
-      console.log(HEIGHT,WIDTH)
-    setSize([HEIGHT,WIDTH])
-      
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
-      const sourceX = OX; //
-      const sourceY = OY; //
-      const sourceWidth = WIDTH; //
-      const sourceHeight = HEIGHT; //
-      const offsetX = 0; //not implemented
-      const offsetY = 0; //not implemented
-      const destinationX = DX;
-      const destinationY = DY;
-      const destinationWidth = WIDTH; //
-      const destinationHeight = HEIGHT; //
-      ctx.imageSmoothingEnabled = false;
-      image.onload = () => {
-        ctx.drawImage(
-          image,
-          sourceX,
-          sourceY,
-          sourceWidth,
-          sourceHeight,
-          destinationX + offsetX,
-          destinationY + offsetY,
-          destinationWidth * scale,
-          destinationHeight * scale
-        );
-        return () => ctx.clearRect(0, 0, 160, 144);
-      }
-    }*/}, []);
+const style={
+  position:"absolute",
+  zIndex:props.zIndex
+}
   return (
     <>
       {(metadata ||props.props.snippet.id>0) && (
+        
         <canvas
           id ={props.props.snippet.id}
           ref={canvasRef}
           width={size[0]}
           height={size[1]}
+          style={style}
         ></canvas>
       )}
     </>

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export default function Level() {
   const [level, setLevel] = useState(null);
   const [character, setCharacter] = useState();
-  const [iso, setIso] = useState([72, 24]);
+  const [iso, setIso] = useState([88, 40]);
   const config = {
     name: "test_room02",
     src: "placeholder",
@@ -41,13 +41,13 @@ export default function Level() {
                 key={[index, Z]}
                 props={{
                     ...(id == 500
-                      ? { position: [
+                      ? { positionInitial: [
                         (index % width)-.25,
                         (Math.floor(index / width)-.25),
                         height - Z,
                       ],snippet:{ id, character: character, src: "main_char" }}
                       : {
-                        position: [
+                        positionInitial: [
                           index % width,
                           Math.floor(index / width),
                           height - Z,
