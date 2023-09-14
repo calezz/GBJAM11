@@ -2,7 +2,7 @@ import Entity from "./Entity";
 import { useEffect, useState } from "react";
 export default function Level() {
   const [level, setLevel] = useState(null);
-    const [iso,setIso] = useState([0,0])
+    const [iso,setIso] = useState([72,24])
   const config = { name: "test_room02" };
 
   useEffect(() => {
@@ -53,7 +53,7 @@ useEffect(() => {
   //create a level
   return (
     <div style={style}>
-        {console.log(style)}
+        
       {level &&
         level.layers.map((layers, Z) => {
           const width = layers.width;

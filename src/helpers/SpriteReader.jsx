@@ -26,7 +26,6 @@ export default function SpriteReader(props) {
   useEffect(() => {
 
     if(props.props.snippet.id){
-      console.log("HELLO")
       const config =props.props.snippet
       const image = new Image();
       image.src = `/${config.src}.png`;
@@ -39,7 +38,7 @@ export default function SpriteReader(props) {
       setSize([HEIGHT,WIDTH])
       
       const canvas = canvasRef.current;
-      console.log(canvas)
+ //     console.log(canvas)
       const ctx = canvas.getContext("2d");
       const sourceX = OX; //
       const sourceY = OY; //
