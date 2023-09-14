@@ -22,8 +22,8 @@ export default function SpriteReader(props) {
         (currentFrame%frameCount===(frameCount-1)&&(props.props.snippet.state="idle_human_02"))
       
       const config = props.props.snippet.character;
+      
       image.src = `/${props.props.snippet.src}.png`;
-      console.log(displayFrame)
       const frameData =
         config.frames[`${props.props.snippet.src} ${displayFrame}.aseprite`];
       if (frameData) {
@@ -67,6 +67,16 @@ export default function SpriteReader(props) {
     const destinationHeight = HEIGHT; //
     ctx.imageSmoothingEnabled = false;
     ctx.clearRect(0, 0, 160, 144);
+    console.log (image,
+      sourceX,
+      sourceY,
+      sourceWidth,
+      sourceHeight,
+      destinationX + offsetX,
+      destinationY + offsetY,
+      destinationWidth * scale,
+      destinationHeight * scale
+      )
     image.onload = () => {
       ctx.drawImage(
         image,
@@ -78,17 +88,17 @@ export default function SpriteReader(props) {
         destinationY + offsetY,
         destinationWidth * scale,
         destinationHeight * scale
-      );
-
-      return () => ctx.clearRect(0, 0, 160, 144);
+        );
+       
+        return () => ctx.clearRect(0, 0, 160, 144);
     };
-  }, [currentFrame]);
+  }, [currentFrame, props.props.snippet.state]);
 
   useEffect(() => {
     let timeoutId;
     const incrementFrame = () => {
       setCurrentFrame((prevCurrentFrame) => prevCurrentFrame + 1);
-      timeoutId = setTimeout(incrementFrame, 70); // Repeat after 100 milliseconds
+      timeoutId = setTimeout(incrementFrame, 1000); // Repeat after 100 milliseconds
     };
 
     if (props.props.snippet.state !== "static") {
