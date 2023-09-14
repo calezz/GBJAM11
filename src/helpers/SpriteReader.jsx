@@ -24,48 +24,61 @@ export default function SpriteReader(props) {
   }, []);*/
 
   useEffect(() => {
+  const image = new Image();
+  let WIDTH, HEIGHT, OX, OY, DX, DY, scale;
 
-    if(props.props.snippet.id){
-      const config =props.props.snippet
-      const image = new Image();
-      image.src = `/${config.src}.png`;
-      let WIDTH, HEIGHT,OX,OY,DX,DY,scale
-      [WIDTH, HEIGHT] = [config.size[0], config.size[1]];   
-      [OX, OY] = [(((config.id-1)%config.columns))*WIDTH, (Math.floor((config.id-1)/config.columns))*HEIGHT]; 
-      [DX, DY] = [0, 0]; 
-      scale = 1;
+  if (props.props.snippet.id === 500) {
+    const config = props.props.snippet.character;
+    image.src = `/${props.props.snippet.src}.png`;
 
-      setSize([HEIGHT,WIDTH])
-      
-      const canvas = canvasRef.current;
- //     console.log(canvas)
-      const ctx = canvas.getContext("2d");
-      const sourceX = OX; //
-      const sourceY = OY; //
-      const sourceWidth = WIDTH; //
-      const sourceHeight = HEIGHT; //
-      const offsetX = 0; //not implemented
-      const offsetY = 0; //not implemented
-      const destinationX = DX;
-      const destinationY = DY;
-      const destinationWidth = WIDTH; //
-      const destinationHeight = HEIGHT; //
-      ctx.imageSmoothingEnabled = false;
-      image.onload = () => {
-        ctx.drawImage(
-          image,
-          sourceX,
-          sourceY,
-          sourceWidth,
-          sourceHeight,
-          destinationX + offsetX,
-          destinationY + offsetY,
-          destinationWidth * scale,
-          destinationHeight * scale
-        );
-        return () => ctx.clearRect(0, 0, 160, 144);
-      }
+    [WIDTH, HEIGHT] = [config.frames[`${props.props.snippet.src} 0.aseprite`].frame.w, config.frames[`${props.props.snippet.src} 0.aseprite`].frame.h]; // asset size will be input here
+    [OX, OY] = [config.frames[`${props.props.snippet.src} 0.aseprite`].frame.x, config.frames[`${props.props.snippet.src} 0.aseprite`].frame.y]; // where the sprite will be read from
+    [DX, DY] = [0, 0]; // where the sprite will be drawn from relative to its own canvas
+    scale = 1; // scale - don't see why I would ever need this but it's here just in case
+  } else if (props.props.snippet.id) try{
+    const config = props.props.snippet;
+    image.src = `/${config.src}.png`;
+    [WIDTH, HEIGHT] = [config.size[0], config.size[1]];
+    [OX, OY] = [(((config.id - 1) % config.columns)) * WIDTH, (Math.floor((config.id - 1) / config.columns)) * HEIGHT];
+    [DX, DY] = [0, 0];
+    scale = 1;
+  }catch{console.error("Check if you are funneling right ids in here.",error)}
+
+  //  console.log(props.props.snippet)
+    setSize([HEIGHT,WIDTH])
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const sourceX = OX; //
+    const sourceY = OY; //
+    const sourceWidth = WIDTH; //
+    const sourceHeight = HEIGHT; //
+    const offsetX = 0; //not implemented
+    const offsetY = 0; //not implemented
+    const destinationX = DX;
+    const destinationY = DY;
+    const destinationWidth = WIDTH; //
+    const destinationHeight = HEIGHT; //
+    ctx.imageSmoothingEnabled = false;
+    image.onload = () => {
+      ctx.drawImage(
+        image,
+        sourceX,
+        sourceY,
+        sourceWidth,
+        sourceHeight,
+        destinationX + offsetX,
+        destinationY + offsetY,
+        destinationWidth * scale,
+        destinationHeight * scale
+      );
+      return () => ctx.clearRect(0, 0, 160, 144);
     }
+
+
+
+
+
+
    /* else if (metadata) {
       console.error("HMM")
       const image = new Image();

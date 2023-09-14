@@ -8,17 +8,28 @@ export default function Entity(props) {
     (position[0] * 16) / 4 + (position[1] * 16) / 4 + (position[2] * 16) / 2,
   ]);
 
-  function throttle(func, delay) {
-    let lastCall = 0;
-    return function (...args) {
-      const now = new Date().getTime();
-      if (now - lastCall >= delay) {
-        lastCall = now;
-        func(...args);
+  useEffect(() => {
+    if(rest.snippet.id===500){
+    const keyHandler = (e) => {
+      if (e.key === "w") {
+        setIso((prev)=>[prev[0] + 8, prev[1] - 4]);
+      }
+      if (e.key === "d") {
+        setIso((prev)=>[prev[0] + 8, prev[1] + 4]);
+      }
+      if (e.key === "a") {
+        setIso((prev)=>[prev[0] - 8, prev[1] - 4]);
+      }
+      if (e.key === "s") {
+        setIso((prev)=>[prev[0] - 8, prev[1] + 4]);
       }
     };
-  }
-
+    //movement controller
+    window.addEventListener("keydown", keyHandler);
+    return () => {
+      window.removeEventListener("keydown", keyHandler);
+    }}
+}, []);
 
 
   const style = {
@@ -30,6 +41,7 @@ export default function Entity(props) {
     <>
       {rest.snippet.id>0 && (
         <div style={style}>
+
           <SpriteReader props={rest} />
         </div>
       )}
