@@ -84,7 +84,7 @@ useEffect(() => {
           });
         })}
 
-      {!level && "loading"}
+      {!level && ""}
     </div>
   );
 }
