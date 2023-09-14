@@ -19,28 +19,7 @@ export default function Entity(props) {
     };
   }
 
-  const keyHandler = throttle((e) => {
-    if (e.key === 'w') {
-      setIso([iso[0] + 8, iso[1] - 4]);
-    }
-    if (e.key === 'd') {
-      setIso([iso[0] + 8, iso[1] + 4]);
-    }
-    if (e.key === 'a') {
-      setIso([iso[0] - 8, iso[1] - 4]);
-    }
-    if (e.key === 's') {
-      setIso([iso[0] - 8, iso[1] + 4]);
-    }
-  }, 10000);
 
-  useEffect(() => {
-    //movement controller
-    window.addEventListener("keydown", keyHandler);
-    return () => {
-      window.removeEventListener("keydown", keyHandler);
-    };
-  }, [keyHandler]);
 
   const style = {
     transform: `translate(${iso[0]}px,${iso[1]}px)`,
