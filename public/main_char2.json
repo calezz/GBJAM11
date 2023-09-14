@@ -1,0 +1,11 @@
+{
+    "tilename":"main_char",
+    "size":[16,16,16],
+    "drawOrigin":[0,0],
+    "scale":1,
+    "orientation":"",
+    "type":"default",
+    
+    "spritedata":"todo"
+    }
+    
