@@ -2,29 +2,27 @@ import Entity from "./Entity";
 import { useEffect, useState } from "react";
 export default function Level() {
   const [level, setLevel] = useState(null);
+  const [character,setCharacter] = useState()
     const [iso,setIso] = useState([72,24])
-  const config = { name: "test_room02" };
+  const config = { name: "test_room02", character:"main_char"};
 
   useEffect(() => {
     fetch(`/${config.name}.json`)
       .then((response) => response.json())
       .then((data) => setLevel(data))
       .catch((error) => console.error("fetching error:", error));
+
+      fetch(`/${config.character}.json`)
+      .then((response) => response.json())
+      .then((data) => setCharacter(data))
+      .catch((error) => console.error("fetching error:", error));
+    
   }, []);
   const src = "placeholder";
 
 
-  function throttle(func, delay) {
-    let lastCall = 0;
-    return function (...args) {
-      const now = new Date().getTime();
-      if (now - lastCall >= delay) {
-        lastCall = now;
-        func(...args);
-      }
-    };
-  }
-  const keyHandler = throttle((e) => {
+
+  const keyHandler = (e) => {
     if (e.key === 'w') {
       setIso([iso[0] + 8, iso[1] - 4]);
     }
@@ -37,8 +35,7 @@ export default function Level() {
     if (e.key === 's') {
         setIso([iso[0] - 8, iso[1] + 4]);
     }
-}, 100);
-
+};
 useEffect(() => {
     //movement controller
     window.addEventListener("keydown", keyHandler);
