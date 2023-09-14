@@ -14,15 +14,18 @@ export default function SpriteReader(props) {
     let displayFrame = 0;
 
     if (props.props.snippet.id === 500) {
-      const frametags = props.props.snippet.character.meta.frameTags.find((obj) => obj.name ===  props.props.snippet.state);
+      const frametags = props.props.snippet.character.meta.frameTags.find(
+        (obj) => obj.name === props.props.snippet.state
+      );
+      
       // Check animation
+      const frameCount = frametags.to - frametags.from + 1;
+      displayFrame = frametags.from + (currentFrame % frameCount);
+      currentFrame % frameCount === frameCount - 1 &&
+        (props.props.snippet.state = "idle_human_02");
 
-        const frameCount = frametags.to - frametags.from + 1;
-        displayFrame =frametags.from+ (currentFrame % frameCount);
-        (currentFrame%frameCount===(frameCount-1)&&(props.props.snippet.state="idle_human_02"))
-      
       const config = props.props.snippet.character;
-      
+
       image.src = `/${props.props.snippet.src}.png`;
       const frameData =
         config.frames[`${props.props.snippet.src} ${displayFrame}.aseprite`];
@@ -50,8 +53,8 @@ export default function SpriteReader(props) {
       } catch {
         console.error("Check if you are funneling right ids in here.", error);
       }
-
-    //  console.log(props.props.snippet)
+      
+      //preparing variables
     setSize([HEIGHT, WIDTH]);
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -66,9 +69,10 @@ export default function SpriteReader(props) {
     const destinationWidth = WIDTH; //
     const destinationHeight = HEIGHT; //
     ctx.imageSmoothingEnabled = false;
-    ctx.clearRect(0, 0, 160, 144);
 
+    //Drawing canvas
     image.onload = () => {
+      ctx.clearRect(0, 0, 160, 144);
       ctx.drawImage(
         image,
         sourceX,
@@ -79,9 +83,8 @@ export default function SpriteReader(props) {
         destinationY + offsetY,
         destinationWidth * scale,
         destinationHeight * scale
-        );
-       
-        return () => ctx.clearRect(0, 0, 160, 144);
+      );
+      //     return ()=>clearRect(0, 0, 160, 144);
     };
   }, [currentFrame, props.props.snippet.state]);
 
@@ -89,12 +92,11 @@ export default function SpriteReader(props) {
     let timeoutId;
     const incrementFrame = () => {
       setCurrentFrame((prevCurrentFrame) => prevCurrentFrame + 1);
-      timeoutId = setTimeout(incrementFrame, 60); // Repeat after 100 milliseconds
+      timeoutId = setTimeout(incrementFrame, 80); // Repeat after 100 milliseconds
     };
 
     if (props.props.snippet.state !== "static") {
-      incrementFrame()
-
+      incrementFrame();
     }
 
     // Return a cleanup function to clear the timeout when the component unmounts or state changes
@@ -107,14 +109,14 @@ export default function SpriteReader(props) {
   };
   return (
     <>
-      {(metadata || props.props.snippet.id > 0) && (
+      {props.props.snippet.id > 0 && (
         <canvas
           id={props.props.snippet.id}
           ref={canvasRef}
           width={size[0]}
           height={size[1]}
           style={style}
-        ></canvas>
+        />
       )}
     </>
   );

@@ -8,7 +8,6 @@ export default function Entity(props) {
     (positionInitial[0] * 16) / 2 - (positionInitial[1] * 16) / 2,
     (positionInitial[0] * 16) / 4 + (positionInitial[1] * 16) / 4 + (positionInitial[2] * 16) / 2,
   ]);
-
   useEffect(() => {   
     if(rest.snippet.id===500){
     const keyHandler = (e) => {
@@ -43,7 +42,6 @@ export default function Entity(props) {
         setIso((prev)=>[prev[0] , prev[1] +8]);
         setPos((prev)=>[prev[0] , prev[1],prev[2]-1])
         rest.snippet.state="jumping_human_back"
-        console.log("holding")
       }
     };
     //movement controller

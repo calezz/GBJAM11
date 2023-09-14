@@ -22,7 +22,6 @@ export default function Level() {
   }, []);
 
 
-
   const style = {
     transform: `translate(${iso[0]}px,${iso[1]}px)`,
   };
