@@ -50,14 +50,13 @@ export default function Entity(props) {
   const style = {
     transform: `translate(${iso[0]}px,${iso[1]}px)`,
     position: 'relative',
-    zIndex:pos[0]*100+pos[1]*100+pos[2],
+    zIndex:pos[0]*100+pos[1]*100+pos[2] -(rest.snippet.id===500&&100) ,
   };
-  console.log(pos[0]+pos[1]+pos[2])
   return (
     <>
       {rest.snippet.id>0 && (
         <div style={style} >
-
+          {console.log(style.zIndex)}
           <SpriteReader props={rest} zIndex={style.zIndex} />
         </div>
       )}
