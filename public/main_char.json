@@ -206,30 +206,6 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "sourceSize": { "w": 16, "h": 16 },
     "duration": 100
-   },
-   "main_char 26.aseprite": {
-    "frame": { "x": 416, "y": 0, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 16, "h": 16 },
-    "duration": 100
-   },
-   "main_char 27.aseprite": {
-    "frame": { "x": 432, "y": 0, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 16, "h": 16 },
-    "duration": 100
-   },
-   "main_char 28.aseprite": {
-    "frame": { "x": 448, "y": 0, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 16, "h": 16 },
-    "duration": 100
    }
  },
  "meta": {
@@ -237,10 +213,14 @@
   "version": "1.2.34.1-x64",
   "image": "main_char.png",
   "format": "RGBA8888",
-  "size": { "w": 464, "h": 16 },
+  "size": { "w": 416, "h": 16 },
   "scale": "1",
   "frameTags": [
-   { "name": "idle", "from": 0, "to": 10, "direction": "forward" }
+   { "name": "idle_human_02", "from": 0, "to": 7, "direction": "forward" },
+   { "name": "walking_human", "from": 8, "to": 13, "direction": "forward" },
+   { "name": "walking_back_human", "from": 14, "to": 19, "direction": "forward" },
+   { "name": "jumping_human_back", "from": 20, "to": 22, "direction": "forward" },
+   { "name": "jumping_human_front", "from": 23, "to": 25, "direction": "forward" }
   ],
   "layers": [
    { "name": "Layer 5", "opacity": 255, "blendMode": "normal" }

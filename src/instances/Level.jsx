@@ -45,7 +45,7 @@ export default function Level() {
                         (index % width)-.25,
                         (Math.floor(index / width)-.25),
                         height - Z,
-                      ],snippet:{state:"idle", id, character: character, src: "main_char" }}
+                      ],snippet:{state:"idle_human_02", id, character: character, src: "main_char" }}
                       : {
                         positionInitial: [
                           index % width,

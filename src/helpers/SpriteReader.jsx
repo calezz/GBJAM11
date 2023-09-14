@@ -9,24 +9,21 @@ export default function SpriteReader(props) {
   const [size, setSize] = useState([16, 16]);
 
   useEffect(() => {
-
     const image = new Image();
     let WIDTH, HEIGHT, OX, OY, DX, DY, scale;
     let displayFrame = 0;
 
     if (props.props.snippet.id === 500) {
-      console.log("render")
-      console.log(currentFrame)
-      const frametags = props.props.snippet.character.meta.frameTags[0];
-
+      const frametags = props.props.snippet.character.meta.frameTags.find((obj) => obj.name ===  props.props.snippet.state);
       // Check animation
-      if (frametags.name === props.props.snippet.state) {
-        const frameCount = frametags.to - frametags.from + 1;
-        displayFrame = currentFrame % frameCount;
-      }
 
+        const frameCount = frametags.to - frametags.from + 1;
+        displayFrame =frametags.from+ (currentFrame % frameCount);
+        (currentFrame%frameCount===(frameCount-1)&&(props.props.snippet.state="idle_human_02"))
+      
       const config = props.props.snippet.character;
       image.src = `/${props.props.snippet.src}.png`;
+      console.log(displayFrame)
       const frameData =
         config.frames[`${props.props.snippet.src} ${displayFrame}.aseprite`];
       if (frameData) {
@@ -69,6 +66,7 @@ export default function SpriteReader(props) {
     const destinationWidth = WIDTH; //
     const destinationHeight = HEIGHT; //
     ctx.imageSmoothingEnabled = false;
+    ctx.clearRect(0, 0, 160, 144);
     image.onload = () => {
       ctx.drawImage(
         image,
@@ -90,13 +88,14 @@ export default function SpriteReader(props) {
     let timeoutId;
     const incrementFrame = () => {
       setCurrentFrame((prevCurrentFrame) => prevCurrentFrame + 1);
-      timeoutId = setTimeout(incrementFrame, 100); // Repeat after 100 milliseconds
+      timeoutId = setTimeout(incrementFrame, 50); // Repeat after 100 milliseconds
     };
-  
-    if (props.props.snippet.state === "idle") {
-      timeoutId = setTimeout(incrementFrame, 100);
+
+    if (props.props.snippet.state !== "static") {
+      incrementFrame()
+
     }
-  
+
     // Return a cleanup function to clear the timeout when the component unmounts or state changes
     return () => clearTimeout(timeoutId);
   }, [props.props.snippet.state]);

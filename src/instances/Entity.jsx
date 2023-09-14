@@ -16,27 +16,33 @@ export default function Entity(props) {
       if (e.key === "w") {
         setIso((prev)=>[prev[0] + 8, prev[1] - 4]);
         setPos((prev)=>[prev[0], prev[1]-1,prev[2]])
+        rest.snippet.state="walking_human"
       }
       if (e.key === "d") {
         setIso((prev)=>[prev[0] + 8, prev[1] + 4]);
         setPos((prev)=>[prev[0] +1, prev[1],prev[2]])
+        rest.snippet.state="walking_human"
       }
       if (e.key === "a") {
         setIso((prev)=>[prev[0] - 8, prev[1] - 4]);
         setPos((prev)=>[prev[0] -1, prev[1],prev[2]])
+        rest.snippet.state="walking_back_human"
       }
       if (e.key === "s") {
         setIso((prev)=>[prev[0] - 8, prev[1] + 4]);
         setPos((prev)=>[prev[0] , prev[1]+1,prev[2]])
+        rest.snippet.state="walking_back_human"
       }
       if (e.key === " ") {
         setIso((prev)=>[prev[0], prev[1] -8]);
         setPos((prev)=>[prev[0] , prev[1],prev[2]+1])
-
+        rest.snippet.state="jumping_human_front"
+        
       }
       if (e.key === "Control") {
         setIso((prev)=>[prev[0] , prev[1] +8]);
         setPos((prev)=>[prev[0] , prev[1],prev[2]-1])
+        rest.snippet.state="jumping_human_back"
       }
     };
     //movement controller
