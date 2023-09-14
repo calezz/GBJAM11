@@ -45,14 +45,14 @@ export default function Level() {
                         (index % width)-.25,
                         (Math.floor(index / width)-.25),
                         height - Z,
-                      ],snippet:{ id, character: character, src: "main_char" }}
+                      ],snippet:{state:"idle", id, character: character, src: "main_char" }}
                       : {
                         positionInitial: [
                           index % width,
                           Math.floor(index / width),
                           height - Z,
                         ],
-                          snippet:{id,
+                          snippet:{state:"static",id,
                           src: config.src,
                           columns: level.tilesets[0].columns,
                           size: [
