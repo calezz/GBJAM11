@@ -1,7 +1,7 @@
-import { render } from "react-dom";
+
 import Entity from "./Entity";
-import { useEffect, useRef, useState } from "react";
-export default function Level() {
+import { memo, useEffect, useRef, useState } from "react";
+const Level = memo(()=> {
   const [level, setLevel] = useState(null);
   const [character, setCharacter] = useState();
 
@@ -89,3 +89,5 @@ export default function Level() {
     </div>
   );
 }
+)
+export default Level
