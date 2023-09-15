@@ -1,6 +1,6 @@
 //TODO add a replacemnt config for while its being
 //can improve speed by using a store for json data
-import { useEffect, useRef, useState, useLayoutEffect } from "react";
+import { useEffect, useRef, useState} from "react";
 
 export default function SpriteReader(props) {
   const canvasRef = useRef(null);
@@ -8,7 +8,7 @@ export default function SpriteReader(props) {
   const [size, setSize] = useState([16, 16]);
   
   useEffect(() => {
-    console.log("reset")
+ //  console.log("reset")
     setCurrentFrame(-1) //reset on state change
     let timeoutId;
     const incrementFrame = () => {
@@ -25,7 +25,7 @@ export default function SpriteReader(props) {
   }, [props.props.snippet.state]);
   useEffect(() => {
     
-    console.log(currentFrame,props.props.snippet.state)
+ //  console.log(currentFrame,props.props.snippet.state)
     const image = new Image();
     let WIDTH, HEIGHT, OX, OY, DX, DY, scale;
     let displayFrame = 0;

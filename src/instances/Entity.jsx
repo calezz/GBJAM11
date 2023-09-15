@@ -1,46 +1,45 @@
 import SpriteReader from "../helpers/SpriteReader";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef,forwardRef } from "react";
 
-export default function Entity(props) {
-  const { positionInitial, ...rest } = props.props;
-  const [pos,setPos] = useState(positionInitial)
+const Entity = forwardRef(function(props,entityRef){
+//  const entityRef = useRef(null);
   const [iso, setIso] = useState([
-    (positionInitial[0] * 16) / 2 - (positionInitial[1] * 16) / 2,
-    (positionInitial[0] * 16) / 4 + (positionInitial[1] * 16) / 4 + (positionInitial[2] * 16) / 2,
+    (props.props.position[0] * 16) / 2 - (props.props.position[1] * 16) / 2,
+    (props.props.position[0] * 16) / 4 + (props.props.position[1] * 16) / 4 + (props.props.position[2] * 16) / 2,
   ]);
   useEffect(() => {   
-    if(rest.snippet.id===500){
+    if(props.props.snippet.id===500){
     const keyHandler = (e) => {
       if (e.key === "w") {
         setIso((prev)=>[prev[0] + 8, prev[1] - 4]);
-        setPos((prev)=>[prev[0], prev[1]-1,prev[2]])
-        rest.snippet.state="walking_human"
+        props.props.position = [props.props.position[0], props.props.position[1]-1,props.props.position[2]]
+        props.props.snippet.state="walking_human"
       }
       if (e.key === "d") {
         setIso((prev)=>[prev[0] + 8, prev[1] + 4]);
-        setPos((prev)=>[prev[0] +1, prev[1],prev[2]])
-        rest.snippet.state="walking_human"
+        props.props.position = [props.props.position[0] +1, props.props.position[1],props.props.position[2]]
+        props.props.snippet.state="walking_human"
       }
       if (e.key === "a") {
         setIso((prev)=>[prev[0] - 8, prev[1] - 4]);
-        setPos((prev)=>[prev[0] -1, prev[1],prev[2]])
-        rest.snippet.state="walking_back_human"
+        props.props.position = [props.props.position[0] -1, props.props.position[1],props.props.position[2]]
+        props.props.snippet.state="walking_back_human"
       }
       if (e.key === "s") {
         setIso((prev)=>[prev[0] - 8, prev[1] + 4]);
-        setPos((prev)=>[prev[0] , prev[1]+1,prev[2]])
-        rest.snippet.state="walking_back_human"
+        props.props.position = [props.props.position[0], props.props.position[1] +1,props.props.position[2]]
+        props.props.snippet.state="walking_back_human"
       }
       if (e.key === " ") {
         setIso((prev)=>[prev[0], prev[1] -8]);
-        setPos((prev)=>[prev[0] , prev[1],prev[2]+1])
-        rest.snippet.state="jumping_human_front"
+        props.props.position = [props.props.position[0] , props.props.position[1],props.props.position[2]+1]
+        props.props.snippet.state="jumping_human_front"
         
       }
       if (e.key === "Control") {
         setIso((prev)=>[prev[0] , prev[1] +8]);
-        setPos((prev)=>[prev[0] , prev[1],prev[2]-1])
-        rest.snippet.state="jumping_human_back"
+        props.props.position = [props.props.position[0] , props.props.position[1],props.props.position[2]-1]
+        props.props.snippet.state="jumping_human_back"
       }
     };
     //movement controller
@@ -54,16 +53,18 @@ export default function Entity(props) {
   const style = {
     transform: `translate(${iso[0]}px,${iso[1]}px)`,
     position: 'relative',
-    zIndex:pos[0]*100+pos[1]*100+pos[2] -(rest.snippet.id===500&&100) ,
+    zIndex:props.props.position[0]*100+props.props.position[1]*10000+props.props.position[2] ,
+    opacity:`${1}`
   };
   return (
     <>
-      {rest.snippet.id>0 && (
-        <div style={style} >
-          {console.log(rest.snippet.state)}
-          <SpriteReader props={rest} zIndex={style.zIndex} />
+      {props.props.snippet.id>0 && (
+        <div style={style} ref={entityRef} position={props.props.position} type={"character"}>
+          {props.props.snippet.state!=="static"&&console.log(props.props.snippet.state)}
+          <SpriteReader props={props.props} zIndex={style.zIndex} />
         </div>
       )}
     </>
   );
-}
+})
+export default Entity
