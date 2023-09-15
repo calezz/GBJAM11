@@ -13,7 +13,7 @@ export default function SpriteReader(props) {
     let timeoutId;
     const incrementFrame = () => {
       setCurrentFrame((prevCurrentFrame) => prevCurrentFrame + 1);
-      timeoutId = setTimeout(incrementFrame, 1000); // Repeat after 100 milliseconds
+      timeoutId = setTimeout(incrementFrame, 70); // Repeat after 100 milliseconds
     };
   
     if (props.props.snippet.state !== "static") {
