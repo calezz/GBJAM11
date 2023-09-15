@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 export default function Level() {
   const [level, setLevel] = useState(null);
   const [character, setCharacter] = useState();
-  const [iso, setIso] = useState([88, 40]);
+
   const entityRef = useRef();
   const refs = [];
   const config = {
@@ -24,46 +24,16 @@ export default function Level() {
       .catch((error) => console.error("fetching error:", error));
   }, []);
 
-  useEffect(() => {
-    const keyHandler = (e) => {
-      if (e.key === "w") {
-        setIso((prev) => [prev[0] - 8, prev[1] + 4]); // Inverse the addition and subtraction
-      }
-      if (e.key === "d") {
-        setIso((prev) => [prev[0] - 8, prev[1] - 4]); // Inverse the addition and subtraction
-      }
-      if (e.key === "a") {
-        setIso((prev) => [prev[0] + 8, prev[1] + 4]); // Inverse the addition and subtraction
-      }
-      if (e.key === "s") {
-        setIso((prev) => [prev[0] + 8, prev[1] - 4]); // Inverse the addition and subtraction
-      }
-      if (e.key === " ") {
-        setIso((prev) => [prev[0], prev[1] + 8]); // Inverse the addition and subtraction
-      }
-      if (e.key === "Control") {
-        setIso((prev) => [prev[0], prev[1] - 8]); // Inverse the addition and subtraction
-      }
-    };
-    //movement controller
-    window.addEventListener("keyup", keyHandler);
-    return () => {
-      window.removeEventListener("keyup", keyHandler);
-    };
-  }, []);
 
-  const style = {
-    transform: `translate(${iso[0]}px,${iso[1]}px)`,
-  };
+
   useEffect(() => {
     // console.log(refs[0]?.current.getAttribute("position"))
   }, [refs[0]?.current.getAttribute("position")]);
 
-  console.log("roo");
 
   //create a level
   return (
-    <div style={style}>
+    <div >
       {level &&
         character &&
         level.layers.map((layers, Z) => {
@@ -109,6 +79,7 @@ export default function Level() {
                 }}
               >
                 {refs.push(entityRef)}
+                {console.log("MAP RENDER")}
               </Entity>
             );
           });

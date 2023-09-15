@@ -1,4 +1,5 @@
-import Level from "../instances/Level";
+import LevelCamera from "../instances/LevelCamera";
+
 
 export default function Display(){
   const style = {
@@ -7,7 +8,7 @@ export default function Display(){
   };
     return (
     <div id="display">
-   <div style={style}> <Level/>
+   <div style={style}> <LevelCamera/>
     </div>
    
   </div>)
