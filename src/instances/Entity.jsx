@@ -5,12 +5,11 @@ const Entity = forwardRef(function(props,entityRef){
 //  const entityRef = useRef(null);
   const [iso, setIso] = useState([
     (props.props.position[0] * 16) / 2 - (props.props.position[1] * 16) / 2,
-    (props.props.position[0] * 16) / 4 + (props.props.position[1] * 16) / 4 + (props.props.position[2] * 16) / 2,
+    (props.props.position[0] * 16) / 4 + (props.props.position[1] * 16) / 4 - (props.props.position[2] * 16) / 2,
   ]);
   useEffect(() => {   
     if(props.props.snippet.id===500){
     const keyHandlerPlayer = (e) => {
-      console.log("PLAYER MOVE")
       if (e.key === "w") {
         setIso((prev)=>[prev[0] + 8, prev[1] - 4]);
         props.props.position = [props.props.position[0], props.props.position[1]-1,props.props.position[2]]
@@ -42,7 +41,9 @@ const Entity = forwardRef(function(props,entityRef){
         props.props.position = [props.props.position[0] , props.props.position[1],props.props.position[2]-1]
         props.props.snippet.state="jumping_human_back"
       }
+        //console.log(props.props.position[0]*100+props.props.position[1]*100+props.props.position[2]*1)
     };
+    console.log("RUN")
     //movement controller
     window.addEventListener("keyup", keyHandlerPlayer);
     return () => {
@@ -50,18 +51,17 @@ const Entity = forwardRef(function(props,entityRef){
     }}
 }, []);
 
-props.props.snippet.state!=="static"&&console.log(props.props.snippet.state)
-  const style = {
-    transform: `translate(${iso[0]}px,${iso[1]}px)`,
+  const style = { //on rework implement offset 
+    transform: `translate(${iso[0]+(props.props.snippet.state!=="static"&&0) }px,${iso[1]+(props.props.snippet.state!=="static"&&-2)}px)`,
     position: 'relative',
-    zIndex:props.props.position[0]*100+props.props.position[1]*10000+props.props.position[2] ,
+    zIndex:props.props.position[0]*100+props.props.position[1]*1000+props.props.position[2]*1+ (props.props.snippet.state!=="static"&&0  ) ,
     opacity:`${1}`
   };
+
   return (
     <>
       {props.props.snippet.id>0 && (
         <div style={style} ref={entityRef} position={props.props.position} type={"character"}>
-          {props.props.snippet.state!=="static"&&console.log(props.props.snippet.state)}
           <SpriteReader props={props.props} zIndex={style.zIndex} />
         </div>
       )}

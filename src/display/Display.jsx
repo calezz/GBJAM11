@@ -8,7 +8,11 @@ export default function Display(){
   };
     return (
     <div id="display">
-   <div style={style}> <LevelCamera/>
+   <div style={style}> <LevelCamera config={{
+    name: "floortest",
+    src: "placeholder",
+    spriteSheet: "main_char",
+  }}/>
     </div>
    
   </div>)

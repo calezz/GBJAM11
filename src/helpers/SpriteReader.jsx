@@ -6,6 +6,7 @@ export default function SpriteReader(props) {
   const canvasRef = useRef(null);
   const [currentFrame, setCurrentFrame] = useState(0);
   const [size, setSize] = useState([16, 16]);
+  const [opacity,setOpacity]=useState(1)
   
   useEffect(() => {
  //  console.log("reset")
@@ -29,9 +30,9 @@ export default function SpriteReader(props) {
     const image = new Image();
     let WIDTH, HEIGHT, OX, OY, DX, DY, scale;
     let displayFrame = 0;
-
+    
     if (props.props.snippet.id === 500) {
-      const frametags = props.props.snippet.character.meta.frameTags.find(
+      const frametags = props.props.snippet.spriteSheet.meta.frameTags.find(
         (obj) => obj.name === props.props.snippet.state
       );
 
@@ -43,7 +44,7 @@ export default function SpriteReader(props) {
       currentFrame % frameCount === (frameCount - 1) &&
         ((props.props.snippet.state = "idle_human_02")&&setCurrentFrame(0))
 
-      const config = props.props.snippet.character;
+      const config = props.props.snippet.spriteSheet;
 
       image.src = `/${props.props.snippet.src}.png`;
       const frameData =
@@ -107,10 +108,16 @@ export default function SpriteReader(props) {
     };
   }, [currentFrame]);
 
-
+  function handleClick(){
+  
+    console.log(props.props.position,"id:"+props.props.snippet.id)
+    setOpacity(()=>.5)
+    
+  }
   const style = {
     position: "absolute",
     zIndex: props.zIndex,
+    opacity:opacity,
   };
   return (
     <>
@@ -121,6 +128,8 @@ export default function SpriteReader(props) {
           width={size[0]}
           height={size[1]}
           style={style}
+          onMouseDown={handleClick}
+          onMouseUp={()=>setOpacity(1)}
         />
       )}
     </>

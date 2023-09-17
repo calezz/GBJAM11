@@ -2,8 +2,8 @@ import Level from "./Level";
 import { useState,useEffect } from "react";
 import RenderTest from "./RenderTest";
 
-export default function LevelCamera(){
-    const [iso, setIso] = useState([88, 40]);
+export default function LevelCamera(config){
+    const [iso, setIso] = useState([0, 40]);
 
 
     useEffect(() => {
@@ -40,5 +40,5 @@ export default function LevelCamera(){
         transform: `translate(${iso[0]}px,${iso[1]}px)`,
       };
 
-      return(<div style={style}>{<Level/>}</div>)
+      return(<div style={style} >{<Level {...config}/>}</div>)
 }
