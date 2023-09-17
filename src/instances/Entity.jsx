@@ -41,9 +41,7 @@ const Entity = forwardRef(function(props,entityRef){
         props.props.position = [props.props.position[0] , props.props.position[1],props.props.position[2]-1]
         props.props.snippet.state="jumping_human_back"
       }
-        //console.log(props.props.position[0]*100+props.props.position[1]*100+props.props.position[2]*1)
     };
-    console.log("RUN")
     //movement controller
     window.addEventListener("keyup", keyHandlerPlayer);
     return () => {
@@ -61,7 +59,7 @@ const Entity = forwardRef(function(props,entityRef){
   return (
     <>
       {props.props.snippet.id>0 && (
-        <div style={style} ref={entityRef} position={props.props.position} type={"character"}>
+        <div style={style} ref={entityRef} position={props.props.position} type={props.props.type}>
           <SpriteReader props={props.props} zIndex={style.zIndex} />
         </div>
       )}

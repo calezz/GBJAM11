@@ -19,8 +19,8 @@ const Level = memo((prop) => {
   }, []);
 
   useEffect(() => {
-    // console.log(refs[0]?.current.getAttribute("position"))
-  }, [refs[0]?.current.getAttribute("position")]);
+    
+  }, [refs[0]?.current]);
 
   return (
     <div>
@@ -28,53 +28,54 @@ const Level = memo((prop) => {
         spriteSheet &&
         level.infinite &&
         level.layers.map((layer, Z) => {
-          console.log(Z)
           const width = 16;
           const height = level.nextlayerid - 2;
           return layer.chunks.map((chunk) => {
-            const chunkX= chunk.x
-            const chunkY= chunk.y
-            
+            const chunkX = chunk.x;
+            const chunkY = chunk.y;
+
             return chunk.data.map((id, index) => {
-              
               return (
-                <Entity key={[index, Z]} ref={entityRef} props={{
-                  ...(id == 500
-                    ? {
-                        position: [
-                          (index % width),
-                          chunkY+Math.floor(index / width),
-                          Z,
-                          [-0.25, -0.25, 0],
-                        ],
-                        snippet: {
-                          state: "idle_human_02",
-                          id,
-                          spriteSheet: spriteSheet,
-                          src: config.spriteSheet,
-                        },
-                      }
-                    : {
-                        position: [
-                          chunkX+(index % width),
-                          chunkY+Math.floor(index / width),
-                          Z,
-                        ],
-                        snippet: {
-                          state: "static",
-                          id,
-                          src: config.src,
-                          columns: level.tilesets[0].columns,
-                          size: [
-                            16,
-                            16,
+                <Entity
+                  key={[index, Z]}
+                  ref={entityRef}
+                  props={{
+                    ...(id == 500
+                      ? {
+                          position: [
+                            index % width,
+                            chunkY + Math.floor(index / width),
+                            Z,
+                            [-0.25, -0.25, 0],
                           ],
-                        },
-                      }),
-                }}>
+                          type: "player",
+                          snippet: {
+                            state: "idle_human_02",
+                            id,
+                            spriteSheet: spriteSheet,
+                            src: config.spriteSheet,
+                          },
+                        }
+                      : {
+                          position: [
+                            chunkX + (index % width),
+                            chunkY + Math.floor(index / width),
+                            Z,
+                          ],
+                          type: "tile",
+                          snippet: {
+                            state: "static",
+                            id,
+                            src: config.src,
+                            columns: level.tilesets[0].columns,
+                            size: [16, 16],
+                          },
+                        }),
+                  }}
+                >
                   {refs.push(entityRef)}
-             
-                </Entity>             );
+                </Entity>
+              );
             });
           });
         })}
@@ -86,7 +87,6 @@ const Level = memo((prop) => {
           const width = layers.width;
           const height = level.nextlayerid - 2;
           return layers.data.map((id, index) => {
-            
             return (
               <Entity
                 key={[index, Z]}
