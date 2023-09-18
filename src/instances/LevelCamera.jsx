@@ -1,27 +1,30 @@
+import { useGameContext } from "../store/GameContext";
 import Level from "./Level";
-import {  useEffect, useContext, memo } from "react";
-import { GameLogic } from "./GameLogic";
+import {  useEffect, memo } from "react";
 const LevelCamera = memo((config) => {
-  const context = useContext(GameLogic);
+  const cameraPosition = useGameContext((state)=>state.cameraPosition)
+  const moveCamera = useGameContext((state)=>state.moveCamera)
+  const entities = useGameContext((state)=>state.entities)
   useEffect(() => {
     const keyHandler = (e) => {
       if (e.key === "w") {
-        context.moveCamera([-8,4])
+        moveCamera([-8,4])
+         console.log(entities)
       }
       if (e.key === "d") {
-        context.moveCamera([-8,-4]); // Inverse the addition and subtraction
+        moveCamera([-8,-4]); // Inverse the addition and subtraction
       }
       if (e.key === "a") {
-        context.moveCamera([+8,+4]); // Inverse the addition and subtraction
+        moveCamera([+8,+4]); // Inverse the addition and subtraction
       }
       if (e.key === "s") {
-        context.moveCamera([+8,-4]);; // Inverse the addition and subtraction
+        moveCamera([+8,-4]);; // Inverse the addition and subtraction
       }
       if (e.key === " ") {
-        context.moveCamera([0,+8]);; // Inverse the addition and subtraction
+        moveCamera([0,+8]);; // Inverse the addition and subtraction
       }
       if (e.key === "Control") {
-        context.moveCamera([0,-8]); // Inverse the addition and subtraction
+        moveCamera([0,-8]); // Inverse the addition and subtraction
       }
     };
     //movement controller
@@ -31,7 +34,7 @@ const LevelCamera = memo((config) => {
     };
   }, []);
   const style = {
-    transform: `translate(${context.cameraPosition[0]}px,${context.cameraPosition[1]}px)`,
+    transform: `translate(${cameraPosition[0]}px,${cameraPosition[1]}px)`,
   };
   return <div style={style}>{<Level {...config} />}</div>;
 });
