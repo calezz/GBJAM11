@@ -1,8 +1,8 @@
 import Level from "./Level";
-import { useState, useEffect, useContext, memo, useMemo } from "react";
-import { GameContext } from "./GameContext";
+import {  useEffect, useContext, memo } from "react";
+import { GameLogic } from "./GameLogic";
 const LevelCamera = memo((config) => {
-  const context = useContext(GameContext);
+  const context = useContext(GameLogic);
   useEffect(() => {
     const keyHandler = (e) => {
       if (e.key === "w") {
@@ -30,11 +30,9 @@ const LevelCamera = memo((config) => {
       window.removeEventListener("keyup", keyHandler);
     };
   }, []);
-  console.log(context.cameraPosition)
   const style = {
     transform: `translate(${context.cameraPosition[0]}px,${context.cameraPosition[1]}px)`,
   };
-
   return <div style={style}>{<Level {...config} />}</div>;
 });
 export default LevelCamera;
