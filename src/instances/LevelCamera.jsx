@@ -1,44 +1,40 @@
 import Level from "./Level";
-import { useState,useEffect } from "react";
-import RenderTest from "./RenderTest";
+import { useState, useEffect, useContext, memo, useMemo } from "react";
+import { GameContext } from "./GameContext";
+const LevelCamera = memo((config) => {
+  const context = useContext(GameContext);
+  useEffect(() => {
+    const keyHandler = (e) => {
+      if (e.key === "w") {
+        context.moveCamera([-8,4])
+      }
+      if (e.key === "d") {
+        context.moveCamera([-8,-4]); // Inverse the addition and subtraction
+      }
+      if (e.key === "a") {
+        context.moveCamera([+8,+4]); // Inverse the addition and subtraction
+      }
+      if (e.key === "s") {
+        context.moveCamera([+8,-4]);; // Inverse the addition and subtraction
+      }
+      if (e.key === " ") {
+        context.moveCamera([0,+8]);; // Inverse the addition and subtraction
+      }
+      if (e.key === "Control") {
+        context.moveCamera([0,-8]); // Inverse the addition and subtraction
+      }
+    };
+    //movement controller
+    window.addEventListener("keyup", keyHandler);
+    return () => {
+      window.removeEventListener("keyup", keyHandler);
+    };
+  }, []);
+  console.log(context.cameraPosition)
+  const style = {
+    transform: `translate(${context.cameraPosition[0]}px,${context.cameraPosition[1]}px)`,
+  };
 
-export default function LevelCamera(config){
-    const [iso, setIso] = useState([0, 40]);
-
-
-    useEffect(() => {
-        const keyHandler = (e) => {
-          if (e.key === "w") {
-            setIso((iso) => [iso[0] - 8, iso[1] + 4]); // Inverse the addition and subtraction
-          }
-          if (e.key === "d") {
-            setIso((iso) => [iso[0] - 8, iso[1] - 4]); // Inverse the addition and subtraction
-          }
-          if (e.key === "a") {
-            setIso((iso) => [iso[0] + 8, iso[1] + 4]); // Inverse the addition and subtraction
-          }
-          if (e.key === "s") {
-            setIso((iso) => [iso[0] + 8, iso[1] - 4]); // Inverse the addition and subtraction
-          }
-          if (e.key === " ") {
-            setIso((iso) => [iso[0], iso[1] + 8]); // Inverse the addition and subtraction
-          }
-          if (e.key === "Control") {
-            setIso((iso) => [iso[0], iso[1] - 8]); // Inverse the addition and subtraction
-          }
-        };
-        //movement controller
-        window.addEventListener("keyup", keyHandler);
-        return () => {
-          window.removeEventListener("keyup", keyHandler);
-        };
-      }, []);
-
-
-
-      const style = {
-        transform: `translate(${iso[0]}px,${iso[1]}px)`,
-      };
-
-      return(<div style={style} >{<Level {...config}/>}</div>)
-}
+  return <div style={style}>{<Level {...config} />}</div>;
+});
+export default LevelCamera;
