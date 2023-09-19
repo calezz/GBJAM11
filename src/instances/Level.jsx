@@ -7,7 +7,8 @@ const Level = memo((prop) => {
   const [isLoading, setIsLoading] = useState(true);
   const entities = useGameContext((state)=>state.entities)
   const setEntities = useGameContext((state)=>(state.setEntities))
-  const config = prop.config;
+  
+  const config = useGameContext((state)=>(state.config))
   useEffect(() => {
     async function fetcher() {
       const [levelResponse, spriteSheetResponse] = await Promise.all([

@@ -16,24 +16,47 @@ export const useGameContext = create((set) => ({
         prev.cameraPosition[1] - value[1],
       ],
     })),
+
+    //rewrite using promise.all to fetch them in a batch
   spriteSheet: {},
-  levelLayout: {},
+  level: {},
   fetchSprites: async (src) => {
-    const responseSprite = await fetch(`/${src.spriteSheet}.json`);
-    const responseLevelLayout = await fetch(`/${src.levelLayout}.json`);
-    set({
-      spriteSheet: await responseSprite.json(),
-      levelLayout: await responseLevelLayout.json(),
-    });
+    try {
+      const dataPromises = {};
+      
+      for (const key in src) {
+        if (src.hasOwnProperty(key)) {
+          const response = await fetch(`/${src[key]}.json`);
+          const data = await response.json();
+          dataPromises[key] = data;
+        }
+      }
+      set(dataPromises);
+    } catch (error) {
+      console.error("Fetching error:", error);
+    }
+  },
+  
+   
+
+  //dumb placeholeders
+  //GameInstance
+  config: {
+    name: "tileshowcase",
+    src: "tileset",
+    spriteSheet: "main_char",
   },
 }));
 
+
+//instantly fetches needed data
+useGameContext
+  .getState()
+  .fetchSprites({ spriteSheet: "main_char", level: "tileshowcase"});
 export const useBearStore = create((set) => ({
   bears: 0,
   increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
   removeAllBears: () => set({ bears: 0 }),
 }));
-
-
 
 //fetchSprites ({spriteSheet:"main_char",levelLayout:"floortest"})
