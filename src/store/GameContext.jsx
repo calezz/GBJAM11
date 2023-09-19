@@ -1,8 +1,16 @@
 import { create } from "zustand";
+import Entity from "../instances/Entity";
 
-export const useGameContext = create((set,get) => ({
+export const useGameContext = create((set, get) => ({
   entities: [],
-  setEntities: (value) => set({ entities: value }),
+  setEntities: ()=>{
+    const state= get()
+    const newEntities = state.entities.map((entity)=>{
+        return {...entity}
+    })
+    newEntities[1].position[0]-=.5
+    set({entities:newEntities})
+  },
   cameraPosition: [72, 0],
   playerPosition: [72, 64],
   movePlayer: (value) =>
@@ -26,46 +34,46 @@ export const useGameContext = create((set,get) => ({
       for (const key in src) {
         const response = await fetch(`/${src[key]}.json`);
         const data = await response.json();
-        
-        if(key==="level"){
 
-          console.log(data.layers.map((layer, Z) => {
+        if (key === "level") {
+          data.layers.map((layer, Z) => {
             const width = 16;
             return layer.chunks.map((chunk) => {
               const chunkX = chunk.x;
               const chunkY = chunk.y;
 
-              return chunk.data.filter((id)=>id!==0).map((id, index) => {
-                if(id!==0){
-                  return ({
-                    key: [
-                      chunkX + (index % width) + 2 * Z,
-                      chunkY + Math.floor(index / width) + 2 * Z,
-                      Z,
+              return chunk.data.map((id, index) => {
+                if (id !== 0) {
+                  set((state) => ({
+                    entities: [
+                      ...state.entities,
+                      {
+                        key: [
+                          chunkX + (index % width) + 2 * Z,
+                          chunkY + Math.floor(index / width) + 2 * Z,
+                          Z,
+                        ],
+                        position: [
+                          chunkX + (index % width) + 2 * Z,
+                          chunkY + Math.floor(index / width) + 2 * Z,
+                          Z,
+                        ],
+                        snippet: {
+                          state: "static",
+                          id,
+                          src: get().config.src,
+                          columns: data.tilesets[0].columns,
+                          size: [16, 16],
+                        },
+                      },
                     ],
-                    position: [
-                      chunkX + (index % width) + 2 * Z,
-                      chunkY + Math.floor(index / width) + 2 * Z,
-                      Z,
-                    ],
-                    snippet: {
-                      state: "static",
-                      id,
-                      src: get().config.src,
-                      columns: data.tilesets[0].columns,
-                      size: [16, 16],
-                    },
-                  })
+                  }));
                 }
               });
             });
-          }
-          
-          ))
-          
+          });
         }
         dataPromises[key] = data;
-
       }
       set(dataPromises);
     } catch (error) {
