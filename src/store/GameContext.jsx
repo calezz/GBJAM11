@@ -1,6 +1,6 @@
 import { create } from "zustand";
 export const useGameContext = create((set, get) => ({
-  entities: {},
+  entities: [],
   setEntities: ()=>{
     const state= get()
     const newEntities = state.entities.map((entity)=>{
