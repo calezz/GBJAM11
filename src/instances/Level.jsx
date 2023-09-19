@@ -70,13 +70,12 @@ const Level = memo((prop) => {
             });
           });
         });
-      
       setIsLoading(false);
       setEntities(entities)
     }
     fetcher();
   }, []);
 
-  return <div>{!isLoading && entities}</div>;
+  return <div>{!isLoading &&entities}</div>;
 });
 export default Level;

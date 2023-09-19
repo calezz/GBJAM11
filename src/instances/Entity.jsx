@@ -1,9 +1,7 @@
 import SpriteReader from "../helpers/SpriteReader";
 import { useState, useEffect, useRef,forwardRef, useContext } from "react";
-const Entity = forwardRef(function(props,entityRef){
- // const context = useContext(GameContext)
-  
-  
+import { useGameContext} from "../store/GameContext";
+const Entity = forwardRef(function(props,entityRef){  
   const iso = [
     (props.props.position[0] * 16) / 2 - (props.props.position[1] * 16) / 2,
     (props.props.position[0] * 16) / 4 + (props.props.position[1] * 16) / 4 - (props.props.position[2] * 16) / 2,
