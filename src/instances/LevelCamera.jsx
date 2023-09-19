@@ -13,7 +13,7 @@ console.log("CAMERA")
   useEffect(() => {
     const keyHandler = (e) => {
       if (e.key === "w") {
-        //setEntities()
+        setEntities()
         movePlayer([-8,4])
       }
       if (e.key === "d") {
@@ -42,6 +42,6 @@ console.log("CAMERA")
   const style = {
     transform: `translate(${playerPosition[0]}px,${playerPosition[1]}px)`,
   };
-  return <div style={style}>{children}</div>;
+  return <div style={style}>{console.log("huuu")}</div>;
 });
 export default LevelCamera;

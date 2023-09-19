@@ -6,7 +6,7 @@ export const useGameContext = create((set, get) => ({
     const newEntities = state.entities.map((entity)=>{
         return {...entity}
     })
-    newEntities[1].position[0]-=.5
+    newEntities[1].position[0]-=1
     set({entities:newEntities})
   },
   cameraPosition: [72, 0],

@@ -7,7 +7,8 @@ const Entity = memo(({position})=> {
   console.log("renderENTITY")
 
   const entity = entities.filter(entity=>entity.position.every((value,index)=>value===position[index]))[0]
-
+  console.log(entity)
+  //console.log([...entity])
   const iso = [
     ((entity.position[0] - entity.position[2]) * 16) / 2 -
       ((entity.position[1] - entity.position[2]) * 16) / 2,
