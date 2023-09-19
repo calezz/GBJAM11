@@ -3,8 +3,8 @@ import { useState, useEffect, useRef,forwardRef, useContext } from "react";
 import { useGameContext} from "../store/GameContext";
 const Entity = forwardRef(function(props,entityRef){  
   const iso = [
-    (props.props.position[0] * 16) / 2 - (props.props.position[1] * 16) / 2,
-    (props.props.position[0] * 16) / 4 + (props.props.position[1] * 16) / 4 - (props.props.position[2] * 16) / 2,
+    ((props.props.position[0]-props.props.position[2]) * 16) / 2 - ((props.props.position[1]-props.props.position[2]) * 16) / 2,
+    ((props.props.position[0]-props.props.position[2]) * 16) / 4 + ((props.props.position[1]-props.props.position[2]) * 16) / 4 - (props.props.position[2] * 16) / 2,
   ]
   const style = { //on rework implement offset 
     transform: `translate(${iso[0]+(props.props.snippet.state!=="static"&&0) }px,${iso[1]+(props.props.snippet.state!=="static"&&-2)}px)`,

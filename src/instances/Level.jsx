@@ -37,8 +37,8 @@ const Level = memo((prop) => {
                       ...(id == 500
                         ? {
                             position: [
-                              (chunkX+index % width)+Z,
-                              (chunkY + Math.floor(index / width))+Z,
+                              (chunkX+index % width)+2*Z,
+                              (chunkY + Math.floor(index / width))+2*Z,
                               Z,
                             ],
                             type: "player",
@@ -51,8 +51,8 @@ const Level = memo((prop) => {
                           }
                         : {
                             position: [
-                              (chunkX + (index % width))+Z,
-                              (chunkY + Math.floor(index / width))+Z,
+                              (chunkX + (index % width))+2*Z,
+                              (chunkY + Math.floor(index / width))+2*Z,
                               Z,
                             ],
                             type: "tile",
