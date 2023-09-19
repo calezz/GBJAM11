@@ -4,9 +4,13 @@ import SpriteReader from "../helpers/SpriteReader";
 import { useGameContext } from "../store/GameContext";
 const Entity = memo(({position})=> {
   const entities = useGameContext((state)=>state.entities)
-  console.log("render")
+  console.log("renderENTITY")
 
-  const entity = entities.filter(entity=>entity.position.every((value,index)=>value===position[index]))[0]
+  const entity = useMemo(() => {
+    return entities.find((entity) =>
+      entity.position.every((value, index) => value === position[index])
+    );
+  }, [entities, position]);
 
   const iso = [
     ((entity.position[0] - entity.position[2]) * 16) / 2 -
@@ -28,8 +32,6 @@ const Entity = memo(({position})=> {
       (entity.snippet.state !== "static" && 0),
     opacity: `${1}`,
   };
-
-
 
 
 

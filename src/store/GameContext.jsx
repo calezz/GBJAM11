@@ -1,8 +1,6 @@
 import { create } from "zustand";
-import Entity from "../instances/Entity";
-
 export const useGameContext = create((set, get) => ({
-  entities: [],
+  entities: {},
   setEntities: ()=>{
     const state= get()
     const newEntities = state.entities.map((entity)=>{
@@ -88,7 +86,7 @@ export const useGameContext = create((set, get) => ({
     src: "tileset",
     spriteSheet: "main_char",
   },
-}));
+}),{shallow:true});
 
 //instantly fetches needed data
 useGameContext.getState().fetchSprites({ spriteSheet: "main_char", level: "tileshowcase"}); //prettier-ignore
