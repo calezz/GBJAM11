@@ -6,11 +6,7 @@ const Entity = memo(({position})=> {
   const entities = useGameContext((state)=>state.entities)
   console.log("renderENTITY")
 
-  const entity = useMemo(() => {
-    return entities.find((entity) =>
-      entity.position.every((value, index) => value === position[index])
-    );
-  }, [entities, position]);
+  const entity = entities.filter(entity=>entity.position.every((value,index)=>value===position[index]))[0]
 
   const iso = [
     ((entity.position[0] - entity.position[2]) * 16) / 2 -
