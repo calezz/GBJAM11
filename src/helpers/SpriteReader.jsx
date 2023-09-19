@@ -1,5 +1,3 @@
-//TODO add a replacemnt config for while its being
-//can improve speed by using a store for json data
 import { useEffect, useRef, useState} from "react";
 
 export default function SpriteReader(props) {
