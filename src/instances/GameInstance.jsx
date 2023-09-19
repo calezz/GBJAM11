@@ -5,8 +5,8 @@ export default function GameInstance(){
         {" "}
         <LevelCamera
           config={{
-            name: "floortest",
-            src: "placeholder",
+            name: "tileshowcase",
+            src: "tileset",
             spriteSheet: "main_char",
           }}
         />

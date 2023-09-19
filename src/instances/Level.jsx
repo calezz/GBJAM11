@@ -32,13 +32,13 @@ const Level = memo((prop) => {
               id !== 0 &&
                 entities.push(
                   <Entity
-                    key={[index, Z]}
+                    key={[chunkX+(index % width),chunkY + Math.floor(index / width),Z]}
                     props={{
                       ...(id == 500
                         ? {
                             position: [
-                              index % width,
-                              chunkY + Math.floor(index / width),
+                              (chunkX+index % width)+Z,
+                              (chunkY + Math.floor(index / width))+Z,
                               Z,
                             ],
                             type: "player",
@@ -51,8 +51,8 @@ const Level = memo((prop) => {
                           }
                         : {
                             position: [
-                              chunkX + (index % width),
-                              chunkY + Math.floor(index / width),
+                              (chunkX + (index % width))+Z,
+                              (chunkY + Math.floor(index / width))+Z,
                               Z,
                             ],
                             type: "tile",
