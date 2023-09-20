@@ -117,4 +117,8 @@ export const useGameContext = create(
 );
 
 //instantly fetches needed data
-await useGameContext.getState().fetchSprites({ spriteSheet: "tileset_main", level: "tileshowcase"}); //prettier-ignore
+
+async function instaFetch (){
+  await useGameContext.getState().fetchSprites({ spriteSheet: "tileset_main", level: "tileshowcase"}); //prettier-ignore
+}
+instaFetch()
