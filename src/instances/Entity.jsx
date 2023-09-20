@@ -2,12 +2,13 @@ import { memo, useMemo } from "react";
 import SpriteReader from "../helpers/SpriteReader";
 
 import { useGameContext } from "../store/GameContext";
-const Entity = memo(({position})=> {
-  const entities = useGameContext((state)=>state.entities)
-  console.log("renderENTITY")
+const Entity = memo(({entity})=> {
+  //const position = [0,0,0]
+  //const entity= useGameContext((state)=>state.entities.filter(entity=>entity.position.every((value,index)=>value===position[index]))[0])
+console.log("renderENTITY")
 
-  const entity = entities.filter(entity=>entity.position.every((value,index)=>value===position[index]))[0]
-  console.log(entity)
+  //const entity = {...entities.filter(entity=>entity.position.every((value,index)=>value===position[index]))[0]}
+  //console.log(entities)
   //console.log([...entity])
   const iso = [
     ((entity.position[0] - entity.position[2]) * 16) / 2 -

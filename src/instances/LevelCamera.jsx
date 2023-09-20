@@ -42,6 +42,6 @@ console.log("CAMERA")
   const style = {
     transform: `translate(${playerPosition[0]}px,${playerPosition[1]}px)`,
   };
-  return <div style={style}>{console.log("huuu")}</div>;
+  return <div style={style}>{children}</div>;
 });
 export default LevelCamera;

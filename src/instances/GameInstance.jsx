@@ -5,8 +5,9 @@ export default function GameInstance(){
   const config = useGameContext((state)=>state.config)
     return(<>
     <div>
+<LevelCamera>
       <Level/>
-<LevelCamera/>
+</LevelCamera>
       </div>
     </>)
 }

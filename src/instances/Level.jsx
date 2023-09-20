@@ -9,7 +9,7 @@ const Level = memo((children) => {
   //const setEntities = useGameContext((state)=>state.setEntities)  
  
   return( <div>
-    {...entities.map(entity=><Entity position={entity.position} key={entity.position}/>)}
+    {...entities.map(entity=><Entity entity={entity} key={entity.position}/>)}
   </div>)
 })
 export default Level;
