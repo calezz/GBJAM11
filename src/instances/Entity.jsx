@@ -17,14 +17,13 @@ const Entity = memo(({position})=> {
   const style = {
     //on rework implement offset
     transform: `translate(${
-      iso[0] + (entity.snippet.state !== "static" && 0)
-    }px,${iso[1] + (entity.snippet.state !== "static" && -2)}px)`,
+      iso[0]
+    }px,${iso[1]}px)`,
     position: "relative",
     zIndex:
       entity.position[0] * 100 +
       entity.position[1] * 1000 +
-      entity.position[2] * 1 +
-      (entity.snippet.state !== "static" && 0),
+      entity.position[2] * 1,
     opacity: `${1}`,
   };
 

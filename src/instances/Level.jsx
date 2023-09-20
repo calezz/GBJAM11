@@ -19,6 +19,7 @@ const Level = memo((children) => {
 
   return( <div>
     {entities.map(entity=><Entity entity={entity} position={entity.position} key={entity.position}/>)}
+    <PlayerEntity/>
 
   </div>)
 })

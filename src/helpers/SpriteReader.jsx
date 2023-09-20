@@ -19,8 +19,6 @@ const SpriteReader = memo(({ id, position }) => {
   const [opacity, setOpacity] = useState(1);
   const scale = 1;
   useEffect(() => {
-    
-    //setCurrentFrame(-1); //reset on state change
     let timeoutId;
     const incrementFrame = () => {
       setCurrentFrame((prevCurrentFrame) => (prevCurrentFrame +1)%sprite.keys.length);
@@ -34,7 +32,7 @@ const SpriteReader = memo(({ id, position }) => {
   }, [sprite]);
 
   useEffect(() => {
-    console.log("frame"+currentFrame,sprite.name)
+  //  console.log("frame"+currentFrame,sprite.name)
     const image = new Image();
     image.src = `/${config.src}.png`;
 

@@ -2,18 +2,18 @@ import { create } from "zustand";
 export const useGameContext = create(
   (set, get) => ({
     entities: [],
-    playerEntity: [],
-    cameraPosition: [0, 0],
+    playerEntity: {},
+    cameraPosition: [],
     playerPosition: [0, 0, 0],
-    playerState:92,
-    setPlayerState:(value)=>set({playerState:value}),
+    playerState: 92,
+    setPlayerState: (value) => set({ playerState: value }),
     movePlayer: (value) => {
       const targetPlayerPosition = get().playerPosition.map(
         (data, index) => data + value[index]
       );
-      //console.log(targetPlayerPosition);
-      //const checkEnitites = get().entities.filter(entity=>entity.position.every((value,index)=>value===currentPlayerPosition[index]))
-      if (true)
+      const checkEnitites = get().entities.filter(entity=>entity.position.every((value,index)=>value===targetPlayerPosition[index]))
+      console.log(get().playerPosition,targetPlayerPosition,checkEnitites[0]?"true":"false")
+      if (!checkEnitites[0])
         [
           set((prev) => ({
             playerPosition: [
@@ -32,9 +32,9 @@ export const useGameContext = create(
           prev.cameraPosition[1] - value[1],
         ],
       })),
-    
+
     //rewrite using promise.all to fetch them in a batch
-    spriteSheet:{},
+    spriteSheet: {},
     level: {},
     fetchSprites: async (src) => {
       try {
@@ -52,37 +52,39 @@ export const useGameContext = create(
 
                 return chunk.data.map((id, index) => {
                   if (id !== 0) {
-                    set((state) => ({
-                      entities: [
-                        ...state.entities,
-                        {
-                          key: [
-                            chunkX + (index % width) + 2 * Z,
-                            chunkY + Math.floor(index / width) + 2 * Z,
-                            Z,
-                          ],
-                          position: [
-                            chunkX + (index % width) + 2 * Z,
-                            chunkY + Math.floor(index / width) + 2 * Z,
-                            Z,
-                          ],
-                          id:((id-1)/data.tilesets[0].columns)+1,
-                          snippet: {
-                            state: "static",
-                            id,
-                            src: get().config.src,
-                            columns: data.tilesets[0].columns,
-                            size: [16, 16],
+                    id = (id - 1) / data.tilesets[0].columns + 1;
+                    const position = [
+                      chunkX + (index % width) + 2 * Z,
+                      chunkY + Math.floor(index / width) + 2 * Z,
+                      Z,
+                    ];
+                    if (id !== 92) {
+                      set((state) => ({
+                        entities: [
+                          ...state.entities,
+                          {
+                            key: [
+                              chunkX + (index % width) + 2 * Z,
+                              chunkY + Math.floor(index / width) + 2 * Z,
+                              Z,
+                            ],
+                            position: position,
+                            id: id,
                           },
-                        },
-                      ],
-                    }));
+                        ],
+                      }));
+                    } else {
+                      set((state) => ({
+                        playerPosition: position,
+                        playerEntity: { id },
+                      }));
+                    }
                   }
                 });
               });
             });
           }
-           
+
           dataPromises[key] = data;
         }
         set(dataPromises);

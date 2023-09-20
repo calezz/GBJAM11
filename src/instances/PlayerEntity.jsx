@@ -3,8 +3,8 @@ import { memo } from "react";
 import SpriteReader from "../helpers/SpriteReader";
 const PlayerEntity = memo(()=> {
   const position= useGameContext((state)=>state.playerPosition)
-
-
+  const playerEntity= useGameContext((state)=>state.playerEntity)
+ 
   const iso = [
     ((position[0] - position[2]) * 16) / 2 -
       ((position[1] - position[2]) * 16) / 2,
@@ -31,7 +31,7 @@ const PlayerEntity = memo(()=> {
     <>
       {(
         <div style={style}>
-          <SpriteReader zIndex={style.zIndex} />
+          <SpriteReader id={playerEntity.id} position={position} zIndex={style.zIndex} />
         </div>
       )}
     </>
