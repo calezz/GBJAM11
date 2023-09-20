@@ -7,7 +7,6 @@ const SpriteReader = memo(({id,orientation, position }) => {
   const canvasRef = useRef(null);
   const [currentFrame, setCurrentFrame] = useState(0);
   const [size, setSize] = useState([16, 16]);
-
   const [sprite, setSprite] = useState(
     spriteSheet.meta.slices.filter(
       (slice) => slice.name === `Slice ${id}`

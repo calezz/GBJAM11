@@ -114,11 +114,6 @@ export const useGameContext = create(
     },
   }),
   { shallow: true }
-);
+)
 
 //instantly fetches needed data
-
-async function instaFetch (){
-  await useGameContext.getState().fetchSprites({ spriteSheet: "tileset_main", level: "tileshowcase"}); //prettier-ignore
-}
-instaFetch()

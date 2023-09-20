@@ -4,8 +4,7 @@ import { memo, useEffect } from "react";
 import { useGameContext } from "../store/GameContext";
 import PlayerEntity from "./PlayerEntity";
  // console.log("LEVEL")
-const Level = memo((children) => {
-
+const Level =  memo( (children) => {
   const entities = useGameContext((state)=>state.entities)
 
  
