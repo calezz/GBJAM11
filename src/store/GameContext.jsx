@@ -1,14 +1,16 @@
 import { create } from "zustand";
+import { produce } from "immer";
 export const useGameContext = create((set, get) => ({
   entities: [],
-  setEntities: ()=>{
-    const state= get()
-    const newEntities = state.entities.map((entity)=>{
-        return {...entity}
-    })
-    newEntities[1].position[0]-=1
-    set({entities:newEntities})
-  },
+  setEntities: () => {set((state)=>({entities:
+    state.entities.map(entity=>{
+    if(entity.position.every(value=>value===0)){
+
+      return {...entity, position:[entity.position[0]-1,0,0]}
+    } 
+    return entity
+  })})
+  )},
   cameraPosition: [72, 0],
   playerPosition: [72, 64],
   movePlayer: (value) =>
@@ -90,7 +92,6 @@ export const useGameContext = create((set, get) => ({
     spriteSheet: "main_char",
   },
 }),{shallow:true});
-
 //instantly fetches needed data
 useGameContext.getState().fetchSprites({ spriteSheet: "main_char", level: "tileshowcase"}); //prettier-ignore
 

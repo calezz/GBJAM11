@@ -6,7 +6,7 @@ const LevelCamera = memo(({children}) => {
   const playerPosition = useGameContext((state)=>state.playerPosition)
   const movePlayer = useGameContext((state)=>state.movePlayer)  
   const setEntities = useGameContext((state)=>state.setEntities)  
-  //const entities = useGameContext((state)=>state.entities)
+  const entities = useGameContext((state)=>state.entities)
 
 console.log("CAMERA")
 useEffect(()=>{
@@ -17,6 +17,7 @@ useEffect(()=>{
     const keyHandler = (e) => {
       if (e.key === "w") {
         setEntities()
+
      //   movePlayer([-8,4])
       }
       if (e.key === "d") {

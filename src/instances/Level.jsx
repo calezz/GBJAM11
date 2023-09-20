@@ -17,7 +17,7 @@ const Level = memo((children) => {
 
 
   return( <div>
-    {entities.map(entity=><Entity entity={entity} uid={entity.uid} key={entity.position}/>)}
+    {entities.map(entity=><Entity entity={entity} position={entity.position} key={entity.position}/>)}
   </div>)
 })
 export default Level;
