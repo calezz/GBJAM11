@@ -45,7 +45,10 @@ export const useGameContext = create((set, get) => ({
                   set((state) => ({
                     entities: [
                       ...state.entities,
-                      {
+                      { 
+                        uid:[chunkX + (index % width) + 2 * Z,
+                          chunkY + Math.floor(index / width) + 2 * Z,
+                          Z,],
                         key: [
                           chunkX + (index % width) + 2 * Z,
                           chunkY + Math.floor(index / width) + 2 * Z,

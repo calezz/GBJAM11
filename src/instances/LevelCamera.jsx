@@ -9,12 +9,15 @@ const LevelCamera = memo(({children}) => {
   //const entities = useGameContext((state)=>state.entities)
 
 console.log("CAMERA")
-
+useEffect(()=>{
+  console.log("mounted camera")
+  return ()=> console.log("dismounted camera") 
+},[])
   useEffect(() => {
     const keyHandler = (e) => {
       if (e.key === "w") {
         setEntities()
-        movePlayer([-8,4])
+     //   movePlayer([-8,4])
       }
       if (e.key === "d") {
 

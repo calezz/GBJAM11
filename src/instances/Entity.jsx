@@ -1,11 +1,16 @@
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
 import SpriteReader from "../helpers/SpriteReader";
 
 import { useGameContext } from "../store/GameContext";
-const Entity = memo(({entity})=> {
+const Entity = memo(({uid})=> {
+ // console.log(uid)
   //const position = [0,0,0]
-  //const entity= useGameContext((state)=>state.entities.filter(entity=>entity.position.every((value,index)=>value===position[index]))[0])
-console.log("renderENTITY")
+  const entity= useGameContext((state)=>state.entities.filter(entity=>entity.uid.every((value,index)=>value===uid[index]))[0])
+  console.log("renderENTITY")
+  useEffect(()=>{console.log("ENTITYMOUNT")
+
+  return ()=>console.log("ENTITY DISMOUNT ")
+},[])
 
   //const entity = {...entities.filter(entity=>entity.position.every((value,index)=>value===position[index]))[0]}
   //console.log(entities)

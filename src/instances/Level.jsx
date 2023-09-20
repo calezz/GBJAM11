@@ -8,8 +8,16 @@ const Level = memo((children) => {
   const entities = useGameContext((state)=>state.entities)
   //const setEntities = useGameContext((state)=>state.setEntities)  
  
+
+
+  useEffect(()=>{
+    console.log("mounted LEVEL")
+    return ()=> console.log("dismounted LEVL") 
+  },[])
+
+
   return( <div>
-    {...entities.map(entity=><Entity entity={entity} key={entity.position}/>)}
+    {entities.map(entity=><Entity entity={entity} uid={entity.uid} key={entity.position}/>)}
   </div>)
 })
 export default Level;
