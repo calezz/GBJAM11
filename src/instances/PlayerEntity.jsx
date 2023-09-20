@@ -2,9 +2,9 @@ import { useGameContext } from "../store/GameContext";
 import { memo } from "react";
 import SpriteReader from "../helpers/SpriteReader";
 const PlayerEntity = memo(()=> {
+ // const state= useGameContext((state)=>state.playerState)
   const position= useGameContext((state)=>state.playerPosition)
   const playerEntity= useGameContext((state)=>state.playerEntity)
- 
   const iso = [
     ((position[0] - position[2]) * 16) / 2 -
       ((position[1] - position[2]) * 16) / 2,
@@ -25,13 +25,11 @@ const PlayerEntity = memo(()=> {
     opacity: `${1}`,
   };
 
-
-
   return (
     <>
       {(
         <div style={style}>
-          <SpriteReader id={playerEntity.id} position={position} zIndex={style.zIndex} />
+          <SpriteReader id={playerEntity.id} orientation={playerEntity.orientation} position={position} zIndex={style.zIndex} />
         </div>
       )}
     </>

@@ -5,8 +5,7 @@ export const useGameContext = create(
     playerEntity: {},
     cameraPosition: [],
     playerPosition: [0, 0, 0],
-    playerState: 92,
-    setPlayerState: (value) => set({ playerState: value }),
+    setPlayerState: (value) => set({ playerEntity: { id: value[0], orientation: value[1] }}),
     movePlayer: (value) => {
       const targetPlayerPosition = get().playerPosition.map(
         (data, index) => data + value[index]
@@ -52,6 +51,19 @@ export const useGameContext = create(
 
                 return chunk.data.map((id, index) => {
                   if (id !== 0) {
+                    let orientation=[1,1]
+                    //transformations
+                    if(id>3221225474){
+                      orientation = [-1,1]
+                      id = id-3221225474
+                    }else if(id>2147483648){
+                      orientation = [-1,1]
+                      id = id-2147483648
+                    }else if(id>1073741824 ){
+                      orientation = [1,-1]
+                      id = id-1073741824
+                    }
+
                     id = (id - 1) / data.tilesets[0].columns + 1;
                     const position = [
                       chunkX + (index % width) + 2 * Z,
@@ -70,13 +82,14 @@ export const useGameContext = create(
                             ],
                             position: position,
                             id: id,
+                            orientation,
                           },
                         ],
                       }));
                     } else {
                       set((state) => ({
                         playerPosition: position,
-                        playerEntity: { id },
+                        playerEntity: { id,orientation},
                       }));
                     }
                   }

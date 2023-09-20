@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState, memo } from "react";
 import { useGameContext } from "../store/GameContext";
 
-const SpriteReader = memo(({ id, position }) => {
+const SpriteReader = memo(({id,orientation, position }) => {
   const config = useGameContext((state) => state.config);
   const spriteSheet = useGameContext((state) => state.spriteSheet);
-
   const canvasRef = useRef(null);
   const [currentFrame, setCurrentFrame] = useState(0);
   const [size, setSize] = useState([16, 16]);
@@ -19,6 +18,12 @@ const SpriteReader = memo(({ id, position }) => {
   const [opacity, setOpacity] = useState(1);
   const scale = 1;
   useEffect(() => {
+    setSprite(
+      spriteSheet.meta.slices.filter(
+        (slice) => slice.name === `Slice ${id}`
+      )[0] ??
+        spriteSheet.meta.slices.filter((slice) => slice.name === `Slice ${1}`)[0]
+    )
     let timeoutId;
     const incrementFrame = () => {
       setCurrentFrame((prevCurrentFrame) => (prevCurrentFrame +1)%sprite.keys.length);
@@ -29,7 +34,7 @@ const SpriteReader = memo(({ id, position }) => {
     }
     // Return a cleanup function to clear the timeout when the component unmounts or state changes
     return () => clearTimeout(timeoutId);
-  }, [sprite]);
+  }, [id]);
 
   useEffect(() => {
   //  console.log("frame"+currentFrame,sprite.name)
@@ -83,6 +88,7 @@ const SpriteReader = memo(({ id, position }) => {
   const style = {
     position: "absolute",
     opacity: opacity,
+    transform:`scale(${orientation[0]},${orientation[1]})`
   };
   return (
     <>

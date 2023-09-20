@@ -33,7 +33,7 @@ const Entity = memo(({position})=> {
     <>
       {(
         <div style={style}>
-          <SpriteReader id={entity.id} position={position} zIndex={style.zIndex}/>
+          <SpriteReader id={entity.id} position={position} orientation={entity.orientation} zIndex={style.zIndex}/>
         </div>
       )}
     </>
