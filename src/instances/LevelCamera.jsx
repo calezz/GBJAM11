@@ -3,38 +3,35 @@ import Entities from "./Entitites";
 import Level from "./Level";
 import {  useEffect, memo, Children } from "react";
 const LevelCamera = memo(({children}) => {
-  const playerPosition = useGameContext((state)=>state.playerPosition)
+  const cameraPosition = useGameContext((state)=>state.cameraPosition)
   const movePlayer = useGameContext((state)=>state.movePlayer)  
-  const setEntities = useGameContext((state)=>state.setEntities)  
-  const entities = useGameContext((state)=>state.entities)
+  const moveCamera= useGameContext((state)=>state.moveCamera)  
+  const setPlayerState= useGameContext((state)=>state.setPlayerState)  
 
-console.log("CAMERA")
-useEffect(()=>{
-  console.log("mounted camera")
-  return ()=> console.log("dismounted camera") 
-},[])
   useEffect(() => {
     const keyHandler = (e) => {
       if (e.key === "w") {
-        setEntities()
-
-     //   movePlayer([-8,4])
+      setPlayerState(93)
+       movePlayer([0,-1,0])
+       moveCamera([-8,4])
       }
       if (e.key === "d") {
-
-       movePlayer([-8,-4]); 
+        movePlayer([1,0,0])
+        moveCamera([-8,-4]); 
       }
       if (e.key === "a") {
-        movePlayer([+8,+4]); 
+        movePlayer([-1,0,0])
+        moveCamera([+8,+4]); 
       }
       if (e.key === "s") {
-        movePlayer([+8,-4]);; 
+        movePlayer([0,-1,0])
+        moveCamera([+8,-4]);
       }
       if (e.key === " ") {
-        movePlayer([0,+8]);; 
+  //      movePlayer([0,+8]);; 
       }
       if (e.key === "Control") {
-        movePlayer([0,-8]); 
+    //    movePlayer([0,-8]); 
       }
     };
     //movement controller
@@ -44,7 +41,7 @@ useEffect(()=>{
     };
   }, []);
   const style = {
-    transform: `translate(${playerPosition[0]}px,${playerPosition[1]}px)`,
+    transform: `translate(${cameraPosition[0]}px,${cameraPosition[1]}px)`,
   };
   return <div style={style}>{children}</div>;
 });

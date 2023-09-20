@@ -3,19 +3,10 @@ import SpriteReader from "../helpers/SpriteReader";
 
 import { useGameContext } from "../store/GameContext";
 const Entity = memo(({position})=> {
- // console.log(uid)
- // const uid = [0,0,0]
-  
-  const entities= useGameContext((state)=>state.entities)
   const entity= useGameContext((state)=>state.entities.filter(entity=>entity.position.every((value,index)=>value===position[index]))[0])
-  console.log("renderENTITY")
-  useEffect(()=>{console.log("ENTITYMOUNT")
-  return ()=>console.log("ENTITY DISMOUNT ")
-},[])
-  console.log(entities)
-  //const entity = {...entities.filter(entity=>entity.position.every((value,index)=>value===position[index]))[0]}
-  //console.log(entities)
-  //console.log([...entity])
+
+
+
   const iso = [
     ((entity.position[0] - entity.position[2]) * 16) / 2 -
       ((entity.position[1] - entity.position[2]) * 16) / 2,
@@ -43,10 +34,11 @@ const Entity = memo(({position})=> {
     <>
       {(
         <div style={style}>
-          <SpriteReader props={entity} zIndex={style.zIndex} />
+          <SpriteReader id={entity.id} position={position} zIndex={style.zIndex}/>
         </div>
       )}
     </>
   );
 })
 export default Entity;
+//<SpriteReader props={entity} zIndex={style.zIndex} />

@@ -21,10 +21,7 @@ const audio = useRef(null)
       <input type="range" />
       <br />
 
-      {<audio ref={audio} style={{transform:`scale(.5)`, position:"relative",left:"-25%"}} controls>
-      <source src="/tekit.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>}
+      {}
     </>
   );
 }
