@@ -6,8 +6,9 @@ const LevelCamera = memo(({ children }) => {
   const position = useGameContext((state) => state.playerPosition);
   const pE= useGameContext((state) => state.playerEntity);
   const movePlayer = useGameContext((state) => state.movePlayer);
-
   const setPlayerState = useGameContext((state) => state.setPlayerState);
+  const fetched = useGameContext((state)=>state.fetched)
+  const entities = useGameContext((state)=>state.entities)
   const cameraPosition = [
     16 * (position[0] / 2 - position[1] / 2 - 4.5),
     16 * (position[0] / 4 + position[1] / 4 - position[2] / 2 - 5),
@@ -15,6 +16,7 @@ const LevelCamera = memo(({ children }) => {
   useEffect(() => {
     const keyHandler = (e) => {
       if (e.key === "w") {
+        console.log(fetched,entities)
         movePlayer([0, -1, 0]);
         setPlayerState([92,[1,1]]);
         console.log(pE)

@@ -1,6 +1,8 @@
 import { create } from "zustand";
 export const useGameContext = create(
   (set, get) => ({
+    fetched:false,
+    setFetched:(value)=>set({fetched:value}),
     entities: [],
     playerEntity: {},
     cameraPosition: [],
@@ -101,6 +103,7 @@ export const useGameContext = create(
           dataPromises[key] = data;
         }
         set(dataPromises);
+        set({fetched:true})
       } catch (error) {
         console.error("Fetching error:", error);
       }
@@ -117,3 +120,4 @@ export const useGameContext = create(
 )
 
 //instantly fetches needed data
+useGameContext.getState().fetchSprites({ spriteSheet: "tileset_main", level: "tileshowcase" });

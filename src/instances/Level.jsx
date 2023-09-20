@@ -6,19 +6,17 @@ import PlayerEntity from "./PlayerEntity";
  // console.log("LEVEL")
 const Level =  memo( (children) => {
   const entities = useGameContext((state)=>state.entities)
-
+  const fetched = useGameContext((state)=>state.fetched)
+  
+  useEffect(()=>{
+    console.log(fetched)
+    
+  },[fetched])
  
 
-
-  useEffect(()=>{
-  //  console.log("mounted LEVEL")
-  //  return ()=> console.log("dismounted LEVL") 
-  },[])
-
-
-  return( <div>
-    {entities.map(entity=><Entity entity={entity} position={entity.position} key={entity.position}/>)}
-    <PlayerEntity/>
+  return(  <div>
+    {fetched && entities.map(entity=><Entity entity={entity} position={entity.position} key={entity.position}/>)}
+    {fetched && <PlayerEntity/>}
 
   </div>)
 })

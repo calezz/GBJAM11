@@ -3,12 +3,13 @@ import { useGameContext } from "../store/GameContext";
 
 const GameInitializer = () => {
   const fetchSprites = useGameContext((state) => state.fetchSprites);
+  const setFetched = useGameContext((state) => state.setFetched);
 
   useEffect(() => {
     // Fetch sprites when this component mounts
     fetchSprites({ spriteSheet: "tileset_main", level: "tileshowcase" })
       .then(() => {
-        // Data fetched successfully
+        setFetched(true)
       })
       .catch((error) => {
         console.error("Error fetching sprites:", error);
