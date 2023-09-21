@@ -18,8 +18,7 @@ export const useGameContext = create(
       //const checkEnitites = get().entities.filter(entity=>entity.position.every((value,index)=>value===targetPlayerPosition[index]))
    //   console.log(get().playerPosition,targetPlayerPosition,checkEnitites[0]?"true":"false")
      const checkEntities = get().entities.some((entity) => entity.position.every((value, index) => value === targetPlayerPosition[index]))
-     console.log(checkEntities)
- //  const checkEnitites = get().entities.find(entity=>entity.position)
+
       if (!checkEntities)
         [
           set((prev) => ({
