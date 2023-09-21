@@ -7,14 +7,18 @@ export const useGameContext = create(
     playerEntity: {},
     cameraPosition: [],
     playerPosition: [0, 0, 0],
-    setPlayerState: (value) => set({ playerEntity: { id: value[0], orientation: value[1] }}),
+    setPlayerState: (value) => set({ playerEntity: { id: value[0], orientation: value[1],defaultState:value[2] }}),
     movePlayer: (value) => {
+      const indexMultiplier= [1,1,8]
       const targetPlayerPosition = get().playerPosition.map(
-        (data, index) => data + value[index]
+        (data, index) => data + value[index]*indexMultiplier[index]
       );
-      const checkEnitites = get().entities.filter(entity=>entity.position.every((value,index)=>value===targetPlayerPosition[index]))
-      console.log(get().playerPosition,targetPlayerPosition,checkEnitites[0]?"true":"false")
-      if (!checkEnitites[0])
+      //const checkEnitites = get().entities.filter(entity=>entity.position.every((value,index)=>value===targetPlayerPosition[index]))
+   //   console.log(get().playerPosition,targetPlayerPosition,checkEnitites[0]?"true":"false")
+     const checkEntities = get().entities.some((entity) => entity.position.every((value, index) => value === targetPlayerPosition[index]))
+     console.log(checkEntities)
+ //  const checkEnitites = get().entities.find(entity=>entity.position)
+      if (!checkEntities)
         [
           set((prev) => ({
             playerPosition: [
@@ -68,9 +72,9 @@ export const useGameContext = create(
 
                     id = (id - 1) / data.tilesets[0].columns + 1;
                     const position = [
-                      chunkX + (index % width) + 2 * Z,
-                      chunkY + Math.floor(index / width) + 2 * Z,
-                      Z,
+                      (chunkX + (index % width) + 2 * Z)*16,
+                      (chunkY + Math.floor(index / width) + 2 * Z)*16,
+                      Z*16,
                     ];
                     if (id !== 92) {
                       set((state) => ({
@@ -115,6 +119,11 @@ export const useGameContext = create(
       src: "tileset",
       spriteSheet: "tileset_main",
     },
+
+
+
+    //Gameloop
+    
   }),
   { shallow: true }
 )

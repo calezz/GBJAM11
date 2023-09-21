@@ -1,28 +1,18 @@
 import { useEffect, useRef, useState, memo } from "react";
 import { useGameContext } from "../store/GameContext";
 
-const SpriteReader = memo(({id,orientation, position }) => {
+const SpriteReader = memo(({id,orientation,defaultState, position }) => {
   const config = useGameContext((state) => state.config);
   const spriteSheet = useGameContext((state) => state.spriteSheet);
+  const setPlayerState= useGameContext((state) => state.setPlayerState);
   const canvasRef = useRef(null);
   const [currentFrame, setCurrentFrame] = useState(0);
   const [size, setSize] = useState([16, 16]);
-  const [sprite, setSprite] = useState(
-    spriteSheet.meta.slices.filter(
-      (slice) => slice.name === `Slice ${id}`
-    )[0] ??
-      spriteSheet.meta.slices.filter((slice) => slice.name === `Slice ${1}`)[0]
-  );
-
   const [opacity, setOpacity] = useState(1);
   const scale = 1;
+  const sprite = spriteSheet.meta.slices.filter((slice) => slice.name === `Slice ${id}`)[0] ??spriteSheet.meta.slices.filter((slice) => slice.name === `Slice ${1}`)[0]
   useEffect(() => {
-    setSprite(
-      spriteSheet.meta.slices.filter(
-        (slice) => slice.name === `Slice ${id}`
-      )[0] ??
-        spriteSheet.meta.slices.filter((slice) => slice.name === `Slice ${1}`)[0]
-    )
+    setCurrentFrame(0)
     let timeoutId;
     const incrementFrame = () => {
       setCurrentFrame((prevCurrentFrame) => (prevCurrentFrame +1)%sprite.keys.length);
@@ -39,6 +29,13 @@ const SpriteReader = memo(({id,orientation, position }) => {
   //  console.log("frame"+currentFrame,sprite.name)
     const image = new Image();
     image.src = `/${config.src}.png`;
+
+    //reset animations
+    if(sprite.keys.length>1&&(currentFrame===sprite.keys.length-1)){    
+      setCurrentFrame(0)
+      setPlayerState([defaultState,orientation]);
+    }
+
 
     const WIDTH = sprite.keys[currentFrame].bounds.w;
     const HEIGHT = sprite.keys[currentFrame].bounds.h;

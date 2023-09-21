@@ -8,11 +8,11 @@ const Entity = memo(({position})=> {
 
 
   const iso = [
-    ((entity.position[0] - entity.position[2]) * 16) / 2 -
-      ((entity.position[1] - entity.position[2]) * 16) / 2,
-    ((entity.position[0] - entity.position[2]) * 16) / 4 +
-      ((entity.position[1] - entity.position[2]) * 16) / 4 -
-      (entity.position[2] * 16) / 2,
+    ((entity.position[0] - entity.position[2])) / 2 -
+      ((entity.position[1] - entity.position[2])) / 2,
+    ((entity.position[0] - entity.position[2]) ) / 4 +
+      ((entity.position[1] - entity.position[2]) ) / 4 -
+      (entity.position[2] ) / 2,
   ];
   const style = {
     //on rework implement offset
@@ -33,7 +33,7 @@ const Entity = memo(({position})=> {
     <>
       {(
         <div style={style}>
-          <SpriteReader id={entity.id} position={position} orientation={entity.orientation} zIndex={style.zIndex}/>
+          <SpriteReader id={entity.id} defaultState={entity.id} position={position} orientation={entity.orientation} zIndex={style.zIndex}/>
         </div>
       )}
     </>

@@ -7,39 +7,41 @@ const LevelCamera = memo(({ children }) => {
   const pE= useGameContext((state) => state.playerEntity);
   const movePlayer = useGameContext((state) => state.movePlayer);
   const setPlayerState = useGameContext((state) => state.setPlayerState);
-  const fetched = useGameContext((state)=>state.fetched)
-  const entities = useGameContext((state)=>state.entities)
+  const playerEntity = useGameContext((state) => state.playerEntity);
   const cameraPosition = [
-    16 * (position[0] / 2 - position[1] / 2 - 4.5),
-    16 * (position[0] / 4 + position[1] / 4 - position[2] / 2 - 5),
+     (position[0] / 2 - position[1] / 2 - 4.5*16),
+     (position[0] / 4 + position[1] / 4 - position[2] / 2 - 5*16),
   ];
   useEffect(() => {
     const keyHandler = (e) => {
       if (e.key === "w") {
-        console.log(fetched,entities)
-        movePlayer([0, -1, 0]);
-        setPlayerState([92,[1,1]]);
-        console.log(pE)
+        movePlayer([0, -16, 0]);
+        setPlayerState([96,[1,1],92]);
       }
 
       if (e.key === "d") {
-        movePlayer([1, 0, 0]);
-        setPlayerState([92,[1,1]]);
+        movePlayer([16, 0, 0]);
+        setPlayerState([94,[1,1],92]);
       }
       if (e.key === "a") {
-        movePlayer([-1, 0, 0]);
-        setPlayerState([92,[-1,1]]);
+        movePlayer([-16, 0, 0]);
+        setPlayerState([96,[-1,1],92]);
         console.log(pE)
       }
       if (e.key === "s") {
-        movePlayer([0, +1, 0]);
-        setPlayerState([92,[-1,1]]);
+        movePlayer([0, +16, 0]);
+        setPlayerState([94,[-1,1],92]);
       }
       if (e.key === " ") {
-        movePlayer([0, 0, 1]);
+        movePlayer([0, 0, +16]);
+        setPlayerState([98,[-1,1],92]);
       }
       if (e.key === "Control") {
-        movePlayer([0, 0, -1]);
+        movePlayer([0, 0, -2]);
+
+    
+        setPlayerState([92,[1,1],92]);
+        
       }
     };
     //movement controller

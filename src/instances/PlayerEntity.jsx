@@ -6,11 +6,11 @@ const PlayerEntity = memo(()=> {
   const position= useGameContext((state)=>state.playerPosition)
   const playerEntity= useGameContext((state)=>state.playerEntity)
   const iso = [
-    ((position[0] - position[2]) * 16) / 2 -
-      ((position[1] - position[2]) * 16) / 2,
-    ((position[0] - position[2]) * 16) / 4 +
-      ((position[1] - position[2]) * 16) / 4 -
-      (position[2] * 16) / 2,
+    ((position[0] - position[2])) / 2 -
+      ((position[1] - position[2]) ) / 2,
+    ((position[0] - position[2]) ) / 4 +
+      ((position[1] - position[2])) / 4 -
+      (position[2] ) / 2,
   ];
   const style = {
     //on rework implement offset
@@ -29,7 +29,7 @@ const PlayerEntity = memo(()=> {
     <>
       {(
         <div style={style}>
-          <SpriteReader id={playerEntity.id} orientation={playerEntity.orientation} position={position} zIndex={style.zIndex} />
+          <SpriteReader id={playerEntity.id} defaultState={playerEntity.defaultState||playerEntity.id} orientation={playerEntity.orientation} position={position} zIndex={style.zIndex} />
         </div>
       )}
     </>
