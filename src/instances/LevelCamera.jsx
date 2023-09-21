@@ -1,55 +1,87 @@
 import { useGameContext } from "../store/GameContext";
 import Entities from "./Entitites";
 import Level from "./Level";
-import { useEffect, memo, Children } from "react";
+import { useEffect, memo, Children, useRef, useState } from "react";
 const LevelCamera = memo(({ children }) => {
   const position = useGameContext((state) => state.playerPosition);
-  const pE= useGameContext((state) => state.playerEntity);
   const movePlayer = useGameContext((state) => state.movePlayer);
   const setPlayerState = useGameContext((state) => state.setPlayerState);
-  const playerEntity = useGameContext((state) => state.playerEntity);
+  const setPlayerOrientation = useGameContext((state) => state.setPlayerOrientation);
+  const [keysPressed,setKeysPressed] = useState([])
+  const keysPressedRef = useRef(keysPressed)
   const cameraPosition = [
-     (position[0] / 2 - position[1] / 2 - 4.5*16),
-     (position[0] / 4 + position[1] / 4 - position[2] / 2 - 5*16),
+     Math.round(position[0] / 2 - position[1] / 2 - 4.5*16),
+     Math.round(position[0] / 4 + position[1] / 4 - position[2] / 2 - 5*16),
   ];
+  console.log(keysPressed)
   useEffect(() => {
-    const keyHandler = (e) => {
-      if (e.key === "w") {
-        movePlayer([0, -16, 0]);
+    const handleKeyDown = (e) => {
+      // Add the pressed key to the state
+      setKeysPressed((prev) => ({
+        ...prev,
+        [e.key]: true,
+      }));
+    };
+    const handleKeyUp = (e) => {
+      // Remove the released key from the state
+      setKeysPressed((prev) => {
+        const { [e.key]:anything, ...rest } = prev;
+        return rest;
+      });
+    };
+    //console.log(keysPressed)
+    const movementUpdate = () => {
+      console.log(keysPressedRef.current)
+      const movementSpeed =8
+      if (keysPressed["w"]) {
+        console.log("Updates")
+        movePlayer([0, -movementSpeed, 0]);
         setPlayerState([96,[1,1],92]);
+        setPlayerOrientation([1,1])
       }
 
-      if (e.key === "d") {
-        movePlayer([16, 0, 0]);
+      if (keysPressed["a"]) {
+        movePlayer([movementSpeed, 0, 0]);
         setPlayerState([94,[1,1],92]);
+        setPlayerOrientation([1,1])
       }
-      if (e.key === "a") {
-        movePlayer([-16, 0, 0]);
-        setPlayerState([96,[-1,1],92]);
-        console.log(pE)
-      }
-      if (e.key === "s") {
-        movePlayer([0, +16, 0]);
+      if (keysPressed["s"]) {
+        movePlayer([0, +movementSpeed, 0]);
         setPlayerState([94,[-1,1],92]);
+        setPlayerOrientation([-1,1])
       }
-      if (e.key === " ") {
+      if (keysPressed["d"]) {
+        movePlayer([-movementSpeed, 0, 0]);
+        setPlayerState([96,[-1,1],92]);
+        setPlayerOrientation([-1,1])
+      }
+      if (keysPressed[" "]) {
         movePlayer([0, 0, +16]);
-        setPlayerState([98,[-1,1],92]);
-      }
-      if (e.key === "Control") {
-        movePlayer([0, 0, -2]);
-
-    
-        setPlayerState([92,[1,1],92]);
+        setPlayerState([98,[1,1],92]);
         
       }
+      if (keysPressed["Control"]) {
+        movePlayer([0, 0, -2]);
+        setPlayerState([92,[1,1],92]);   
+      }
     };
+
     //movement controller
-    window.addEventListener("keyup", keyHandler);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    const movementUpdateInterval = setInterval(movementUpdate,1000)
+    console.log(12)
     return () => {
-      window.removeEventListener("keyup", keyHandler);
+      console.log(13)
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      clearInterval(movementUpdateInterval)
     };
-  }, []);
+  },[]);
+
+
+
+  
   const style = {
     transform: `translate(${-cameraPosition[0]}px,${-cameraPosition[1]}px)`,
   };

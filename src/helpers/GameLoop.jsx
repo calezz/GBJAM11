@@ -9,8 +9,8 @@ export default function GameLoop(){
         
         const gravity = setInterval(()=>{
             if(fetched){
-                movePlayer([0,0,-2])}
-        },30)
+                movePlayer([0,0,0])}
+        },1000000)
         return ()=> {clearInterval(gravity)}
     },[fetched])
     

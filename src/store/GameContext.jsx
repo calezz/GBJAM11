@@ -7,7 +7,9 @@ export const useGameContext = create(
     playerEntity: {},
     cameraPosition: [],
     playerPosition: [0, 0, 0],
-    setPlayerState: (value) => set({ playerEntity: { id: value[0], orientation: value[1],defaultState:value[2] }}),
+    playerOrientation:[],
+    setPlayerOrientation:(value) => set({ playerOrientation:value}),
+    setPlayerState: (value) => set({ playerEntity: { id: value[0],defaultState:value[2] }}),
     movePlayer: (value) => {
       const indexMultiplier= [1,1,8]
       const targetPlayerPosition = get().playerPosition.map(
