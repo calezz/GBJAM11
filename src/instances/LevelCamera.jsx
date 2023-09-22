@@ -6,24 +6,27 @@ const LevelCamera = memo(({ children }) => {
   const position = useGameContext((state) => state.playerPosition);
   const movePlayer = useGameContext((state) => state.movePlayer);
   const setPlayerState = useGameContext((state) => state.setPlayerState);
+  const setPlayerAcceleration = useGameContext((state) => state.setPlayerAcceleration);
+  const setPlayerDirection = useGameContext((state) => state.setPlayerDirection);
   const setPlayerOrientation = useGameContext(
     (state) => state.setPlayerOrientation
   );
   const [keysPressed, setKeysPressed] = useState([]);
   const cameraPosition = [
     Math.round(position[0] / 2 - position[1] / 2 - 4.5 * 16),
-    Math.round(position[0] / 4 + position[1] / 4 - position[2] / 2 - 5 * 16),
+    Math.round(position[0] / 4 + position[1] / 4 - position[2] - 4 * 16),
   ];
-  //console.log(keysPressed)
+//  console.log(keysPressed)
   useEffect(() => {
     //define listeners
     const handleKeyDown = (e) => {
       // Add the pressed key to the state
-      console.log(keysPressed)
-      setKeysPressed((prev) => ({
-        ...prev,
-        [e.key]: true,
-      }));
+      if(!e.repeat){
+        setKeysPressed((prev) => ({
+          ...prev,
+          [e.key]: true,
+        }));
+      }
     };
     const handleKeyUp = (e) => {
       // Remove the released key from the state
@@ -31,6 +34,7 @@ const LevelCamera = memo(({ children }) => {
         const { [e.key]: anything, ...rest } = prev;
         return rest;
       });
+      setPlayerAcceleration(0)
     };
     //movement controller
     window.addEventListener("keydown", handleKeyDown);
@@ -44,30 +48,35 @@ const LevelCamera = memo(({ children }) => {
   
   useEffect(()=>{
     //drive movement
-      const movementSpeed = 8;
+      const changefactor = 1;
       if (keysPressed["w"]) {
-        movePlayer([0, -movementSpeed, 0]);
-        setPlayerState([96, [1, 1], 92]);
-        setPlayerOrientation([1, 1]);
+       setPlayerAcceleration(changefactor)
+       setPlayerDirection([0,-1,0])
+       setPlayerState([96, [1, 1], 92]);
+       setPlayerOrientation([1, 1]);
+       // movePlayer([0, -movementSpeed, 0]);
       }
 
       if (keysPressed["a"]) {
-        movePlayer([-movementSpeed, 0, 0]);
+        setPlayerAcceleration(changefactor)
+        setPlayerDirection([-1, 0, 0]);
         setPlayerState([96, [-1, 1], 92]);
         setPlayerOrientation([-1, 1]);
       }
       if (keysPressed["s"]) {
-        movePlayer([0, +movementSpeed, 0]);
+        setPlayerAcceleration(changefactor)
+        setPlayerDirection([0, 1, 0]);
         setPlayerState([94, [-1, 1], 92]);
         setPlayerOrientation([-1, 1]);
       }
       if (keysPressed["d"]) {
-        movePlayer([movementSpeed, 0, 0]);
+        setPlayerAcceleration(changefactor)
+        setPlayerDirection([1, 0, 0]);
         setPlayerState([94, [1, 1], 92]);
         setPlayerOrientation([1, 1]);
       }
       if (keysPressed[" "]) {
-        movePlayer([0, 0, +16]);
+        movePlayer([0, 0, 8]);
         setPlayerState([98, [1, 1], 92]);
       }
       if (keysPressed["Control"]) {

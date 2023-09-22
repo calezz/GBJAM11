@@ -1,24 +1,57 @@
 import { create } from "zustand";
 export const useGameContext = create(
   (set, get) => ({
-    fetched:false,
-    setFetched:(value)=>set({fetched:value}),
+    fetched: false,
+    setFetched: (value) => set({ fetched: value }),
     entities: [],
     playerEntity: {},
     cameraPosition: [],
     playerPosition: [0, 0, 0],
-    playerOrientation:[],
-    setPlayerOrientation:(value) => set({ playerOrientation:value}),
-    setPlayerState: (value) => set({ playerEntity: { id: value[0],defaultState:value[2] }}),
-    movePlayer: (value) => {
-      const indexMultiplier= [1,1,8]
-      const targetPlayerPosition = get().playerPosition.map(
-        (data, index) => data + value[index]*indexMultiplier[index]
-      );
-      //const checkEnitites = get().entities.filter(entity=>entity.position.every((value,index)=>value===targetPlayerPosition[index]))
-   //   console.log(get().playerPosition,targetPlayerPosition,checkEnitites[0]?"true":"false")
-     const checkEntities = get().entities.some((entity) => entity.position.every((value, index) => value === targetPlayerPosition[index]))
+    playerOrientation: [],
+    setPlayerOrientation: (value) => set({ playerOrientation: value }),
+    setPlayerState: (value) =>
+      set({ playerEntity: { id: value[0], defaultState: value[2] } }),
+    playerSpeed: 0,
+    playerDirection: [0, 0, 1],
+    playerAcceleration: 0,
+    updatePlayerSpeed: () =>{
+    if(get().playerAcceleration===0){
+      set((state) => ({
+        playerSpeed: Math.max(state.playerSpeed - .1,0),
+      }))
+    }
+    else{
+      set((state) => ({
+        playerSpeed: state.playerSpeed + state.playerAcceleration,
+      }))}
+    },
+    updatePlayerPosition: () =>
+    get().movePlayer([get().playerDirection[0]*get().playerSpeed,
+    get().playerDirection[1]*get().playerSpeed,
+    get().playerDirection[2]*get().playerSpeed,]),
 
+    setPlayerSpeed: (value) => set({ playerSpeed: value }),
+    setPlayerDirection: (value) => set({ playerDirection: value }),
+    setPlayerAcceleration: (value) => set({ playerAcceleration: value }),
+    movePlayer: (value) => {
+      //todo factor in block heights? fix outlies in collision
+      const playerSize = 16;
+      const direction = value.map(
+        (entry) => (entry = entry >= 0 === true ? 1 : -1)
+      );
+      const targetPlayerPosition = get().playerPosition.map(
+        (data, index) => data + (playerSize / 2) * direction[index]
+      );
+
+      const checkEntities = get().entities.some((entity) =>
+        entity.position.every((value, index) => {
+          return (
+            targetPlayerPosition[index] - 16 / 2 <= value &&
+            value <= targetPlayerPosition[index] + 16 / 2
+          );
+        })
+      );
+      //console.log(get().entities.filter(entity=>entity.position.every((value, index) => (((targetPlayerPosition[index]-16/2)<=value)&&(value<(targetPlayerPosition[index]+16/2))))))
       if (!checkEntities)
         [
           set((prev) => ({
@@ -30,7 +63,6 @@ export const useGameContext = create(
           })),
         ];
     },
-
     moveCamera: (value) =>
       set((prev) => ({
         cameraPosition: [
@@ -38,8 +70,7 @@ export const useGameContext = create(
           prev.cameraPosition[1] - value[1],
         ],
       })),
-
-    //rewrite using promise.all to fetch them in a batch
+    //rewrite using promise.all to fetch them in a batch // for .2ms LOADING SPEED IMPROVMENT!
     spriteSheet: {},
     level: {},
     fetchSprites: async (src) => {
@@ -58,24 +89,24 @@ export const useGameContext = create(
 
                 return chunk.data.map((id, index) => {
                   if (id !== 0) {
-                    let orientation=[1,1]
+                    let orientation = [1, 1];
                     //transformations
-                    if(id>3221225474){
-                      orientation = [-1,1]
-                      id = id-3221225474
-                    }else if(id>2147483648){
-                      orientation = [-1,1]
-                      id = id-2147483648
-                    }else if(id>1073741824 ){
-                      orientation = [1,-1]
-                      id = id-1073741824
+                    if (id > 3221225474) {
+                      orientation = [-1, 1];
+                      id = id - 3221225474;
+                    } else if (id > 2147483648) {
+                      orientation = [-1, 1];
+                      id = id - 2147483648;
+                    } else if (id > 1073741824) {
+                      orientation = [1, -1];
+                      id = id - 1073741824;
                     }
 
                     id = (id - 1) / data.tilesets[0].columns + 1;
                     const position = [
-                      (chunkX + (index % width) + 2 * Z)*16,
-                      (chunkY + Math.floor(index / width) + 2 * Z)*16,
-                      Z*16,
+                      (chunkX + (index % width) + 2 * Z) * 16,
+                      (chunkY + Math.floor(index / width) + 2 * Z) * 16,
+                      Z * 16,
                     ];
                     if (id !== 92) {
                       set((state) => ({
@@ -96,7 +127,7 @@ export const useGameContext = create(
                     } else {
                       set((state) => ({
                         playerPosition: position,
-                        playerEntity: { id,orientation},
+                        playerEntity: { id, orientation },
                       }));
                     }
                   }
@@ -108,12 +139,11 @@ export const useGameContext = create(
           dataPromises[key] = data;
         }
         set(dataPromises);
-        set({fetched:true})
+        set({ fetched: true });
       } catch (error) {
         console.error("Fetching error:", error);
       }
     },
-
     //dumb placeholeders
     //GameInstance
     config: {
@@ -121,13 +151,12 @@ export const useGameContext = create(
       spriteSheet: "tileset_main",
     },
 
-
-
     //Gameloop
-    
   }),
   { shallow: true }
-)
+);
 
 //instantly fetches needed data
-useGameContext.getState().fetchSprites({ spriteSheet: "tileset_main", level: "tileshowcase" });
+useGameContext
+  .getState()
+  .fetchSprites({ spriteSheet: "tileset_main", level: "tileshowcase" });
