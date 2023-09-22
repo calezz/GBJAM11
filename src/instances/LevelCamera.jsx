@@ -7,6 +7,7 @@ const LevelCamera = memo(({ children }) => {
   const movePlayer = useGameContext((state) => state.movePlayer);
   const setPlayerState = useGameContext((state) => state.setPlayerState);
   const setPlayerAcceleration = useGameContext((state) => state.setPlayerAcceleration);
+  const addPlayerSpeed = useGameContext((state) => state.addPlayerSpeed);
   const setPlayerDirection = useGameContext((state) => state.setPlayerDirection);
   const setPlayerOrientation = useGameContext(
     (state) => state.setPlayerOrientation
@@ -48,8 +49,9 @@ const LevelCamera = memo(({ children }) => {
   
   useEffect(()=>{
     //drive movement
-      const changefactor = .5;
+      const changefactor = .0001;
       if (keysPressed["w"]) {
+        addPlayerSpeed(3)
        setPlayerAcceleration(changefactor)
        setPlayerDirection([0,-1,0])
        setPlayerState([96, [1, 1], 92]);
@@ -58,28 +60,33 @@ const LevelCamera = memo(({ children }) => {
       }
 
       if (keysPressed["a"]) {
+        addPlayerSpeed(3)
         setPlayerAcceleration(changefactor)
         setPlayerDirection([-1, 0, 0]);
         setPlayerState([96, [-1, 1], 92]);
         setPlayerOrientation([-1, 1]);
       }
       if (keysPressed["s"]) {
+        addPlayerSpeed(3)
         setPlayerAcceleration(changefactor)
         setPlayerDirection([0, 1, 0]);
         setPlayerState([94, [-1, 1], 92]);
         setPlayerOrientation([-1, 1]);
       }
       if (keysPressed["d"]) {
+        addPlayerSpeed(3)
         setPlayerAcceleration(changefactor)
         setPlayerDirection([1, 0, 0]);
         setPlayerState([94, [1, 1], 92]);
         setPlayerOrientation([1, 1]);
       }
       if (keysPressed[" "]) {
-        movePlayer([0, 0, 8]);
+        addPlayerSpeed(9)
+        setPlayerDirection([0, 0,.5]);
         setPlayerState([98, [1, 1], 92]);
       }
       if (keysPressed["Control"]) {
+        
         movePlayer([0, 0, -2]);
         setPlayerState([92, [1, 1], 92]);
       }

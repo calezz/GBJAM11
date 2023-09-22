@@ -9,7 +9,7 @@ const Level =  memo( (children) => {
   const fetched = useGameContext((state)=>state.fetched)
   
   useEffect(()=>{
-    console.log(fetched)
+    console.log("fetched:"+ fetched)
     
   },[fetched])
  

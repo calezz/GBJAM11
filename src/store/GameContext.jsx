@@ -29,12 +29,12 @@ export const useGameContext = create(
     get().movePlayer([get().playerDirection[0]*get().playerSpeed,
     get().playerDirection[1]*get().playerSpeed,
     get().playerDirection[2]*get().playerSpeed,]),
-
+    addPlayerSpeed:(value) => {if(get().playerSpeed<value){set((state)=>({ playerSpeed: state.playerSpeed+value }))}},
     setPlayerSpeed: (value) => set({ playerSpeed: value }),
     setPlayerDirection: (value) => set({ playerDirection: value }),
     setPlayerAcceleration: (value) => set({ playerAcceleration: value }),
     movePlayer: (value) => {
-      //todo factor in block heights? fix outlies in collision
+      //todo factor in block heights? fix outliers in collision
       const playerSize = 16;
       const direction = value.map(
         (entry) => (entry = entry >= 0 === true ? 1 : -1)
@@ -159,4 +159,4 @@ export const useGameContext = create(
 //instantly fetches needed data
 useGameContext
   .getState()
-  .fetchSprites({ spriteSheet: "tileset_main", level: "tileshowcase" });
+  .fetchSprites({ spriteSheet: "tileset_main", level: "plain" });
