@@ -48,7 +48,7 @@ const LevelCamera = memo(({ children }) => {
   
   useEffect(()=>{
     //drive movement
-      const changefactor = 1;
+      const changefactor = .5;
       if (keysPressed["w"]) {
        setPlayerAcceleration(changefactor)
        setPlayerDirection([0,-1,0])

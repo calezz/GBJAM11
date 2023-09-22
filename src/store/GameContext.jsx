@@ -17,7 +17,7 @@ export const useGameContext = create(
     updatePlayerSpeed: () =>{
     if(get().playerAcceleration===0){
       set((state) => ({
-        playerSpeed: Math.max(state.playerSpeed - .1,0),
+        playerSpeed: Math.max(state.playerSpeed - 1,0),
       }))
     }
     else{
