@@ -6,6 +6,7 @@ export default function GameLoop() {
   const updatePlayerSpeed = useGameContext((state) => state.updatePlayerSpeed);
   const updatePlayerPosition= useGameContext((state) => state.updatePlayerPosition);
   const movePlayer= useGameContext((state) => state.movePlayer);
+  //const playerSpeedZ= useGameContext((state) => state.playerSpeedZ);
     
   useEffect(() => {
     if (fetched) {

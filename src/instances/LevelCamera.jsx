@@ -8,6 +8,7 @@ const LevelCamera = memo(({ children }) => {
   const setPlayerState = useGameContext((state) => state.setPlayerState);
   const setPlayerAcceleration = useGameContext((state) => state.setPlayerAcceleration);
   const addPlayerSpeed = useGameContext((state) => state.addPlayerSpeed);
+  const addPlayerSpeedZ = useGameContext((state) => state.addPlayerSpeedZ);
   const setPlayerDirection = useGameContext((state) => state.setPlayerDirection);
   const setPlayerOrientation = useGameContext(
     (state) => state.setPlayerOrientation
@@ -48,6 +49,8 @@ const LevelCamera = memo(({ children }) => {
   
   
   useEffect(()=>{
+    
+    console.log("ree")
     //drive movement
       const changefactor = .01;
       if (keysPressed["w"]) {
@@ -81,12 +84,11 @@ const LevelCamera = memo(({ children }) => {
         setPlayerOrientation([1, 1]);
       }
       if (keysPressed[" "]) {
-        addPlayerSpeed(6)
-        setPlayerDirection([0, 0,1]);
+        addPlayerSpeedZ(6)
+        //setPlayerDirection([0, 0,1]);
         setPlayerState([98, [1, 1], 92]);
       }
       if (keysPressed["Control"]) {
-        
         movePlayer([0, 0, -2]);
         setPlayerState([92, [1, 1], 92]);
       }

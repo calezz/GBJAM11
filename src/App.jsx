@@ -7,7 +7,7 @@ function App (){
   const fetched = useGameContext((state)=>state.fetched)
   return (<>
  <div id="display">    
- <img src="/public/titlescreen.png"/> 
+ <img src="/titlescreen.png"/> 
     </div>
    {fetched&&<Game/>}
   </>

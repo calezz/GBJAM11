@@ -6,7 +6,7 @@ const PlayerEntity = memo(()=> {
   const position= useGameContext((state)=>state.playerPosition)
   const playerEntity= useGameContext((state)=>state.playerEntity)
   const playerOrientation= useGameContext((state)=>state.playerOrientation)
-  console.log("Playerupdate")
+ // console.log("Playerupdate")
   const iso = [
     ((position[0])) / 2 -
       ((position[1]) ) / 2,

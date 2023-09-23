@@ -12,7 +12,8 @@ export const useGameContext = create(
     setPlayerState: (value) =>
       set({ playerEntity: { id: value[0], defaultState: value[2] } }),
     playerSpeed: 0,
-    playerDirection: [0, 0, 1],
+    playerSpeedZ: 0,
+    playerDirection: [0, 0, 0],
     playerAcceleration: 0,
     updatePlayerSpeed: () => {
       if (get().playerAcceleration === 0) {
@@ -24,23 +25,33 @@ export const useGameContext = create(
           playerSpeed: state.playerSpeed + state.playerAcceleration,
         }));
       }
+      set((state) => ({
+        playerSpeedZ: Math.max(state.playerSpeedZ - .5, 0),
+      }));
     },
     updatePlayerPosition: () =>
       get().movePlayer([
         get().playerDirection[0] * get().playerSpeed,
         get().playerDirection[1] * get().playerSpeed,
-        get().playerDirection[2] * get().playerSpeed,
+        get().playerSpeedZ,
       ]),
     addPlayerSpeed: (value) => {
       if (get().playerSpeed < value) {
         set((state) => ({ playerSpeed: state.playerSpeed + value }));
       }
     },
+    addPlayerSpeedZ: (value) => {
+      if (get().playerSpeedZ < value) {
+        set((state) => ({ playerSpeedZ: state.playerSpeedZ + value }));
+      }
+    },
     setPlayerSpeed: (value) => set({ playerSpeed: value }),
+
     setPlayerDirection: (value) => set({ playerDirection: value }),
     setPlayerAcceleration: (value) => set({ playerAcceleration: value }),
     movePlayer: (value) => {
       //todo factor in block heights? fix outliers in collision
+     // console.log("move")
       const playerSize = 8
       const direction = value.map(
         (value) => (value = value >= 0 === true ? 1 : -1)
