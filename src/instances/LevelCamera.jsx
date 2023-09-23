@@ -49,7 +49,7 @@ const LevelCamera = memo(({ children }) => {
   
   useEffect(()=>{
     //drive movement
-      const changefactor = .0001;
+      const changefactor = .01;
       if (keysPressed["w"]) {
         addPlayerSpeed(3)
        setPlayerAcceleration(changefactor)

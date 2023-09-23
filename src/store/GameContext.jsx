@@ -17,7 +17,7 @@ export const useGameContext = create(
     updatePlayerSpeed: () => {
       if (get().playerAcceleration === 0) {
         set((state) => ({
-          playerSpeed: Math.max(state.playerSpeed - 1, 0),
+          playerSpeed: Math.max(state.playerSpeed - .5, 0),
         }));
       } else {
         set((state) => ({
@@ -46,16 +46,16 @@ export const useGameContext = create(
         (value) => (value = value >= 0 === true ? 1 : -1)
       );
       const targetPlayerPosition = get().playerPosition.map(
-        (data, index) => data + (playerSize) * direction[index]
+        (data, index) => data + value[index]
       );
 
       const checkEntities = get().entities.some((entity) =>
         entity.position.every((value, index) => {
           return (
-            (targetPlayerPosition[index] - 16 / 2 <= value &&
-              value <= targetPlayerPosition[index] + 16 / 2) ||
+            (targetPlayerPosition[index] - 15 < value &&
+              value < targetPlayerPosition[index] + 15) ||
             value ===
-              targetPlayerPosition[index] + (playerSize) * -direction[index]
+              targetPlayerPosition[index] 
           );
         })
       );
