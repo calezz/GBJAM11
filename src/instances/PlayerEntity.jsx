@@ -23,7 +23,7 @@ const PlayerEntity = memo(()=> {
     zIndex:
       (position[0]) * 1 +
       (position[1]) * 12 +
-      (position[2]+1) * 10 ,
+      (position[2]) * 10 ,
     opacity: `${1}`,
   };
 
