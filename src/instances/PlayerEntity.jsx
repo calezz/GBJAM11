@@ -8,10 +8,10 @@ const PlayerEntity = memo(()=> {
   const playerOrientation= useGameContext((state)=>state.playerOrientation)
   console.log("Playerupdate")
   const iso = [
-    ((position[0] - position[2])) / 2 -
-      ((position[1] - position[2]) ) / 2,
-    ((position[0] - position[2]) ) / 4 +
-      ((position[1] - position[2])) / 4 -
+    ((position[0])) / 2 -
+      ((position[1]) ) / 2,
+    ((position[0]) ) / 4 +
+      ((position[1])) / 4 -
       (position[2] ) / 2,
   ];
   const style = {
@@ -21,9 +21,9 @@ const PlayerEntity = memo(()=> {
     }px,${iso[1]-2}px)`,
     position: "relative",
     zIndex:
-      position[0] * 100000 +
-      position[1] * 1000000 +
-      position[2] * 1 ,
+      (position[0]) * 1 +
+      (position[1]) * 1 +
+      (position[2]) * 100 ,
     opacity: `${1}`,
   };
 

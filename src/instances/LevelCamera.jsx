@@ -15,7 +15,7 @@ const LevelCamera = memo(({ children }) => {
   const [keysPressed, setKeysPressed] = useState([]);
   const cameraPosition = [
     Math.round(position[0] / 2 - position[1] / 2 - 4.5 * 16),
-    Math.round(position[0] / 4 + position[1] / 4 - position[2] - 4 * 16),
+    Math.round(position[0] / 4 + position[1] / 4 -position[2]/2 - 4.5 * 16),
   ];
 //  console.log(keysPressed)
   useEffect(() => {

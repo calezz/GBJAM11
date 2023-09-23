@@ -14,40 +14,48 @@ export const useGameContext = create(
     playerSpeed: 0,
     playerDirection: [0, 0, 1],
     playerAcceleration: 0,
-    updatePlayerSpeed: () =>{
-    if(get().playerAcceleration===0){
-      set((state) => ({
-        playerSpeed: Math.max(state.playerSpeed - 1,0),
-      }))
-    }
-    else{
-      set((state) => ({
-        playerSpeed: state.playerSpeed + state.playerAcceleration,
-      }))}
+    updatePlayerSpeed: () => {
+      if (get().playerAcceleration === 0) {
+        set((state) => ({
+          playerSpeed: Math.max(state.playerSpeed - 1, 0),
+        }));
+      } else {
+        set((state) => ({
+          playerSpeed: state.playerSpeed + state.playerAcceleration,
+        }));
+      }
     },
     updatePlayerPosition: () =>
-    get().movePlayer([get().playerDirection[0]*get().playerSpeed,
-    get().playerDirection[1]*get().playerSpeed,
-    get().playerDirection[2]*get().playerSpeed,]),
-    addPlayerSpeed:(value) => {if(get().playerSpeed<value){set((state)=>({ playerSpeed: state.playerSpeed+value }))}},
+      get().movePlayer([
+        get().playerDirection[0] * get().playerSpeed,
+        get().playerDirection[1] * get().playerSpeed,
+        get().playerDirection[2] * get().playerSpeed,
+      ]),
+    addPlayerSpeed: (value) => {
+      if (get().playerSpeed < value) {
+        set((state) => ({ playerSpeed: state.playerSpeed + value }));
+      }
+    },
     setPlayerSpeed: (value) => set({ playerSpeed: value }),
     setPlayerDirection: (value) => set({ playerDirection: value }),
     setPlayerAcceleration: (value) => set({ playerAcceleration: value }),
     movePlayer: (value) => {
       //todo factor in block heights? fix outliers in collision
-      const playerSize = 16;
+      const playerSize = 8
       const direction = value.map(
         (value) => (value = value >= 0 === true ? 1 : -1)
       );
       const targetPlayerPosition = get().playerPosition.map(
-        (data, index) => data + (playerSize / 2) * direction[index]
+        (data, index) => data + (playerSize) * direction[index]
       );
 
       const checkEntities = get().entities.some((entity) =>
         entity.position.every((value, index) => {
           return (
-            (targetPlayerPosition[index] - 16 / 2 < value &&
-            value < targetPlayerPosition[index] + 16 / 2)|| value === targetPlayerPosition[index]+(playerSize / 2) * -direction[index]
+            (targetPlayerPosition[index] - 16 / 2 <= value &&
+              value <= targetPlayerPosition[index] + 16 / 2) ||
+            value ===
+              targetPlayerPosition[index] + (playerSize) * -direction[index]
           );
         })
       );
@@ -104,8 +112,8 @@ export const useGameContext = create(
 
                     id = (id - 1) / data.tilesets[0].columns + 1;
                     const position = [
-                      (chunkX + (index % width) + 2 * Z) * 16,
-                      (chunkY + Math.floor(index / width) + 2 * Z) * 16,
+                      (chunkX + (index % width) + 1 * Z) * 16,
+                      (chunkY + Math.floor(index / width) + 1 * Z) * 16,
                       Z * 16,
                     ];
                     if (id !== 92) {
@@ -114,9 +122,9 @@ export const useGameContext = create(
                           ...state.entities,
                           {
                             key: [
-                              chunkX + (index % width) + 2 * Z,
-                              chunkY + Math.floor(index / width) + 2 * Z,
-                              Z,
+                              position[0],
+                              position[1],
+                              position[2],
                             ],
                             position: position,
                             id: id,

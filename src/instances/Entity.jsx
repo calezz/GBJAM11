@@ -8,11 +8,8 @@ const Entity = memo(({position})=> {
 
 
   const iso = [
-    ((entity.position[0] - entity.position[2])) / 2 -
-      ((entity.position[1] - entity.position[2])) / 2,
-    ((entity.position[0] - entity.position[2]) ) / 4 +
-      ((entity.position[1] - entity.position[2]) ) / 4 -
-      (entity.position[2] ) / 2,
+    ((entity.position[0] )) / 2 -((entity.position[1] )) / 2,    ((entity.position[0]) ) / 4 +
+      ((entity.position[1] ) ) / 4 -(entity.position[2] ) / 2,
   ];
   const style = {
     //on rework implement offset
@@ -21,9 +18,9 @@ const Entity = memo(({position})=> {
     }px,${iso[1]}px)`,
     position: "relative",
     zIndex:
-      entity.position[0] * 100000 +
-      entity.position[1] * 1000000 +
-      entity.position[2] * 1,
+      entity.position[0] * 1 +
+      entity.position[1] * 1 +
+      entity.position[2] * 10,
     opacity: `${1}`,
   };
 
