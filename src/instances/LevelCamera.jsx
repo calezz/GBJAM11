@@ -81,8 +81,8 @@ const LevelCamera = memo(({ children }) => {
         setPlayerOrientation([1, 1]);
       }
       if (keysPressed[" "]) {
-        addPlayerSpeed(9)
-        setPlayerDirection([0, 0,.5]);
+        addPlayerSpeed(6)
+        setPlayerDirection([0, 0,1]);
         setPlayerState([98, [1, 1], 92]);
       }
       if (keysPressed["Control"]) {
