@@ -14,7 +14,7 @@ body {
   left: 50%;
   outline: rgb(56, 54, 54) 1px solid;
   box-sizing: content-box;
-  background-color: rgb(255, 255, 255);
+  background-color: #002b59;
   
   transform: translate(-50%, -50%) scale(3);;
   overflow: hidden;

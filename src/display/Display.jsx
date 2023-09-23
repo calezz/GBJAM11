@@ -9,5 +9,6 @@ export default function Display(){
   <div id="display">
     
     <GameInstance/>
-    <img src="/public/bg1.png"/>  </div>)
+    <img src="/public/bg2.png"/>
+      </div>)
 }
