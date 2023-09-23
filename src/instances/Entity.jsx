@@ -19,7 +19,7 @@ const Entity = memo(({position})=> {
     position: "relative",
     zIndex:
       entity.position[0] * 1 +
-      entity.position[1] * 1 +
+      entity.position[1] * 12 +
       entity.position[2] * 10,
     opacity: `${1}`,
   };

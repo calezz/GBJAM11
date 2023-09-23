@@ -22,8 +22,8 @@ const PlayerEntity = memo(()=> {
     position: "relative",
     zIndex:
       (position[0]) * 1 +
-      (position[1]) * 1 +
-      (position[2]) * 100 ,
+      (position[1]) * 12 +
+      (position[2]+1) * 10 ,
     opacity: `${1}`,
   };
 
