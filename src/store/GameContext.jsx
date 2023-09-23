@@ -52,10 +52,10 @@ export const useGameContext = create(
     movePlayer: (value) => {
       //todo factor in block heights? fix outliers in collision
      // console.log("move")
-      const playerSize = 8
+      const playerSize = 8 //not used
       const direction = value.map(
         (value) => (value = value >= 0 === true ? 1 : -1)
-      );
+      ); //not used
       const targetPlayerPosition = get().playerPosition.map(
         (data, index) => data + value[index]
       );
@@ -91,8 +91,9 @@ export const useGameContext = create(
       })),
     //rewrite using promise.all to fetch them in a batch // for .2ms LOADING SPEED IMPROVMENT!
     spriteSheet: {},
-    level: {},
-    fetchSprites: async (src) => {
+    fetchSprites: async () => {
+      const buildArray = []
+      const src = get().currentLevel
       try {
         const dataPromises = {};
         for (const key in src) {
@@ -128,9 +129,7 @@ export const useGameContext = create(
                       Z * 16,
                     ];
                     if (id !== 92) {
-                      set((state) => ({
-                        entities: [
-                          ...state.entities,
+                      buildArray.push(
                           {
                             key: [
                               position[0],
@@ -141,8 +140,7 @@ export const useGameContext = create(
                             id: id,
                             orientation,
                           },
-                        ],
-                      }));
+                );
                     } else {
                       set((state) => ({
                         playerPosition: position,
@@ -154,7 +152,7 @@ export const useGameContext = create(
               });
             });
           }
-
+          set(()=>({entities:buildArray}))
           dataPromises[key] = data;
         }
         set(dataPromises);
@@ -163,6 +161,8 @@ export const useGameContext = create(
         console.error("Fetching error:", error);
       }
     },
+    setLevel:(value)=>set((state)=>({currentLevel:{...state.currentLevel,level:value}})),
+    currentLevel:{ spriteSheet: "tileset_main", level: "testlvl" },
     //dumb placeholeders
     //GameInstance
     config: {
@@ -175,7 +175,4 @@ export const useGameContext = create(
   { shallow: true }
 );
 
-//instantly fetches needed data
-useGameContext
-  .getState()
-  .fetchSprites({ spriteSheet: "tileset_main", level: "testlvl" });
+

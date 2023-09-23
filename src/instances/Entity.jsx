@@ -20,7 +20,7 @@ const Entity = memo(({position})=> {
     zIndex:
       entity.position[0] * 1 +
       entity.position[1] * 12 +
-      entity.position[2] * 10,
+      entity.position[2] * 50,
     opacity: `${1}`,
   };
 
