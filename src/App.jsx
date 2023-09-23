@@ -1,15 +1,15 @@
+import { useEffect } from 'react'
 import './App.css'
-import Display from './display/Display'
-import DevMenu from './helpers/DevMenu'
-import GameLoop from './helpers/GameLoop'
 
+import Game from './instances/Game'
+import { useGameContext } from './store/GameContext'
 function App (){
+  const fetched = useGameContext((state)=>state.fetched)
   return (<>
-    <GameLoop/>
-    <Display/>
-
-      <DevMenu/>
-    
+ <div id="display">    
+ <img src="/public/titlescreen.png"/> 
+    </div>
+   {fetched&&<Game/>}
   </>
   )
 }
