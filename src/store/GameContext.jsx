@@ -37,7 +37,7 @@ export const useGameContext = create(
       //todo factor in block heights? fix outliers in collision
       const playerSize = 16;
       const direction = value.map(
-        (entry) => (entry = entry >= 0 === true ? 1 : -1)
+        (value) => (value = value >= 0 === true ? 1 : -1)
       );
       const targetPlayerPosition = get().playerPosition.map(
         (data, index) => data + (playerSize / 2) * direction[index]
@@ -46,8 +46,8 @@ export const useGameContext = create(
       const checkEntities = get().entities.some((entity) =>
         entity.position.every((value, index) => {
           return (
-            targetPlayerPosition[index] - 16 / 2 <= value &&
-            value <= targetPlayerPosition[index] + 16 / 2
+            (targetPlayerPosition[index] - 16 / 2 < value &&
+            value < targetPlayerPosition[index] + 16 / 2)|| value === targetPlayerPosition[index]+(playerSize / 2) * -direction[index]
           );
         })
       );
@@ -159,4 +159,4 @@ export const useGameContext = create(
 //instantly fetches needed data
 useGameContext
   .getState()
-  .fetchSprites({ spriteSheet: "tileset_main", level: "plain" });
+  .fetchSprites({ spriteSheet: "tileset_main", level: "testlvl" });

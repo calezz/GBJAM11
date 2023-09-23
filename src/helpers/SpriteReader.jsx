@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, memo } from "react";
 import { useGameContext } from "../store/GameContext";
 
-const SpriteReader = memo(({id,orientation,defaultState, position }) => {
+const SpriteReader = memo(({id,orientation,defaultState, position,zIndex }) => {
   const config = useGameContext((state) => state.config);
   const spriteSheet = useGameContext((state) => state.spriteSheet);
   const setPlayerState= useGameContext((state) => state.setPlayerState);
@@ -78,7 +78,7 @@ const SpriteReader = memo(({id,orientation,defaultState, position }) => {
 
   //dev tool
   function handleClick() {
-    console.log(position, "id:" + id);
+    console.log(position.map(position=>position/16), "id:" + id, "zindex:",zIndex);
     setOpacity(() => 0.5);
   }
   const style = {
