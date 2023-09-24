@@ -21,7 +21,7 @@ export const useGameContext = create(
           )
         })
       );
-     // const death = checkEntities.some((entity) => entity.id > 116);
+      const death = checkEntities.some((entity) => entity.id > 116);
       if (checkEntities[0]) {
         set((state) => ({
           [input]: { ...state[input],
@@ -29,10 +29,10 @@ export const useGameContext = create(
           },
         }));
       }
-      if (false) {
+      if (death) {
         set((state) => ({
-          mob1: {
-            id: state.mob1.id + 1,
+          [input]: {...state[input],
+            id: state[input].id + 1,
           },
         }));
       }
