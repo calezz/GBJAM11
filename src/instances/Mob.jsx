@@ -2,9 +2,9 @@ import { useGameContext } from "../store/GameContext";
 import { memo } from "react";
 import SpriteReader from "../helpers/SpriteReader";
 const Mob = memo(()=> {
-  const position= useGameContext((state)=>state.mob1.position)
-  const playerEntity= useGameContext((state)=>state.mob1)
-  console.log(playerEntity)
+  const position= useGameContext((state)=>state.mob2.position)
+  const playerEntity= useGameContext((state)=>state.mob2)
+  //console.log(playerEntity)
   const playerOrientation= [1,1]
 
   const iso = [
