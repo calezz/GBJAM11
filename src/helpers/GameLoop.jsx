@@ -16,6 +16,8 @@ export default function GameLoop() {
         updatePlayerPosition()
         movePlayer([0,0,-2])
         setMob1("mob2")
+        //setMob1("mob")
+        
       }, 20);
       return () => {
         clearInterval(gravity);

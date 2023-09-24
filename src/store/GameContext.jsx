@@ -1,13 +1,7 @@
 import { create } from "zustand";
 export const useGameContext = create(
   (set, get) => ({
-    //placeholder entities
-    mob1: {
-      position: [-44 * 16, 72 * 16, 1 * 16],
-      id: 116,
-      defaultState: 116,
-      moving: [0, -1, 0],
-    },
+    mobs:[],
     makeMob: (input) => {
       set((state) => ({
         [input.name]: {
@@ -19,7 +13,8 @@ export const useGameContext = create(
       }));
     },
 
-    setMob: (input) => {
+    setMob: () => {
+      get().mobs.forEach(input=>{
       const targetPlayerPosition = get()[input].position.map(
         (data, index) => data + get()[input].moving[index]
       );
@@ -53,7 +48,7 @@ export const useGameContext = create(
             (position, index) => position + state[input].moving[index]
           ),
         },
-      }));
+      }));})
     },
 
     //console.log(get().entities.filter(entity=>entity.position.every((value, index) => (((targetPlayerPosition[index]-16/2)<=value)&&(value<(targetPlayerPosition[index]+16/2))))))
@@ -152,6 +147,7 @@ export const useGameContext = create(
     //rewrite using promise.all to fetch them in a batch // for .2ms LOADING SPEED IMPROVMENT!
     spriteSheet: {},
     fetchSprites: async () => {
+      const mobArray=[]
       const buildArray = [];
       const src = get().currentLevel;
       try {
@@ -192,13 +188,37 @@ export const useGameContext = create(
                       ];
                       //mobs
                       if (id === 116) {
+                        mobid++
                         get().makeMob({
-                          name: `mob${2}`,
+                          name: `mob${mobid}`,
                           position: position,
                           moving: [0, -1, 0],
                           id: id,
-                        });
-                      } else if (id === 92) {
+                          
+                        })
+                        mobArray.push(`mob${mobid}`)
+                      }
+                        else if (id === 118) {
+                          mobid++
+                          get().makeMob({
+                            name: `mob${mobid}`,
+                            position: position,
+                            moving: [-1, 0, 0],
+                            id: id, 
+                          })
+                          mobArray.push(`mob${mobid}`)
+                          }
+                         else if (id === 120) {
+                            mobid++
+                            get().makeMob({
+                              name: `mob${mobid}`,
+                              position: position,
+                              moving: [-1, 1, 0],
+                              id: id, 
+                            })
+                            mobArray.push(`mob${mobid}`)
+                            }
+                       else if (id === 92) {
                         set((state) => ({
                           playerPosition: position,
                           playerEntity: { id, orientation },
@@ -267,7 +287,8 @@ export const useGameContext = create(
               });
             }
           }
-          set(() => ({ entities: buildArray }));
+          console.log(mobArray)
+          set(() => ({ entities: buildArray,mobs:mobArray}));
           dataPromises[key] = data;
         }
         set(dataPromises);

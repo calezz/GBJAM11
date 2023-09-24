@@ -8,9 +8,9 @@ import Mob from "./Mob"
 const Level =  memo( (children) => {
   const entities = useGameContext((state)=>state.entities)
   const fetched = useGameContext((state)=>state.fetched)
-  const makeMob = useGameContext((state)=>state.makeMob)
-  const mob2= useGameContext((state)=>state.mob2)
+  const mobs= useGameContext((state)=>state.mobs)
   useEffect(()=>{
+    console.log(mobs)
       console.log("fetched:"+ fetched)
   },[fetched])
  useEffect(()=>{
@@ -19,8 +19,9 @@ const Level =  memo( (children) => {
  },[])
   return(  <div>
     {fetched && entities.map(entity=><Entity entity={entity} position={entity.position} key={entity.position}/>)}
+    {fetched && mobs.map(mob=><Mob key={mob} name={mob}/>)}
     {fetched &&<>
-      <Mob/> <PlayerEntity/>
+      <PlayerEntity/>
     </>}
   </div>)
 })
