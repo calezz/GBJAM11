@@ -16,7 +16,7 @@ function App (){
     
   },[fetched])
 return (<>
-  <ThemeAudio></ThemeAudio>
+  <ThemeAudio/>
  <div id="display">    
  <img src="/titlescreen.png"/> 
     </div>

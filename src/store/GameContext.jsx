@@ -160,6 +160,7 @@ export const useGameContext = create(
           const response = await fetch(`/${src[key]}.json`);
           const data = await response.json();
           if (key === "level") {
+            let mobid=0
             if (data.infinite) {
               data.layers.map((layer, Z) => {
                 const width = 16;
@@ -192,9 +193,9 @@ export const useGameContext = create(
                       //mobs
                       if (id === 116) {
                         get().makeMob({
-                          name: "mob2",
+                          name: `mob${2}`,
                           position: position,
-                          moving: [1, 1, 0],
+                          moving: [0, -1, 0],
                           id: id,
                         });
                       } else if (id === 92) {
@@ -294,7 +295,7 @@ export const useGameContext = create(
 
     levelMap: [
       [0, 0, 0, 0, 0],
-      [0, 0, "level1", "navroom", "engineroom"],
+      [0, 0, "tileshowcase", "testlvl", "testlvl2"],
       [0, 0, 0, 3, 0],
       [0, 7, 6, 5, 0],
     ],
