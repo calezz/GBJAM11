@@ -2,11 +2,10 @@ import { useGameContext } from "../store/GameContext";
 import { memo } from "react";
 import SpriteReader from "../helpers/SpriteReader";
 const Mob = memo(({name})=> {
-  console.log(name)
   const position= useGameContext((state)=>state[name].position)
   const playerEntity= useGameContext((state)=>state[name])
   const playerOrientation= [1,1]
-
+  
   const iso = [
     ((position[0])) / 2 -
       ((position[1]) ) / 2,

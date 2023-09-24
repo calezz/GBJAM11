@@ -13,7 +13,6 @@ function App (){
     if(!fetched){
       fetch()
     }
-    
   },[fetched])
 return (<>
   <ThemeAudio/>
