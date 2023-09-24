@@ -1,6 +1,7 @@
 import { create } from "zustand";
 export const useGameContext = create(
   (set, get) => ({
+    playerPosition: [0, 0, 0],
     mobs:[],
     makeMob: (input) => {
       set((state) => ({
@@ -27,7 +28,16 @@ export const useGameContext = create(
           );
         })
       );
-      const death = checkEntities.some((entity) => entity.id > 116);
+      const playerDeath = get().playerPosition.every((value,index)=>
+        {return (
+          (targetPlayerPosition[index] - 15 < value &&
+            value < targetPlayerPosition[index] + 15) ||
+          value === targetPlayerPosition[index]
+        );}
+      )
+
+      
+
       if (checkEntities[0]) {
         set((state) => ({
           [input]: {
@@ -36,10 +46,10 @@ export const useGameContext = create(
           },
         }));
       }
-      if (death) {
-        set((state) => ({
-          [input]: { ...state[input], id: state[input].id + 1 },
-        }));
+      if (playerDeath) {
+        get().resetLevel()
+        const audio = new Audio("death.mp3")
+        audio.play()
       }
       set((state) => ({
         [input]: {
@@ -58,7 +68,6 @@ export const useGameContext = create(
     entities: [],
     playerEntity: {},
     cameraPosition: [],
-    playerPosition: [0, 0, 0],
     playerOrientation: [],
     setPlayerOrientation: (value) => set({ playerOrientation: value }),
     setPlayerState: (value) =>
@@ -98,7 +107,6 @@ export const useGameContext = create(
       }
     },
     setPlayerSpeed: (value) => set({ playerSpeed: value }),
-
     setPlayerDirection: (value) => set({ playerDirection: value }),
     setPlayerAcceleration: (value) => set({ playerAcceleration: value }),
     movePlayer: (value) => {

@@ -83,6 +83,8 @@ const LevelCamera = memo(({ children }) => {
         setPlayerOrientation([1, 1]);
       }
       if (keysPressed[" "]) {
+        const audio = new Audio("jump_3.mp3")
+        audio.play()
         addPlayerSpeedZ(7)
         //setPlayerDirection([0, 0,1]);
         setPlayerState([98, [1, 1], 92]);
