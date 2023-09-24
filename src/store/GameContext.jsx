@@ -93,7 +93,7 @@ export const useGameContext = create(
       }
     },
     addPlayerSpeedZ: (value) => {
-      if (get().playerSpeedZ < value) {
+      if (get().playerSpeedZ ===0) {
         set((state) => ({ playerSpeedZ: state.playerSpeedZ + value }));
       }
     },
