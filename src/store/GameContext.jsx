@@ -25,7 +25,7 @@ export const useGameContext = create(
       if (checkEntities[0]) {
         set((state) => ({
           mob1: { ...state.mob1,
-            moving: state.mob1.moving.map((value, index) => value[index] * -1),
+            moving: state.mob1.moving.map((value, index) => value * -1),
           },
         }));
       }
