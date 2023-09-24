@@ -8,9 +8,9 @@ export const useGameContext = create(
       defaultState: 116,
       moving: [0, -1, 0],
     },
-    setMob1: () => {
-      const targetPlayerPosition = get().mob1.position.map(
-        (data, index) => data + get().mob1.moving[index]
+    setMob: (input) => {
+      const targetPlayerPosition = get()[input].position.map(
+        (data, index) => data + get()[input].moving[index]
       );
       const checkEntities = get().entities.filter((entity) =>
         entity.position.every((value, index) => {
@@ -24,8 +24,8 @@ export const useGameContext = create(
      // const death = checkEntities.some((entity) => entity.id > 116);
       if (checkEntities[0]) {
         set((state) => ({
-          mob1: { ...state.mob1,
-            moving: state.mob1.moving.map((value, index) => value * -1),
+          [input]: { ...state[input],
+            moving: state[input].moving.map((value, index) => value * -1),
           },
         }));
       }
@@ -37,9 +37,9 @@ export const useGameContext = create(
         }));
       }
       set((state) => ({
-        mob1: {...state.mob1,
-          position: state.mob1.position.map(
-            (position, index) => position+ state.mob1.moving[index]
+        [input]: {...state[input],
+          position: state[input].position.map(
+            (position, index) => position+ state[input].moving[index]
           ),
 
         },
@@ -180,23 +180,26 @@ export const useGameContext = create(
                         (chunkY + Math.floor(index / width) + 1 * Z) * 16,
                         Z * 16,
                       ];
-                      if (id !== 92) {
+                      if(id===116){
+                        
+                        set((state) => ({
+                          mob1: {...state.mob1, position:position,id:116,}
+                        }));
+                      }
+                      else if(id===92) {
+                        set((state) => ({
+                          playerPosition: position,
+                          playerEntity: { id, orientation },
+                        }))
+                      }
+                      else {
                         buildArray.push({
                           key: [position[0], position[1], position[2]],
                           position: position,
                           id: id,
                           orientation,
-                        });
-                      } else if(id===92) {
-                        set((state) => ({
-                          playerPosition: position,
-                          playerEntity: { id, orientation },
-                        }));
-                      } else if(id===116){
-                        set((state) => ({
-                          mob1: {position:position,id:id,}
-                        }));
-                      }
+                        })
+                      } 
                     }
                   });
                 });
