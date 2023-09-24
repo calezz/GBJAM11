@@ -1,10 +1,10 @@
 { "frames": {
    "tileset_first.aseprite": {
-    "frame": { "x": 0, "y": 0, "w": 192, "h": 1840 },
+    "frame": { "x": 0, "y": 0, "w": 320, "h": 2064 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 192, "h": 1840 },
-    "sourceSize": { "w": 192, "h": 1840 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 320, "h": 2064 },
+    "sourceSize": { "w": 320, "h": 2064 },
     "duration": 100
    }
  },
@@ -12,7 +12,7 @@
   "app": "https://www.aseprite.org/",
   "version": "1.2.34.1-x64",
   "format": "RGBA8888",
-  "size": { "w": 192, "h": 1840 },
+  "size": { "w": 320, "h": 2064 },
   "scale": "1",
   "frameTags": [
   ],
@@ -134,7 +134,18 @@
    { "name": "Slice 112", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1776, "w": 16, "h": 16 } }] },
    { "name": "Slice 113", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1792, "w": 16, "h": 16 } }] },
    { "name": "Slice 114", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1808, "w": 16, "h": 16 } }] },
-   { "name": "Slice 115", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1824, "w": 16, "h": 16 } }] }
+   { "name": "Slice 115", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1824, "w": 16, "h": 16 } }] },
+   { "name": "Slice 116", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1840, "w": 16, "h": 16 } }, { "frame": 1, "bounds": {"x": 16, "y": 1840, "w": 16, "h": 16 } }, { "frame": 2, "bounds": {"x": 32, "y": 1840, "w": 16, "h": 16 } }, { "frame": 3, "bounds": {"x": 48, "y": 1840, "w": 16, "h": 16 } }, { "frame": 4, "bounds": {"x": 64, "y": 1840, "w": 16, "h": 16 } }] },
+   { "name": "Slice 117", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1856, "w": 16, "h": 16 } }, { "frame": 1, "bounds": {"x": 16, "y": 1856, "w": 16, "h": 16 } }, { "frame": 2, "bounds": {"x": 32, "y": 1856, "w": 16, "h": 16 } }, { "frame": 3, "bounds": {"x": 48, "y": 1856, "w": 16, "h": 16 } }, { "frame": 4, "bounds": {"x": 64, "y": 1856, "w": 16, "h": 16 } }, { "frame": 5, "bounds": {"x": 80, "y": 1856, "w": 16, "h": 16 } }, { "frame": 6, "bounds": {"x": 96, "y": 1856, "w": 16, "h": 16 } }, { "frame": 7, "bounds": {"x": 112, "y": 1856, "w": 16, "h": 16 } }] },
+   { "name": "Slice 118", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1872, "w": 16, "h": 16 } }, { "frame": 1, "bounds": {"x": 16, "y": 1872, "w": 16, "h": 16 } }, { "frame": 2, "bounds": {"x": 32, "y": 1872, "w": 16, "h": 16 } }, { "frame": 3, "bounds": {"x": 48, "y": 1872, "w": 16, "h": 16 } }] },
+   { "name": "Slice 119", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1888, "w": 16, "h": 16 } }, { "frame": 1, "bounds": {"x": 16, "y": 1888, "w": 16, "h": 16 } }, { "frame": 2, "bounds": {"x": 32, "y": 1888, "w": 16, "h": 16 } }, { "frame": 3, "bounds": {"x": 48, "y": 1888, "w": 16, "h": 16 } }, { "frame": 4, "bounds": {"x": 64, "y": 1888, "w": 16, "h": 16 } }, { "frame": 5, "bounds": {"x": 80, "y": 1888, "w": 16, "h": 16 } }, { "frame": 6, "bounds": {"x": 96, "y": 1888, "w": 16, "h": 16 } }, { "frame": 7, "bounds": {"x": 112, "y": 1888, "w": 16, "h": 16 } }, { "frame": 8, "bounds": {"x": 128, "y": 1888, "w": 16, "h": 16 } }, { "frame": 9, "bounds": {"x": 144, "y": 1888, "w": 16, "h": 16 } }, { "frame": 10, "bounds": {"x": 160, "y": 1888, "w": 16, "h": 16 } }, { "frame": 11, "bounds": {"x": 176, "y": 1888, "w": 16, "h": 16 } }, { "frame": 12, "bounds": {"x": 192, "y": 1888, "w": 16, "h": 16 } }, { "frame": 13, "bounds": {"x": 208, "y": 1888, "w": 16, "h": 16 } } ] },
+   { "name": "Slice 120", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1904, "w": 16, "h": 16 } }, { "frame": 1, "bounds": {"x": 16, "y": 1904, "w": 16, "h": 16 } }, { "frame": 2, "bounds": {"x": 32, "y": 1904, "w": 16, "h": 16 } }, { "frame": 3, "bounds": {"x": 48, "y": 1904, "w": 16, "h": 16 } }, { "frame": 4, "bounds": {"x": 64, "y": 1904, "w": 16, "h": 16 } }, { "frame": 5, "bounds": {"x": 80, "y": 1904, "w": 16, "h": 16 } }, { "frame": 6, "bounds": {"x": 96, "y": 1904, "w": 16, "h": 16 } }, { "frame": 7, "bounds": {"x": 112, "y": 1904, "w": 16, "h": 16 } }] },
+   { "name": "Slice 121", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1920, "w": 16, "h": 16 } }, { "frame": 1, "bounds": {"x": 16, "y": 1920, "w": 16, "h": 16 } }, { "frame": 2, "bounds": {"x": 32, "y": 1920, "w": 16, "h": 16 } }, { "frame": 3, "bounds": {"x": 48, "y": 1920, "w": 16, "h": 16 } }, { "frame": 4, "bounds": {"x": 64, "y": 1920, "w": 16, "h": 16 } }, { "frame": 5, "bounds": {"x": 80, "y": 1920, "w": 16, "h": 16 } }, { "frame": 6, "bounds": {"x": 96, "y": 1920, "w": 16, "h": 16 } }, { "frame": 7, "bounds": {"x": 112, "y": 1920, "w": 16, "h": 16 } }, { "frame": 8, "bounds": {"x": 128, "y": 1920, "w": 16, "h": 16 } }, { "frame": 9, "bounds": {"x": 144, "y": 1920, "w": 16, "h": 16 } }, { "frame": 10, "bounds": {"x": 160, "y": 1920, "w": 16, "h": 16 } }, { "frame": 11, "bounds": {"x": 176, "y": 1920, "w": 16, "h": 16 } }] },
+   { "name": "Slice 122", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1936, "w": 16, "h": 16 } }, { "frame": 1, "bounds": {"x": 16, "y": 1936, "w": 16, "h": 16 } }, { "frame": 2, "bounds": {"x": 32, "y": 1936, "w": 16, "h": 16 } }, { "frame": 3, "bounds": {"x": 48, "y": 1936, "w": 16, "h": 16 } }, { "frame": 4, "bounds": {"x": 64, "y": 1936, "w": 16, "h": 16 } }, { "frame": 5, "bounds": {"x": 80, "y": 1936, "w": 16, "h": 16 } }, { "frame": 6, "bounds": {"x": 96, "y": 1936, "w": 16, "h": 16 } }, { "frame": 7, "bounds": {"x": 112, "y": 1936, "w": 16, "h": 16 } }, { "frame": 8, "bounds": {"x": 128, "y": 1936, "w": 16, "h": 16 } }] },
+   { "name": "Slice 123", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1952, "w": 32, "h": 32 } }, { "frame": 1, "bounds": {"x": 32, "y": 1952, "w": 32, "h": 32 } }, { "frame": 2, "bounds": {"x": 64, "y": 1952, "w": 32, "h": 32 } }, { "frame": 3, "bounds": {"x": 96, "y": 1952, "w": 32, "h": 32 } }, { "frame": 4, "bounds": {"x": 128, "y": 1952, "w": 32, "h": 32 } }, { "frame": 5, "bounds": {"x": 160, "y": 1952, "w": 32, "h": 32 } }] },
+   { "name": "Slice 124", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 1984, "w": 32, "h": 32 } }, { "frame": 1, "bounds": {"x": 32, "y": 1984, "w": 32, "h": 32 } }, { "frame": 2, "bounds": {"x": 64, "y": 1984, "w": 32, "h": 32 } }, { "frame": 3, "bounds": {"x": 96, "y": 1984, "w": 32, "h": 32 } }, { "frame": 4, "bounds": {"x": 128, "y": 1984, "w": 32, "h": 32 } }, { "frame": 5, "bounds": {"x": 160, "y": 1984, "w": 32, "h": 32 } }, { "frame": 6, "bounds": {"x": 192, "y": 1984, "w": 32, "h": 32 } }, { "frame": 7, "bounds": {"x": 224, "y": 1984, "w": 32, "h": 32 } }, { "frame": 8, "bounds": {"x": 256, "y": 1984, "w": 32, "h": 32 } }, { "frame": 9, "bounds": {"x": 288, "y": 1984, "w": 32, "h": 32 } }] },
+   { "name": "Slice 125", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 2016, "w": 32, "h": 32 } }, { "frame": 1, "bounds": {"x": 32, "y": 2016, "w": 32, "h": 32 } }, { "frame": 2, "bounds": {"x": 64, "y": 2016, "w": 32, "h": 32 } }, { "frame": 3, "bounds": {"x": 96, "y": 2016, "w": 32, "h": 32 } }, { "frame": 4, "bounds": {"x": 128, "y": 2016, "w": 32, "h": 32 } }, { "frame": 5, "bounds": {"x": 160, "y": 2016, "w": 32, "h": 32 } }] },
+   { "name": "Slice 126", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 2048, "w": 64, "h": 16 } }, { "frame": 1, "bounds": {"x": 64, "y": 2048, "w": 64, "h": 16 } }, { "frame": 2, "bounds": {"x": 128, "y": 2048, "w": 64, "h": 16 } }] }
   ]
  }
 }

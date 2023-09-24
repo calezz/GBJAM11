@@ -1,12 +1,12 @@
 import { useGameContext } from "../store/GameContext";
 import { memo } from "react";
 import SpriteReader from "../helpers/SpriteReader";
-const PlayerEntity = memo(()=> {
- // const state= useGameContext((state)=>state.playerState)
-  const position= useGameContext((state)=>state.playerPosition)
-  const playerEntity= useGameContext((state)=>state.playerEntity)
-  const playerOrientation= useGameContext((state)=>state.playerOrientation)
-  //console.log(playerEntity)
+const Mob = memo(()=> {
+  const position= useGameContext((state)=>state.mob1.position)
+  const playerEntity= useGameContext((state)=>state.mob1)
+  console.log(playerEntity)
+  const playerOrientation= [1,1]
+
   const iso = [
     ((position[0])) / 2 -
       ((position[1]) ) / 2,
@@ -36,5 +36,5 @@ const PlayerEntity = memo(()=> {
     </>
   );
 })
-export default PlayerEntity;
+export default Mob;
 //   <SpriteReader zIndex={style.zIndex} />

@@ -9,8 +9,10 @@ const SpriteReader = memo(({id,orientation,defaultState, position,zIndex }) => {
   const [currentFrame, setCurrentFrame] = useState(0);
   const [size, setSize] = useState([16, 16]);
   const [opacity, setOpacity] = useState(1);
+  
   const scale = 1;
   const sprite = spriteSheet.meta.slices.filter((slice) => slice.name === `Slice ${id}`)[0] ??spriteSheet.meta.slices.filter((slice) => slice.name === `Slice ${1}`)[0]
+ // if(id===116){console.log("SLIMEY" ,id,orientation,defaultState, position,zIndex)}
   useEffect(() => {
     setCurrentFrame(0)
     let timeoutId;
@@ -31,11 +33,12 @@ const SpriteReader = memo(({id,orientation,defaultState, position,zIndex }) => {
     image.src = `/${config.src}.png`;
 
     //reset animations
-    if(sprite.keys.length>1&&(currentFrame===sprite.keys.length-1)){    
-      setCurrentFrame(0)
-      setPlayerState([defaultState,orientation]);
+    if(defaultState===92){
+      if(sprite.keys.length>1&&(currentFrame===sprite.keys.length-1)){    
+        setCurrentFrame(0)
+        setPlayerState([defaultState,orientation]);
+      }
     }
-
 
     const WIDTH = sprite.keys[currentFrame].bounds.w;
     const HEIGHT = sprite.keys[currentFrame].bounds.h;
@@ -57,7 +60,7 @@ const SpriteReader = memo(({id,orientation,defaultState, position,zIndex }) => {
     const destinationWidth = WIDTH; //
     const destinationHeight = HEIGHT; //
     ctx.imageSmoothingEnabled = false;
-
+   // if(id===116||92){console.log("SLIMEY" ,id,orientation,defaultState, position,zIndex)}
     //Drawing canvas
     image.onload = () => {
       ctx.clearRect(0, 0, 160, 144);

@@ -7,11 +7,13 @@ function App (){
   const fetch = useGameContext((state)=>state.fetchSprites)
   const fetched = useGameContext((state)=>state.fetched)
   
-  useEffect(()=>{
-    
-    fetch();
-  },[])
 
+  useEffect(()=>{
+    if(!fetched){
+      fetch()
+    }
+    
+  },[fetched])
 return (<>
   
  <div id="display">    

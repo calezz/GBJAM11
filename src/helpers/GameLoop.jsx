@@ -6,6 +6,7 @@ export default function GameLoop() {
   const updatePlayerSpeed = useGameContext((state) => state.updatePlayerSpeed);
   const updatePlayerPosition= useGameContext((state) => state.updatePlayerPosition);
   const movePlayer= useGameContext((state) => state.movePlayer);
+  const setMob1 = useGameContext((state)=>state.setMob1)
   //const playerSpeedZ= useGameContext((state) => state.playerSpeedZ);
     
   useEffect(() => {
@@ -14,6 +15,7 @@ export default function GameLoop() {
         updatePlayerSpeed()
         updatePlayerPosition()
         movePlayer([0,0,-2])
+        setMob1()
       }, 20);
       return () => {
         clearInterval(gravity);

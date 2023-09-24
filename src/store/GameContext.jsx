@@ -1,6 +1,53 @@
 import { create } from "zustand";
 export const useGameContext = create(
   (set, get) => ({
+    //placeholder entities
+    mob1: {
+      position: [-44*16, 72*16, 1*16],
+      id: 116,
+      defaultState: 116,
+      moving: [0, -1, 0],
+    },
+    setMob1: () => {
+      const targetPlayerPosition = get().mob1.position.map(
+        (data, index) => data + get().mob1.moving[index]
+      );
+      const checkEntities = get().entities.filter((entity) =>
+        entity.position.every((value, index) => {
+          return (
+            (targetPlayerPosition[index] - 15 < value &&
+              value < targetPlayerPosition[index] + 15) ||
+            value === targetPlayerPosition[index]
+          )
+        })
+      );
+     // const death = checkEntities.some((entity) => entity.id > 116);
+      if (checkEntities[0]) {
+        set((state) => ({
+          mob1: { ...state.mob1,
+            moving: state.mob1.moving.map((value, index) => value[index] * -1),
+          },
+        }));
+      }
+      if (false) {
+        set((state) => ({
+          mob1: {
+            id: state.mob1.id + 1,
+          },
+        }));
+      }
+      set((state) => ({
+        mob1: {...state.mob1,
+          position: state.mob1.position.map(
+            (position, index) => position+ state.mob1.moving[index]
+          ),
+
+        },
+      }));
+    },
+
+    //console.log(get().entities.filter(entity=>entity.position.every((value, index) => (((targetPlayerPosition[index]-16/2)<=value)&&(value<(targetPlayerPosition[index]+16/2))))))
+
     fetched: false,
     setFetched: (value) => set({ fetched: value }),
     entities: [],
@@ -18,7 +65,7 @@ export const useGameContext = create(
     updatePlayerSpeed: () => {
       if (get().playerAcceleration === 0) {
         set((state) => ({
-          playerSpeed: Math.max(state.playerSpeed - .5, 0),
+          playerSpeed: Math.max(state.playerSpeed - 0.5, 0),
         }));
       } else {
         set((state) => ({
@@ -26,7 +73,7 @@ export const useGameContext = create(
         }));
       }
       set((state) => ({
-        playerSpeedZ: Math.max(state.playerSpeedZ - .5, 0),
+        playerSpeedZ: Math.max(state.playerSpeedZ - 0.5, 0),
       }));
     },
     updatePlayerPosition: () =>
@@ -51,8 +98,8 @@ export const useGameContext = create(
     setPlayerAcceleration: (value) => set({ playerAcceleration: value }),
     movePlayer: (value) => {
       //todo factor in block heights? fix outliers in collision
-     // console.log("move")
-      const playerSize = 8 //not used
+      // console.log("move")
+      const playerSize = 8; //not used
       const direction = value.map(
         (value) => (value = value >= 0 === true ? 1 : -1)
       ); //not used
@@ -60,18 +107,18 @@ export const useGameContext = create(
         (data, index) => data + value[index]
       );
 
-      const checkEntities = get().entities.some((entity) =>
+      const checkEntities = get().entities.filter((entity) =>
         entity.position.every((value, index) => {
           return (
             (targetPlayerPosition[index] - 15 < value &&
               value < targetPlayerPosition[index] + 15) ||
-            value ===
-              targetPlayerPosition[index] 
+            value === targetPlayerPosition[index]
           );
         })
       );
+      const death = checkEntities.some((entity) => entity.id > 116);
       //console.log(get().entities.filter(entity=>entity.position.every((value, index) => (((targetPlayerPosition[index]-16/2)<=value)&&(value<(targetPlayerPosition[index]+16/2))))))
-      if (!checkEntities)
+      if (!checkEntities[0])
         [
           set((prev) => ({
             playerPosition: [
@@ -81,6 +128,9 @@ export const useGameContext = create(
             ],
           })),
         ];
+      if (death) {
+        get().resetLevel();
+      }
     },
     moveCamera: (value) =>
       set((prev) => ({
@@ -92,8 +142,8 @@ export const useGameContext = create(
     //rewrite using promise.all to fetch them in a batch // for .2ms LOADING SPEED IMPROVMENT!
     spriteSheet: {},
     fetchSprites: async () => {
-      const buildArray = []
-      const src = get().currentLevel
+      const buildArray = [];
+      const src = get().currentLevel;
       try {
         const dataPromises = {};
         for (const key in src) {
@@ -103,56 +153,57 @@ export const useGameContext = create(
           if (key === "level") {
             data.layers.map((layer, Z) => {
               const width = 16;
-              return layer.chunks.map((chunk) => {
-                const chunkX = chunk.x;
-                const chunkY = chunk.y;
 
-                return chunk.data.map((id, index) => {
-                  if (id !== 0) {
-                    let orientation = [1, 1];
-                    //transformations
-                    if (id > 3221225474) {
-                      orientation = [-1, 1];
-                      id = id - 3221225474;
-                    } else if (id > 2147483648) {
-                      orientation = [-1, 1];
-                      id = id - 2147483648;
-                    } else if (id > 1073741824) {
-                      orientation = [1, -1];
-                      id = id - 1073741824;
-                    }
+              if (layer.chunks) {
+                return layer.chunks.map((chunk) => {
+                  const chunkX = chunk.x;
+                  const chunkY = chunk.y;
 
-                    id = (id - 1) / data.tilesets[0].columns + 1;
-                    const position = [
-                      (chunkX + (index % width) + 1 * Z) * 16,
-                      (chunkY + Math.floor(index / width) + 1 * Z) * 16,
-                      Z * 16,
-                    ];
-                    if (id !== 92) {
-                      buildArray.push(
-                          {
-                            key: [
-                              position[0],
-                              position[1],
-                              position[2],
-                            ],
-                            position: position,
-                            id: id,
-                            orientation,
-                          },
-                );
-                    } else {
-                      set((state) => ({
-                        playerPosition: position,
-                        playerEntity: { id, orientation },
-                      }));
+                  return chunk.data.map((id, index) => {
+                    if (id !== 0) {
+                      let orientation = [1, 1];
+                      //transformations
+                      if (id > 3221225474) {
+                        orientation = [-1, 1];
+                        id = id - 3221225474;
+                      } else if (id > 2147483648) {
+                        orientation = [-1, 1];
+                        id = id - 2147483648;
+                      } else if (id > 1073741824) {
+                        orientation = [1, -1];
+                        id = id - 1073741824;
+                      }
+
+                      id = (id - 1) / data.tilesets[0].columns + 1;
+                      const position = [
+                        (chunkX + (index % width) + 1 * Z) * 16,
+                        (chunkY + Math.floor(index / width) + 1 * Z) * 16,
+                        Z * 16,
+                      ];
+                      if (id !== 92) {
+                        buildArray.push({
+                          key: [position[0], position[1], position[2]],
+                          position: position,
+                          id: id,
+                          orientation,
+                        });
+                      } else if(id===92) {
+                        set((state) => ({
+                          playerPosition: position,
+                          playerEntity: { id, orientation },
+                        }));
+                      } else if(id===116){
+                        set((state) => ({
+                          mob1: {position:position,id:id,}
+                        }));
+                      }
                     }
-                  }
+                  });
                 });
-              });
+              }
             });
           }
-          set(()=>({entities:buildArray}))
+          set(() => ({ entities: buildArray }));
           dataPromises[key] = data;
         }
         set(dataPromises);
@@ -161,8 +212,16 @@ export const useGameContext = create(
         console.error("Fetching error:", error);
       }
     },
-    setLevel:(value)=>set((state)=>({currentLevel:{...state.currentLevel,level:value}})),
-    currentLevel:{ spriteSheet: "tileset_main", level: "testlvl" },
+    setLevel: (value) => {
+      set((state) => ({
+        currentLevel: { ...state.currentLevel, level: value },
+        fetched: false,
+      }));
+    },
+    resetLevel: () => {
+      set((state) => ({ fetched: false }));
+    },
+    currentLevel: { spriteSheet: "tileset_main", level: "testlvl" },
     //dumb placeholeders
     //GameInstance
     config: {
@@ -170,9 +229,13 @@ export const useGameContext = create(
       spriteSheet: "tileset_main",
     },
 
+    levelMap: [
+      [0, 0, 0, 0, 0],
+      [0, 0, "level1", "navroom", "engineroom"],
+      [0, 0, 0, 3, 0],
+      [0, 7, 6, 5, 0],
+    ],
     //Gameloop
   }),
   { shallow: true }
 );
-
-
