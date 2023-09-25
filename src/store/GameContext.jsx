@@ -314,7 +314,7 @@ export const useGameContext = create(
     resetLevel: () => {
       set((state) => ({ fetched: false }));
     },
-    currentLevel: { spriteSheet: "tileset_main", level: "testlvl" },
+    currentLevel: { spriteSheet: "tileset_first", level: "room09" },
     //dumb placeholeders
     //GameInstance
     config: {
@@ -324,7 +324,7 @@ export const useGameContext = create(
 
     levelMap: [
       [0, 0, 0, 0, 0],
-      [0, 0, "tileshowcase", "testlvl", "testlvl2"],
+      [0, 0, , , ],
       [0, 0, 0, 3, 0],
       [0, 7, 6, 5, 0],
     ],

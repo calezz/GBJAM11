@@ -87,7 +87,8 @@ const SpriteReader = memo(({id,orientation,defaultState, position,zIndex }) => {
   const style = {
     position: "absolute",
     opacity: opacity,
-    transform:`scale(${orientation[0]},${orientation[1]})`
+    transform:`scale(${orientation[0]},${orientation[1]})`,
+    zIndex:zIndex,
   };
   return (
     <>

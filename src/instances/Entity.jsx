@@ -15,18 +15,15 @@ const Entity = memo(({position})=> {
       iso[0]
     }px,${iso[1]}px)`,
     position: "relative",
-    zIndex:
-      entity.position[0] * 1 +
-      entity.position[1] * 11 +
-      entity.position[2] * 11,
     opacity: `${1}`,
   };
+  const zIndex=entity.position[0] * 1 +entity.position[1] * 10 +entity.position[2] * 10
 
   return (
     <>
       {(
         <div style={style}>
-          <SpriteReader id={entity.id} defaultState={entity.id} position={position} orientation={entity.orientation} zIndex={style.zIndex}/>
+          <SpriteReader id={entity.id} defaultState={entity.id} position={position} orientation={entity.orientation} zIndex={zIndex}/>
         </div>
       )}
     </>

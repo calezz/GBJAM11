@@ -19,17 +19,15 @@ const Mob = memo(({name})=> {
       iso[0] 
     }px,${iso[1]-2}px)`,
     position: "relative",
-    zIndex:
-      (position[0]) * 1 +
-      (position[1]) * 11 +
-      (position[2]+1) * 10 ,
+
     opacity: `${1}`,
   };
+  const zIndex=position[0] * 1 +position[1] * 10 +position[2] * 10
   return (
     <>
       {(
         <div style={style}>
-          <SpriteReader id={playerEntity.id} defaultState={playerEntity.defaultState||playerEntity.id} orientation={playerOrientation} position={position} zIndex={style.zIndex} />
+          <SpriteReader id={playerEntity.id} defaultState={playerEntity.defaultState||playerEntity.id} orientation={playerOrientation} position={position} zIndex={zIndex} />
         </div>
       )}
     </>
