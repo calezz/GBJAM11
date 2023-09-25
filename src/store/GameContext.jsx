@@ -112,6 +112,8 @@ export const useGameContext = create(
     movePlayer: (value) => {
       if(get().playerPosition[2]<-1){
         get().resetLevel()
+          const audio = new Audio("death.mp3");
+          audio.play();
       }
       const targetPlayerPosition = get().playerPosition.map(
         (data, index) => data + value[index]
@@ -158,6 +160,8 @@ export const useGameContext = create(
       if (death) {
         get().resetLevel();
         set({playerSpeed:0,playerAcceleration:0,})
+        const audio = new Audio("death.mp3");
+          audio.play();
       }
     },
     moveCamera: (value) =>
@@ -350,8 +354,6 @@ export const useGameContext = create(
       //[1, 0,"W"]
       const timeNow = new Date()
       if(get().lastFetch===0||(timeNow.getSeconds()-get().lastFetch.getSeconds()>.5)){
-
-      
       const newPos=get().currentLevel.arrayPos.map((pos,index)=>pos+value[index])
       const levelCurrent = get().currentLevel
       const newLevel=get().levelMap[newPos[1]][newPos[0]]
@@ -387,12 +389,12 @@ export const useGameContext = create(
     },
 
     levelMap: [
-    ["      ","      ","      ","      ","      ","      ","      ","      ","      ","      "],
-    ["      ","      ","      ","room10","room10","room20","      ","       ","      ","      "],
-    ["      ","      ","      ","room19","room07","room17","room16","room13","      ","      "],
-    ["      ","      ","room12","room18","room09","room15","      ","      ","      ","      "],
-    ["      ","      ","room14","room11","      ","room08","      ","      ","      ","      "],
-    ["      ","      ","      ","      ","      ","      ","      ","      ","      ","      "],
+    [null,null,null,null,null,null,null,null,null,null],
+    [null,null,null   ,       ,       ,       ,null,"       ",null,null],
+    [null,null,null   ,"room10","room07","room17","room16","room13",null,null],
+    [null,null,"room12","room18","room09","room15","room20",null,null,null],
+    [null,null,"room14","room11","room19","room08",null,null,null,null],
+    [null,null,null,null,null,null,null,null,null,null],
   ],
     //Gameloop
   }),
