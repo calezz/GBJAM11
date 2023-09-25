@@ -135,7 +135,7 @@ export const useGameContext = create(
             get().moveLevel([1, 0,"W"]);
             return "east";
           case 35:
-            get().moveLevel([0, -1,"N"]);
+            get().moveLevel([0, 1,"N"]);
             return "south";
           case 46:
             get().moveLevel([-1, 0,"E"]);
@@ -305,7 +305,7 @@ export const useGameContext = create(
                 });
               }
             }
-            console.log(mobArray);
+          
             set(() => ({ entities: buildArray, mobs: mobArray }));
             dataPromises[key] = data;
           }
