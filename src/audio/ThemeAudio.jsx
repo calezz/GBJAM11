@@ -7,13 +7,13 @@ const playlist=["maintheme.mp3","GBJam11_Tune_1.mp3","GBJam11_Tune_2.mp3","GBJam
  
  useEffect(()=>{
     let i=0
-    window.addEventListener("keydown", audio.play());
+    window.addEventListener("keydown",()=> audio.play());
     audio.addEventListener("ended",function(){
         i++
         audio.src=playlist[i%playlist.length]
         audio.play()
     })
-    return ()=> removeEventListener
+    
  },[])
  return(<>
        
