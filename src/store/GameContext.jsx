@@ -146,6 +146,7 @@ export const useGameContext = create(
         }
       });
       const death = checkEntities.some((entity) => entity.id > 116 &&entity.id!==130);
+      const collect = checkEntities.some((entity) => entity.id===130);
       //console.log(get().entities.filter(entity=>entity.position.every((value, index) => (((targetPlayerPosition[index]-16/2)<=value)&&(value<(targetPlayerPosition[index]+16/2))))))
       if (!checkEntities[0])
         [
@@ -157,6 +158,10 @@ export const useGameContext = create(
             ],
           })),
         ];
+        if(collect){
+          const audio = new Audio("pickupItem.mp3");
+            audio.play();
+        }
       if (death) {
         get().resetLevel();
         set({playerSpeed:0,playerAcceleration:0,})
