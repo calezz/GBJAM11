@@ -109,9 +109,13 @@ export const useGameContext = create(
     setPlayerDirection: (value) => set({ playerDirection: value }),
     setPlayerAcceleration: (value) => set({ playerAcceleration: value }),
     movePlayer: (value) => {
+      if(get().playerPosition[2]<-1){
+        get().resetLevel()
+      }
       const targetPlayerPosition = get().playerPosition.map(
         (data, index) => data + value[index]
       );
+
       const checkEntities = get().entities.filter((entity) =>
         entity.position.every((value, index) => {
           return (
@@ -121,19 +125,20 @@ export const useGameContext = create(
           );
         })
       );
+
       const portal = checkEntities.map((entity) => {
         switch (entity.id) {
           case 19:
-            get().moveLevel([0,-1])
+            get().moveLevel([0, -1,"S"]);
             return "north";
           case 27:
-            get().moveLevel([1,0])
+            get().moveLevel([1, 0,"W"]);
             return "east";
-            case 35:
-              get().moveLevel([0,-1])
+          case 35:
+            get().moveLevel([0, -1,"N"]);
             return "south";
-            case 46:
-              get().moveLevel([-1,0])
+          case 46:
+            get().moveLevel([-1, 0,"E"]);
             return "west";
         }
       });
@@ -169,144 +174,142 @@ export const useGameContext = create(
       try {
         const dataPromises = {};
         for (const key in src) {
-          if(key!=="arrayPos"){
-          
+          if (key !== "arrayPos") {
             const response = await fetch(`/${src[key]}.json`);
             const data = await response.json();
-          
-          if (key === "level") {
-            let mobid = 0;
-            if (data.infinite) {
-              data.layers.map((layer, Z) => {
-                const width = 16;
+            if (key === "level") {
+              let mobid = 0;
+              if (data.infinite) {
+                data.layers.map((layer, Z) => {
+                  const width = 16;
 
-                return layer.chunks.map((chunk) => {
-                  const chunkX = chunk.x;
-                  const chunkY = chunk.y;
+                  return layer.chunks.map((chunk) => {
+                    const chunkX = chunk.x;
+                    const chunkY = chunk.y;
 
-                  return chunk.data.map((id, index) => {
-                    if (id !== 0) {
-                      let orientation = [1, 1];
-                      //transformations
-                      if (id > 3221225474) {
-                        orientation = [-1, 1];
-                        id = id - 3221225474;
-                      } else if (id > 2147483648) {
-                        orientation = [-1, 1];
-                        id = id - 2147483648;
-                      } else if (id > 1073741824) {
-                        orientation = [1, -1];
-                        id = id - 1073741824;
+                    return chunk.data.map((id, index) => {
+                      if (id !== 0) {
+                        let orientation = [1, 1];
+                        //transformations
+                        if (id > 3221225474) {
+                          orientation = [-1, 1];
+                          id = id - 3221225474;
+                        } else if (id > 2147483648) {
+                          orientation = [-1, 1];
+                          id = id - 2147483648;
+                        } else if (id > 1073741824) {
+                          orientation = [1, -1];
+                          id = id - 1073741824;
+                        }
+
+                        id = (id - 1) / data.tilesets[0].columns + 1;
+                        const position = [
+                          (chunkX + (index % width) + 1 * Z) * 16,
+                          (chunkY + Math.floor(index / width) + 1 * Z) * 16,
+                          Z * 16,
+                        ];
+                        //mobs
+                        if (id === 116) {
+                          mobid++;
+                          get().makeMob({
+                            name: `mob${mobid}`,
+                            position: position,
+                            moving: [0, -1, 0],
+                            id: id,
+                          });
+                          mobArray.push(`mob${mobid}`);
+                        } else if (id === 118) {
+                          mobid++;
+                          get().makeMob({
+                            name: `mob${mobid}`,
+                            position: position,
+                            moving: [-1, 0, 0],
+                            id: id,
+                          });
+                          mobArray.push(`mob${mobid}`);
+                        } else if (id === 120) {
+                          mobid++;
+                          get().makeMob({
+                            name: `mob${mobid}`,
+                            position: position,
+                            moving: [-1, 1, 0],
+                            id: id,
+                          });
+                          mobArray.push(`mob${mobid}`);
+                        } else if (id === 92) {
+                          set((state) => ({
+                            playerPosition: position,
+                            playerEntity: { id, orientation },
+                          }));
+                        } else {
+                          buildArray.push({
+                            key: [position[0], position[1], position[2]],
+                            position: position,
+                            id: id,
+                            orientation,
+                          });
+                        }
                       }
-
-                      id = (id - 1) / data.tilesets[0].columns + 1;
-                      const position = [
-                        (chunkX + (index % width) + 1 * Z) * 16,
-                        (chunkY + Math.floor(index / width) + 1 * Z) * 16,
-                        Z * 16,
-                      ];
-                      //mobs
-                      if (id === 116) {
-                        mobid++;
-                        get().makeMob({
-                          name: `mob${mobid}`,
-                          position: position,
-                          moving: [0, -1, 0],
-                          id: id,
-                        });
-                        mobArray.push(`mob${mobid}`);
-                      } else if (id === 118) {
-                        mobid++;
-                        get().makeMob({
-                          name: `mob${mobid}`,
-                          position: position,
-                          moving: [-1, 0, 0],
-                          id: id,
-                        });
-                        mobArray.push(`mob${mobid}`);
-                      } else if (id === 120) {
-                        mobid++;
-                        get().makeMob({
-                          name: `mob${mobid}`,
-                          position: position,
-                          moving: [-1, 1, 0],
-                          id: id,
-                        });
-                        mobArray.push(`mob${mobid}`);
-                      } else if (id === 92) {
-                        set((state) => ({
-                          playerPosition: position,
-                          playerEntity: { id, orientation },
-                        }));
-                      } else {
-                        buildArray.push({
-                          key: [position[0], position[1], position[2]],
-                          position: position,
-                          id: id,
-                          orientation,
-                        });
-                      }
-                    }
+                    });
                   });
                 });
-              });
-            }
-            else {
-              data.layers.map((layer, Z) => {
-                return layer.layers.map((layer) => {
-                  const width = data.width;
-                  return layer.data.map((id, index) => {
-                    if (id !== 0) {
-                      let orientation = [1, 1];
-                      //transformations
-                      if (id > 3221225474) {
-                        orientation = [-1, 1];
-                        id = id - 3221225474;
-                      } else if (id > 2147483648) {
-                        orientation = [-1, 1];
-                        id = id - 2147483648;
-                      } else if (id > 1073741824) {
-                        orientation = [1, -1];
-                        id = id - 1073741824;
-                      }
+              } else {
+                data.layers.map((layer, Z) => {
+                  return layer.layers.map((layer) => {
+                    const width = data.width;
+                    return layer.data.map((id, index) => {
+                      if (id !== 0) {
+                        let orientation = [1, 1];
+                        //transformations
+                        if (id > 3221225474) {
+                          orientation = [-1, 1];
+                          id = id - 3221225474;
+                        } else if (id > 2147483648) {
+                          orientation = [-1, 1];
+                          id = id - 2147483648;
+                        } else if (id > 1073741824) {
+                          orientation = [1, -1];
+                          id = id - 1073741824;
+                        }
 
-                      id = (id - 1) / data.tilesets[0].columns + 1;
-                      const position = [
-                        ((index % width) + 1 * Z) * 16,
-                        (Math.floor(index / width) + 1 * Z) * 16,
-                        Z * 16,
-                      ];
-                      //mobs
-                      if (id === 116) {
-                        get().makeMob({
-                          name: "mob2",
-                          position: position,
-                          moving: [1, 1, 0],
-                          id: id,
-                        });
-                      } else if (id === 92) {
-                        set((state) => ({
-                          playerPosition: position,
-                          playerEntity: { id, orientation },
-                        }));
-                      } else {
-                        buildArray.push({
-                          key: [position[0], position[1], position[2]],
-                          position: position,
-                          id: id,
-                          orientation,
-                        });
+                        id = (id - 1) / data.tilesets[0].columns + 1;
+                        const position = [
+                          ((index % width) + 1 * Z) * 16,
+                          (Math.floor(index / width) + 1 * Z) * 16,
+                          Z * 16,
+                        ];
+                        //mobs
+                        if (id === 116) {
+                          get().makeMob({
+                            name: "mob2",
+                            position: position,
+                            moving: [1, 1, 0],
+                            id: id,
+                          });
+                        } else if (id === 92) {
+                          set((state) => ({
+                            playerPosition: position,
+                            playerEntity: { id, orientation },
+                          }));
+                        } else {
+                          buildArray.push({
+                            key: [position[0], position[1], position[2]],
+                            position: position,
+                            id: id,
+                            orientation,
+                          });
+                        }
                       }
-                    }
+                    });
                   });
                 });
-              });
+              }
             }
+            console.log(mobArray);
+            set(() => ({ entities: buildArray, mobs: mobArray }));
+            dataPromises[key] = data;
           }
-          console.log(mobArray);
-          set(() => ({ entities: buildArray, mobs: mobArray }));
-          dataPromises[key] = data;
-        }}
+        }
         set(dataPromises);
         set({ fetched: true });
       } catch (error) {
@@ -318,23 +321,28 @@ export const useGameContext = create(
         currentLevel: {
           ...state.currentLevel,
           level: value,
-          
         },
         fetched: false,
       }));
     },
-    moveLevel:((value)=>{
-      const newPos= get().currentLevel.arrayPos.map((pos, index) => (pos += value[index]))
-      const newLevel=get().levelMap[newPos[1]][newPos[0]]
-      set((state)=>({
-        currentLevel:{
-          ...state.currentLevel,
-          arrayPos: newPos,
-          level:newLevel
-        }
-       }))
-       get().setLevel(newLevel)
-    }),
+    moveLevel: (value) => {
+      
+      const newPos = get().currentLevel.arrayPos.map(
+        (pos, index) => (pos += value[index])
+      );
+      const newLevel = get().levelMap[newPos[1]][newPos[0]];
+      if(newLevel){
+        set((state) => ({
+          currentLevel: {
+            ...state.currentLevel,
+            arrayPos: newPos,
+            level: newLevel,
+          },
+        }));
+        console.log(newLevel+value[2])
+        get().setLevel(`${newLevel+value[2]}`);
+      }
+      },
 
     resetLevel: () => {
       set((state) => ({ fetched: false }));
@@ -343,7 +351,7 @@ export const useGameContext = create(
     currentLevel: {
       spriteSheet: "tileset_first",
       level: "room09",
-      arrayPos:[0,0],
+      arrayPos: [0, 0],
     },
     //dumb placeholeders
     //GameInstance
@@ -352,10 +360,7 @@ export const useGameContext = create(
       spriteSheet: "tileset_main",
     },
 
-    levelMap: [
-      ["room09","room08"]
-
-    ],
+    levelMap: [["room09", "room14"]],
     //Gameloop
   }),
   { shallow: true }
