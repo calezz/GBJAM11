@@ -1,3 +1,4 @@
+import { current } from "immer";
 import { create } from "zustand";
 export const useGameContext = create(
   (set, get) => ({
@@ -169,7 +170,7 @@ export const useGameContext = create(
     //rewrite using promise.all to fetch them in a batch // for .2ms LOADING SPEED IMPROVMENT!
     spriteSheet: {},
     lastFetch:0,
-    fetchSprites: async () => {
+    fetchSprites: async (value) => {
 
         set(()=>({fetched:false}))
 
@@ -210,6 +211,11 @@ export const useGameContext = create(
                         }
 
                         id = (id - 1) / data.tilesets[0].columns + 1;
+                        if(id%1>0){
+                          id=0
+                        }else{
+
+                        
                         const position = [
                           (chunkX + (index % width) + 1 * Z) * 16,
                           (chunkY + Math.floor(index / width) + 1 * Z) * 16,
@@ -256,7 +262,7 @@ export const useGameContext = create(
                             orientation,
                           });
                         }
-                      }
+                      }}
                     });
                   });
                 });
@@ -323,7 +329,10 @@ export const useGameContext = create(
         set(dataPromises);
         set({ fetched: true });
       } catch (error) {
+       // setTimeout(()=>{get().fetchSprites()},100)
         console.error("Fetching error:", error);
+        console.log(value)
+        set({levelCurrent:value})
       }
       set(()=>({lastFetch:new Date()}))
     },
@@ -344,6 +353,7 @@ export const useGameContext = create(
 
       
       const newPos=get().currentLevel.arrayPos.map((pos,index)=>pos+value[index])
+      const levelCurrent = get().currentLevel
       const newLevel=get().levelMap[newPos[1]][newPos[0]]
       console.log(get().currentLevel.arrayPos,newPos)
       if(newLevel){
@@ -355,7 +365,7 @@ export const useGameContext = create(
           },
           playerSpeed:0,
         }))
-        get().fetchSprites()
+        get().fetchSprites(levelCurrent)
         console.log(newLevel+value[2])
       }}
       },
@@ -381,7 +391,7 @@ export const useGameContext = create(
     ["      ","      ","      ","room10","room10","room20","      ","       ","      ","      "],
     ["      ","      ","      ","room19","room07","room17","room16","room13","      ","      "],
     ["      ","      ","room12","room18","room09","room15","      ","      ","      ","      "],
-    ["      ","      ","room14","room11","room8","       ","      ","      ","      ","      "],
+    ["      ","      ","room14","room11","      ","room08","      ","      ","      ","      "],
     ["      ","      ","      ","      ","      ","      ","      ","      ","      ","      "],
   ],
     //Gameloop
