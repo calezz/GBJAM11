@@ -142,7 +142,7 @@ export const useGameContext = create(
             return "west";
         }
       });
-      const death = checkEntities.some((entity) => entity.id > 116);
+      const death = checkEntities.some((entity) => entity.id > 116 &&entity.id!==130);
       //console.log(get().entities.filter(entity=>entity.position.every((value, index) => (((targetPlayerPosition[index]-16/2)<=value)&&(value<(targetPlayerPosition[index]+16/2))))))
       if (!checkEntities[0])
         [
@@ -156,6 +156,7 @@ export const useGameContext = create(
         ];
       if (death) {
         get().resetLevel();
+        set({playerSpeed:0,playerAcceleration:0,})
       }
     },
     moveCamera: (value) =>
@@ -167,10 +168,16 @@ export const useGameContext = create(
       })),
     //rewrite using promise.all to fetch them in a batch // for .2ms LOADING SPEED IMPROVMENT!
     spriteSheet: {},
+    lastFetch:0,
     fetchSprites: async () => {
+
+        set(()=>({fetched:false}))
+
+      
       const mobArray = [];
       const buildArray = [];
       const src = get().currentLevel;
+      console.log("fetch",src)
       try {
         const dataPromises = {};
         for (const key in src) {
@@ -182,7 +189,7 @@ export const useGameContext = create(
               if (data.infinite) {
                 data.layers.map((layer, Z) => {
                   const width = 16;
-
+                  
                   return layer.chunks.map((chunk) => {
                     const chunkX = chunk.x;
                     const chunkY = chunk.y;
@@ -253,9 +260,10 @@ export const useGameContext = create(
                     });
                   });
                 });
-              } else {
-                data.layers.map((layer, Z) => {
-                  return layer.layers.map((layer) => {
+              } else if(!data.infinite) {
+                data.layers.forEach((layer, Z) => {
+                  console.log(layer)
+                  return layer.layers.forEach((layer) => {
                     const width = data.width;
                     return layer.data.map((id, index) => {
                       if (id !== 0) {
@@ -273,6 +281,7 @@ export const useGameContext = create(
                         }
 
                         id = (id - 1) / data.tilesets[0].columns + 1;
+                        
                         const position = [
                           ((index % width) + 1 * Z) * 16,
                           (Math.floor(index / width) + 1 * Z) * 16,
@@ -308,6 +317,7 @@ export const useGameContext = create(
           
             set(() => ({ entities: buildArray, mobs: mobArray }));
             dataPromises[key] = data;
+
           }
         }
         set(dataPromises);
@@ -315,6 +325,7 @@ export const useGameContext = create(
       } catch (error) {
         console.error("Fetching error:", error);
       }
+      set(()=>({lastFetch:new Date()}))
     },
     setLevel: (value) => {
       set((state) => ({
@@ -322,36 +333,41 @@ export const useGameContext = create(
           ...state.currentLevel,
           level: value,
         },
-        fetched: false,
-      }));
+        
+      }))
+      get().fetchSprites()
     },
     moveLevel: (value) => {
+      //[1, 0,"W"]
+      const timeNow = new Date()
+      if(get().lastFetch===0||(timeNow.getSeconds()-get().lastFetch.getSeconds()>.5)){
+
       
-      const newPos = get().currentLevel.arrayPos.map(
-        (pos, index) => (pos += value[index])
-      );
-      const newLevel = get().levelMap[newPos[1]][newPos[0]];
+      const newPos=get().currentLevel.arrayPos.map((pos,index)=>pos+value[index])
+      const newLevel=get().levelMap[newPos[1]][newPos[0]]
+      console.log(get().currentLevel.arrayPos,newPos)
       if(newLevel){
         set((state) => ({
           currentLevel: {
             ...state.currentLevel,
             arrayPos: newPos,
-            level: newLevel,
+            level: newLevel+value[2],
           },
-        }));
+          playerSpeed:0,
+        }))
+        get().fetchSprites()
         console.log(newLevel+value[2])
-        get().setLevel(`${newLevel+value[2]}`);
-      }
+      }}
       },
 
     resetLevel: () => {
-      set((state) => ({ fetched: false }));
+      get().fetchSprites();
     },
 
     currentLevel: {
       spriteSheet: "tileset_first",
-      level: "room09W",
-      arrayPos: [5, 4],
+      level: "room09E",
+      arrayPos: [4, 3],
     },
     //dumb placeholeders
     //GameInstance
@@ -361,12 +377,12 @@ export const useGameContext = create(
     },
 
     levelMap: [
-    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
-    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
-    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
-    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
-    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
-    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
+    ["","","","","","","","","",""],
+    ["","","","","","","","","",""],
+    ["","","","","room07","","","","",""],
+    ["","","","room18","room09","room15","","","",""],
+    ["","","","","","","","","",""],
+    ["","","","","","","","","",""],
   ],
     //Gameloop
   }),
