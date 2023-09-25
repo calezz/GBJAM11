@@ -98,8 +98,7 @@ const SpriteReader = memo(({id,orientation,defaultState, position,zIndex }) => {
           width={size[0]}
           height={size[1]}
           style={style}
-          onMouseDown={handleClick}
-          onMouseUp={() => setOpacity(1)}
+
         />
       )}
     </>
