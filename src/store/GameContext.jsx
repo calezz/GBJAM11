@@ -2,7 +2,7 @@ import { create } from "zustand";
 export const useGameContext = create(
   (set, get) => ({
     playerPosition: [0, 0, 0],
-    mobs:[],
+    mobs: [],
     makeMob: (input) => {
       set((state) => ({
         [input.name]: {
@@ -15,50 +15,49 @@ export const useGameContext = create(
     },
 
     setMob: () => {
-      get().mobs.forEach(input=>{
-      const targetPlayerPosition = get()[input].position.map(
-        (data, index) => data + get()[input].moving[index]
-      );
-      const checkEntities = get().entities.filter((entity) =>
-        entity.position.every((value, index) => {
+      get().mobs.forEach((input) => {
+        const targetPlayerPosition = get()[input].position.map(
+          (data, index) => data + get()[input].moving[index]
+        );
+        const checkEntities = get().entities.filter((entity) =>
+          entity.position.every((value, index) => {
+            return (
+              (targetPlayerPosition[index] - 15 < value &&
+                value < targetPlayerPosition[index] + 15) ||
+              value === targetPlayerPosition[index]
+            );
+          })
+        );
+        const playerDeath = get().playerPosition.every((value, index) => {
           return (
             (targetPlayerPosition[index] - 15 < value &&
               value < targetPlayerPosition[index] + 15) ||
             value === targetPlayerPosition[index]
           );
-        })
-      );
-      const playerDeath = get().playerPosition.every((value,index)=>
-        {return (
-          (targetPlayerPosition[index] - 15 < value &&
-            value < targetPlayerPosition[index] + 15) ||
-          value === targetPlayerPosition[index]
-        );}
-      )
+        });
 
-      
-
-      if (checkEntities[0]) {
+        if (checkEntities[0]) {
+          set((state) => ({
+            [input]: {
+              ...state[input],
+              moving: state[input].moving.map((value, index) => value * -1),
+            },
+          }));
+        }
+        if (playerDeath) {
+          get().resetLevel();
+          const audio = new Audio("death.mp3");
+          audio.play();
+        }
         set((state) => ({
           [input]: {
             ...state[input],
-            moving: state[input].moving.map((value, index) => value * -1),
+            position: state[input].position.map(
+              (position, index) => position + state[input].moving[index]
+            ),
           },
         }));
-      }
-      if (playerDeath) {
-        get().resetLevel()
-        const audio = new Audio("death.mp3")
-        audio.play()
-      }
-      set((state) => ({
-        [input]: {
-          ...state[input],
-          position: state[input].position.map(
-            (position, index) => position + state[input].moving[index]
-          ),
-        },
-      }));})
+      });
     },
 
     //console.log(get().entities.filter(entity=>entity.position.every((value, index) => (((targetPlayerPosition[index]-16/2)<=value)&&(value<(targetPlayerPosition[index]+16/2))))))
@@ -102,7 +101,7 @@ export const useGameContext = create(
       }
     },
     addPlayerSpeedZ: (value) => {
-      if (get().playerSpeedZ ===0) {
+      if (get().playerSpeedZ === 0) {
         set((state) => ({ playerSpeedZ: state.playerSpeedZ + value }));
       }
     },
@@ -110,16 +109,9 @@ export const useGameContext = create(
     setPlayerDirection: (value) => set({ playerDirection: value }),
     setPlayerAcceleration: (value) => set({ playerAcceleration: value }),
     movePlayer: (value) => {
-      //todo factor in block heights? fix outliers in collision
-      // console.log("move")
-      const playerSize = 8; //not used
-      const direction = value.map(
-        (value) => (value = value >= 0 === true ? 1 : -1)
-      ); //not used
       const targetPlayerPosition = get().playerPosition.map(
         (data, index) => data + value[index]
       );
-
       const checkEntities = get().entities.filter((entity) =>
         entity.position.every((value, index) => {
           return (
@@ -129,6 +121,22 @@ export const useGameContext = create(
           );
         })
       );
+      const portal = checkEntities.map((entity) => {
+        switch (entity.id) {
+          case 19:
+            get().moveLevel([0,-1])
+            return "north";
+          case 27:
+            get().moveLevel([1,0])
+            return "east";
+            case 35:
+              get().moveLevel([0,-1])
+            return "south";
+            case 46:
+              get().moveLevel([-1,0])
+            return "west";
+        }
+      });
       const death = checkEntities.some((entity) => entity.id > 116);
       //console.log(get().entities.filter(entity=>entity.position.every((value, index) => (((targetPlayerPosition[index]-16/2)<=value)&&(value<(targetPlayerPosition[index]+16/2))))))
       if (!checkEntities[0])
@@ -155,16 +163,19 @@ export const useGameContext = create(
     //rewrite using promise.all to fetch them in a batch // for .2ms LOADING SPEED IMPROVMENT!
     spriteSheet: {},
     fetchSprites: async () => {
-      const mobArray=[]
+      const mobArray = [];
       const buildArray = [];
       const src = get().currentLevel;
       try {
         const dataPromises = {};
         for (const key in src) {
-          const response = await fetch(`/${src[key]}.json`);
-          const data = await response.json();
+          if(key!=="arrayPos"){
+          
+            const response = await fetch(`/${src[key]}.json`);
+            const data = await response.json();
+          
           if (key === "level") {
-            let mobid=0
+            let mobid = 0;
             if (data.infinite) {
               data.layers.map((layer, Z) => {
                 const width = 16;
@@ -196,37 +207,33 @@ export const useGameContext = create(
                       ];
                       //mobs
                       if (id === 116) {
-                        mobid++
+                        mobid++;
                         get().makeMob({
                           name: `mob${mobid}`,
                           position: position,
                           moving: [0, -1, 0],
                           id: id,
-                          
-                        })
-                        mobArray.push(`mob${mobid}`)
-                      }
-                        else if (id === 118) {
-                          mobid++
-                          get().makeMob({
-                            name: `mob${mobid}`,
-                            position: position,
-                            moving: [-1, 0, 0],
-                            id: id, 
-                          })
-                          mobArray.push(`mob${mobid}`)
-                          }
-                         else if (id === 120) {
-                            mobid++
-                            get().makeMob({
-                              name: `mob${mobid}`,
-                              position: position,
-                              moving: [-1, 1, 0],
-                              id: id, 
-                            })
-                            mobArray.push(`mob${mobid}`)
-                            }
-                       else if (id === 92) {
+                        });
+                        mobArray.push(`mob${mobid}`);
+                      } else if (id === 118) {
+                        mobid++;
+                        get().makeMob({
+                          name: `mob${mobid}`,
+                          position: position,
+                          moving: [-1, 0, 0],
+                          id: id,
+                        });
+                        mobArray.push(`mob${mobid}`);
+                      } else if (id === 120) {
+                        mobid++;
+                        get().makeMob({
+                          name: `mob${mobid}`,
+                          position: position,
+                          moving: [-1, 1, 0],
+                          id: id,
+                        });
+                        mobArray.push(`mob${mobid}`);
+                      } else if (id === 92) {
                         set((state) => ({
                           playerPosition: position,
                           playerEntity: { id, orientation },
@@ -243,7 +250,8 @@ export const useGameContext = create(
                   });
                 });
               });
-            } else {
+            }
+            else {
               data.layers.map((layer, Z) => {
                 return layer.layers.map((layer) => {
                   const width = data.width;
@@ -295,10 +303,10 @@ export const useGameContext = create(
               });
             }
           }
-          console.log(mobArray)
-          set(() => ({ entities: buildArray,mobs:mobArray}));
+          console.log(mobArray);
+          set(() => ({ entities: buildArray, mobs: mobArray }));
           dataPromises[key] = data;
-        }
+        }}
         set(dataPromises);
         set({ fetched: true });
       } catch (error) {
@@ -307,14 +315,36 @@ export const useGameContext = create(
     },
     setLevel: (value) => {
       set((state) => ({
-        currentLevel: { ...state.currentLevel, level: value },
+        currentLevel: {
+          ...state.currentLevel,
+          level: value,
+          
+        },
         fetched: false,
       }));
     },
+    moveLevel:((value)=>{
+      const newPos= get().currentLevel.arrayPos.map((pos, index) => (pos += value[index]))
+      const newLevel=get().levelMap[newPos[1]][newPos[0]]
+      set((state)=>({
+        currentLevel:{
+          ...state.currentLevel,
+          arrayPos: newPos,
+          level:newLevel
+        }
+       }))
+       get().setLevel(newLevel)
+    }),
+
     resetLevel: () => {
       set((state) => ({ fetched: false }));
     },
-    currentLevel: { spriteSheet: "tileset_first", level: "room09" },
+
+    currentLevel: {
+      spriteSheet: "tileset_first",
+      level: "room09",
+      arrayPos:[0,0],
+    },
     //dumb placeholeders
     //GameInstance
     config: {
@@ -323,10 +353,8 @@ export const useGameContext = create(
     },
 
     levelMap: [
-      [0, 0, 0, 0, 0],
-      [0, 0, , , ],
-      [0, 0, 0, 3, 0],
-      [0, 7, 6, 5, 0],
+      ["room09","room08"]
+
     ],
     //Gameloop
   }),
