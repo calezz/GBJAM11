@@ -350,8 +350,8 @@ export const useGameContext = create(
 
     currentLevel: {
       spriteSheet: "tileset_first",
-      level: "room09",
-      arrayPos: [0, 0],
+      level: "room09W",
+      arrayPos: [5, 4],
     },
     //dumb placeholeders
     //GameInstance
@@ -360,7 +360,14 @@ export const useGameContext = create(
       spriteSheet: "tileset_main",
     },
 
-    levelMap: [["room09", "room14"]],
+    levelMap: [
+    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
+    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
+    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
+    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
+    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
+    ["room09","room09","room09","room09","room09","room09","room09","room09","room09","room09"],
+  ],
     //Gameloop
   }),
   { shallow: true }
