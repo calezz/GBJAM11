@@ -61,6 +61,9 @@ export const useGameContext = create(
           audio.play();
             set((state)=>({[targetPlayerPosition[3]]:{...state[targetPlayerPosition[3]],position:[10000,0,0]},treasuresTaken:[...state.treasuresTaken,get().currentLevel.arrayPos]
             }))
+            if(get().treasuresTaken.length===5){
+              set({won:true})
+            }
           }
         }
         set((state) => ({
@@ -73,6 +76,7 @@ export const useGameContext = create(
         }));
       });
     },
+    won:false,
     //console.log(get().entities.filter(entity=>entity.position.every((value, index) => (((targetPlayerPosition[index]-16/2)<=value)&&(value<(targetPlayerPosition[index]+16/2))))))
 
     fetched: false,

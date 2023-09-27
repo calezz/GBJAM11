@@ -1,0 +1,14 @@
+{ "columns":20,
+ "image":"..\/..\/..\/Tiled\/rooms\/tileset.png",
+ "imageheight":2144,
+ "imagewidth":320,
+ "margin":0,
+ "name":"tileset",
+ "spacing":0,
+ "tilecount":5360,
+ "tiledversion":"1.10.2",
+ "tileheight":8,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":"1.10"
+}
