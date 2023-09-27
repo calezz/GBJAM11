@@ -16,27 +16,32 @@ export const useGameContext = create(
     },
 
     setMob: () => {
+      
+      let treasure = false
       get().mobs.forEach((input) => {
+        
         const targetPlayerPosition = get()[input].position.map(
-          (data, index) => data + get()[input].moving[index]
-        );
-        const checkEntities = get().entities.filter((entity) =>
+          (data, index) => data + get()[input].moving[index]);
+          if(get()[input].id===131){
+          targetPlayerPosition.push(input)
+          }
+          const checkEntities = get().entities.filter((entity) =>
           entity.position.every((value, index) => {
             return (
               (targetPlayerPosition[index] - 15 < value &&
                 value < targetPlayerPosition[index] + 15) ||
-              value === targetPlayerPosition[index]
-            );
-          })
-        );
-        const playerDeath = get().playerPosition.every((value, index) => {
-          return (
-            (targetPlayerPosition[index] - 15 < value &&
-              value < targetPlayerPosition[index] + 15) ||
-            value === targetPlayerPosition[index]
-          );
-        });
-
+                value === targetPlayerPosition[index]
+                );
+              })
+              );
+              const playerDeath = get().playerPosition.every((value, index) => {
+                return (
+                  (targetPlayerPosition[index] - 15 < value &&
+                    value < targetPlayerPosition[index] + 15) ||
+                    value === targetPlayerPosition[index]
+                    );
+                  });
+                  
         if (checkEntities[0]) {
           set((state) => ({
             [input]: {
@@ -45,10 +50,18 @@ export const useGameContext = create(
             },
           }));
         }
+       
         if (playerDeath) {
-          get().resetLevel();
-          const audio = new Audio("death.mp3");
+          if(targetPlayerPosition.length<4){
+            get().resetLevel();
+            const audio = new Audio("death.mp3");
+            audio.play();
+          }else{
+            const audio = new Audio("pickupItem.mp3");
           audio.play();
+            set((state)=>({[targetPlayerPosition[3]]:{...state[targetPlayerPosition[3]],position:[10000,0,0]},treasuresTaken:[...state.treasuresTaken,get().currentLevel.arrayPos]
+            }))
+          }
         }
         set((state) => ({
           [input]: {
@@ -60,7 +73,6 @@ export const useGameContext = create(
         }));
       });
     },
-
     //console.log(get().entities.filter(entity=>entity.position.every((value, index) => (((targetPlayerPosition[index]-16/2)<=value)&&(value<(targetPlayerPosition[index]+16/2))))))
 
     fetched: false,
@@ -79,7 +91,7 @@ export const useGameContext = create(
     updatePlayerSpeed: () => {
       if (get().playerAcceleration === 0) {
         set((state) => ({
-          playerSpeed: Math.max(state.playerSpeed - 0.5, 0),
+          playerSpeed: Math.max(state.playerSpeed -1, 0),
         }));
       } else {
         set((state) => ({
@@ -122,13 +134,14 @@ export const useGameContext = create(
       const checkEntities = get().entities.filter((entity) =>
         entity.position.every((value, index) => {
           return (
-            (targetPlayerPosition[index] - 15 < value &&
-              value < targetPlayerPosition[index] + 15) ||
+            (targetPlayerPosition[index] - 10 < value &&
+              value < targetPlayerPosition[index] + 10) ||
             value === targetPlayerPosition[index]
           );
         })
       );
-
+     
+      //console.log(checkEntities)
       const portal = checkEntities.map((entity) => {
         switch (entity.id) {
           case 19:
@@ -145,8 +158,8 @@ export const useGameContext = create(
             return "west";
         }
       });
-      const death = checkEntities.some((entity) => entity.id > 116 &&entity.id!==130);
-      const collect = checkEntities.some((entity) => entity.id===130);
+      const death = checkEntities.some((entity) => entity.id > 116 &&entity.id!==131);
+     const collect = checkEntities.some((entity) => entity.id===131);
       //console.log(get().entities.filter(entity=>entity.position.every((value, index) => (((targetPlayerPosition[index]-16/2)<=value)&&(value<(targetPlayerPosition[index]+16/2))))))
       if (!checkEntities[0])
         [
@@ -231,7 +244,21 @@ export const useGameContext = create(
                           Z * 16,
                         ];
                         //mobs
-                        if (id === 116) {
+                        if(id === 131) {
+                          const temp = get().currentLevel.arrayPos 
+                          const taken = get().treasuresTaken.some(entry=>entry.every((value,index)=>value===temp[index]))
+                          if(!taken){
+                            mobid++;
+                            get().makeMob({
+                            name: `mob${mobid}`,
+                            position: position,
+                            moving: [0,0, 0],
+                            id: id,
+                          });
+                          mobArray.push(`mob${mobid}`);
+                        }
+                        } 
+                        else if (id === 116) {
                           mobid++;
                           get().makeMob({
                             name: `mob${mobid}`,
@@ -258,7 +285,9 @@ export const useGameContext = create(
                             id: id,
                           });
                           mobArray.push(`mob${mobid}`);
-                        } else if (id === 92) {
+                        } 
+                        
+                          else if (id === 92) {
                           set((state) => ({
                             playerPosition: position,
                             playerEntity: { id, orientation },
@@ -277,7 +306,7 @@ export const useGameContext = create(
                 });
               } else if(!data.infinite) {
                 data.layers.forEach((layer, Z) => {
-                  console.log(layer)
+               //   console.log(layer)
                   return layer.layers.forEach((layer) => {
                     const width = data.width;
                     return layer.data.map((id, index) => {
@@ -308,6 +337,13 @@ export const useGameContext = create(
                             name: "mob2",
                             position: position,
                             moving: [1, 1, 0],
+                            id: id,
+                          });
+                        } if (id === 131) {
+                          get().makeMob({
+                            name: "mob10",
+                            position: position,
+                            moving: [0, 0, 0],
                             id: id,
                           });
                         } else if (id === 92) {
@@ -362,7 +398,7 @@ export const useGameContext = create(
       const newPos=get().currentLevel.arrayPos.map((pos,index)=>pos+value[index])
       const levelCurrent = get().currentLevel
       const newLevel=get().levelMap[newPos[1]][newPos[0]]
-      console.log(get().currentLevel.arrayPos,newPos)
+    //  console.log(get().currentLevel.arrayPos,newPos)
       if(newLevel){
         set((state) => ({
           currentLevel: {
@@ -373,7 +409,7 @@ export const useGameContext = create(
           playerSpeed:0,
         }))
         get().fetchSprites(levelCurrent)
-        console.log(newLevel+value[2])
+     //   console.log(newLevel+value[2])
       }}
       },
 
@@ -392,7 +428,7 @@ export const useGameContext = create(
       src: "tileset",
       spriteSheet: "tileset_main",
     },
-
+    treasuresTaken:[],
     levelMap: [
     [null,null,null,null,null,null,null,null,null,null],
     [null,null,null   ,       ,       ,       ,null,"       ",null,null],
